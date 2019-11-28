@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="55669178-15d6-4fe4-8df5-0d40136082b4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-    </list>
+    <list default="true" id="55669178-15d6-4fe4-8df5-0d40136082b4" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/edu-application/target/" />
@@ -39,7 +37,7 @@
         <entry file="file://$PROJECT_DIR$/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsPermissionController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-810">
-              <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+              <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -51,7 +49,7 @@
         <entry file="file://$PROJECT_DIR$/edu-application/src/main/java/com/njupt/hpc/edu/config/SecurityConfig.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-577">
-              <caret line="19" column="3" lean-forward="true" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+              <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -63,7 +61,7 @@
         <entry file="file://$PROJECT_DIR$/edu-application/src/main/java/com/njupt/hpc/edu/filter/JwtAuthenticationFilter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="574">
-              <caret line="60" column="14" lean-forward="true" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
+              <caret line="60" column="14" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -87,8 +85,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsUserController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="50" column="23" lean-forward="true" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+            <state relative-caret-position="237">
+              <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
               <folding>
                 <element signature="e#1265#1266#0" expanded="true" />
                 <element signature="e#1297#1298#0" expanded="true" />
@@ -357,7 +355,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574940389542" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1574940392235" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
@@ -532,7 +530,7 @@
       <workItem from="1574858886939" duration="2042000" />
       <workItem from="1574861595734" duration="1053000" />
       <workItem from="1574862677760" duration="733000" />
-      <workItem from="1574906126679" duration="20518000" />
+      <workItem from="1574906126679" duration="20921000" />
     </task>
     <servers />
   </component>
@@ -569,7 +567,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66641000" />
+    <option name="totallyTimeSpent" value="67044000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1201" extended-state="6" />
@@ -1050,7 +1048,7 @@
     <entry file="file://$PROJECT_DIR$/edu-application/src/main/java/com/njupt/hpc/edu/config/SecurityConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-577">
-          <caret line="19" column="3" lean-forward="true" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1060,7 +1058,7 @@
     <entry file="file://$PROJECT_DIR$/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsPermissionController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-810">
-          <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+          <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1070,7 +1068,7 @@
     <entry file="file://$PROJECT_DIR$/edu-application/src/main/java/com/njupt/hpc/edu/filter/JwtAuthenticationFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="574">
-          <caret line="60" column="14" lean-forward="true" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
+          <caret line="60" column="14" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1090,8 +1088,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsUserController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="50" column="23" lean-forward="true" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+        <state relative-caret-position="237">
+          <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
           <folding>
             <element signature="e#1265#1266#0" expanded="true" />
             <element signature="e#1297#1298#0" expanded="true" />
