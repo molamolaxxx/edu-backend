@@ -1,0 +1,15 @@
+com/njupt/hpc/edu/user/service/impl/UmsRoleServiceImpl.class
+com/njupt/hpc/edu/user/service/UmsRoleService.class
+com/njupt/hpc/edu/user/controller/UmsUserController.class
+com/njupt/hpc/edu/user/service/impl/UmsUserServiceImpl.class
+com/njupt/hpc/edu/user/dao/UmsPermissionMapper.class
+com/njupt/hpc/edu/user/model/UmsUser.class
+com/njupt/hpc/edu/user/controller/UmsPermissionController.class
+com/njupt/hpc/edu/user/service/impl/UmsPermissionServiceImpl.class
+com/njupt/hpc/edu/user/model/UmsRole.class
+com/njupt/hpc/edu/user/service/UmsUserService.class
+com/njupt/hpc/edu/user/model/UmsPermission.class
+com/njupt/hpc/edu/user/dao/UmsUserMapper.class
+com/njupt/hpc/edu/user/dao/UmsRoleMapper.class
+com/njupt/hpc/edu/user/controller/UmsRoleController.class
+com/njupt/hpc/edu/user/service/UmsPermissionService.class

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.njupt.hpc.edu.user.dao.UmsRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.njupt.hpc.edu.user.model.UmsRole">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <select id="findRoleByUserId" resultMap="BaseResultMap">
+        select
+            r.*
+        from
+            edu.user_role_rela rela
+        left join
+            edu.ums_role r on rela.rid = r.id
+        where
+            rela.uid = #{userId}
+        order by r.id
+    </select>
+</mapper>

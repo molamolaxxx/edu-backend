@@ -1,0 +1,15 @@
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/service/UmsPermissionService.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/dao/UmsPermissionMapper.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/dao/UmsUserMapper.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/service/UmsUserService.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/service/impl/UmsRoleServiceImpl.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsRoleController.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/service/UmsRoleService.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/model/UmsPermission.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/service/impl/UmsPermissionServiceImpl.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsUserController.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/dao/UmsRoleMapper.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/model/UmsUser.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/model/UmsRole.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/service/impl/UmsUserServiceImpl.java
+/home/mola/IdeaProjects/edu/edu-user/src/main/java/com/njupt/hpc/edu/user/controller/UmsPermissionController.java
