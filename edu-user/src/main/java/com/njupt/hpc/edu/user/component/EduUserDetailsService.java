@@ -33,6 +33,6 @@ public class EduUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("用户名不存在");
         }
         // 构建userDetail
-        return new EduUserDetails(user, permissionService.listPermissionListByUserId(user.getId()));
+        return new EduUserDetails(user, permissionService.listPermissionsByUserId(user.getId()));
     }
 }

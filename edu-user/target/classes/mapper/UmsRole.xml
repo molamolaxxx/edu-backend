@@ -22,4 +22,20 @@
             rela.uid = #{userId}
         order by r.id
     </select>
+
+    <delete id="deleteUserRoleRelation" >
+        delete
+            from edu.user_role_rela
+        where
+            uid=#{userId}
+        and
+            rid=#{roleId}
+    </delete>
+
+    <insert id="addUserRoleRelation" >
+        insert
+            into edu.user_role_rela
+        (uid, rid)
+            values (#{userId}, #{roleId})
+    </insert>
 </mapper>

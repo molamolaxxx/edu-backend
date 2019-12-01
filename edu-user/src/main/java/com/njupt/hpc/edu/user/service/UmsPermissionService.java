@@ -17,5 +17,15 @@ import java.util.List;
 @Transactional
 public interface UmsPermissionService extends IService<UmsPermission> {
 
-    List<UmsPermission> listPermissionListByUserId(String userId);
+    List<UmsPermission> listPermissionsByUserId(String userId);
+
+    List<UmsPermission> listPermissionsByRoleId(String roleId);
+
+    void deleteRolePermissionRelation(String roleId, String permissionId);
+
+    void deleteRolePermissionRelationInBatch(String roleId, List<String> permissionIdList);
+
+    void addRolePermissionRelation(String roleId, String permissionId);
+
+    void addRolePermissionRelationInBatch(String roleId, List<String> permissionIdList);
 }

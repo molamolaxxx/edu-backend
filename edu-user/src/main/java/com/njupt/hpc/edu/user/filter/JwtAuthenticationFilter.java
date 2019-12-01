@@ -1,4 +1,4 @@
-package com.njupt.hpc.edu.filter;
+package com.njupt.hpc.edu.user.filter;
 
 import com.njupt.hpc.edu.common.utils.JwtTokenUtil;
 import com.njupt.hpc.edu.user.component.EduUserDetailsService;
@@ -57,6 +57,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 // 如果token有效
                 if (jwtTokenUtil.validateToken(authToken, userDetails)){
+                    // request中放入用户名
+                    request.setAttribute("username",username);
+                    request.setAttribute("token", authToken);
                     // 鉴权通过
                     UsernamePasswordAuthenticationToken authentication
                             = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -78,15 +78,15 @@ public class ${table.controllerName} {
     public CommonResult update(@PathVariable String id, ${entity} ${entity?substring(3)?uncap_first}){
         ${entity?substring(3)?uncap_first}.setId(id);
         ${entity?substring(3)?uncap_first}.setUpdateTime(LocalDateTime.now());
-        ${table.serviceName?uncap_first}.updateById(${entity?substring(3)?uncap_first});
-        return CommonResult.success(true, "更新数据成功");
+        boolean result = ${table.serviceName?uncap_first}.updateById(${entity?substring(3)?uncap_first});
+        return CommonResult.parseResultToResponse(result, "更新数据失败", "更新数据成功");
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("删除数据")
     public CommonResult delete(@PathVariable String id){
-        ${table.serviceName?uncap_first}.removeById(id);
-        return CommonResult.success(true, "删除数据成功");
+        boolean result = ${table.serviceName?uncap_first}.removeById(id);
+        return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
     }
 }
 </#if>

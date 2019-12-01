@@ -53,6 +53,10 @@ public class CommonResult<T> {
         return new CommonResult<T>(ResultCode.FAILED.getCode(), message, null);
     }
 
+    public static <T> CommonResult<T> failed(String message, T data) {
+        return new CommonResult<T>(ResultCode.FAILED.getCode(), message, data);
+    }
+
     /**
      * 失败返回结果
      */
@@ -87,6 +91,13 @@ public class CommonResult<T> {
      */
     public static <T> CommonResult<T> forbidden(T data) {
         return new CommonResult<T>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
+    }
+
+    public static CommonResult<? extends Object> parseResultToResponse(boolean result, String failedMsg, String successMsg){
+        if (result)
+            return CommonResult.failed(failedMsg);
+        else
+            return CommonResult.success(true, successMsg);
     }
 
     public long getCode() {

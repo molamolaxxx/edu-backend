@@ -1,4 +1,4 @@
-package com.njupt.hpc.edu.component;
+package com.njupt.hpc.edu.common.components;
 
 import cn.hutool.json.JSONUtil;
 import com.njupt.hpc.edu.common.api.CommonResult;

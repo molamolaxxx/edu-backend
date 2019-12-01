@@ -1,10 +1,11 @@
 package com.njupt.hpc.edu.user.model;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -45,6 +46,11 @@ public class UmsUser implements Serializable {
      * 用户描述
      */
     private String description;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
 
     private LocalDateTime createTime;
 

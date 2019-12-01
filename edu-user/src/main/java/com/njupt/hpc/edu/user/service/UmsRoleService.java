@@ -1,8 +1,10 @@
 package com.njupt.hpc.edu.user.service;
 
-import com.njupt.hpc.edu.user.model.UmsRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.njupt.hpc.edu.user.model.UmsRole;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UmsRoleService extends IService<UmsRole> {
 
+    List<UmsRole> listRolesByUserId(String userId);
+
+    void deleteUserRoleRelation(String userId, String roleId);
+
+    void deleteUserRoleRelationInBatch(String userId, List<String> roleIdList);
+
+    void addUserRoleRelation(String userId, String roleId);
+
+    void addUserRoleRelationInBatch(String userId, List<String> roleIdList);
 }

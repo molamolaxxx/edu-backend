@@ -1,8 +1,7 @@
 package com.njupt.hpc.edu.config;
 
-import com.njupt.hpc.edu.component.RestAuthenticationEntryPoint;
-import com.njupt.hpc.edu.component.RestfulAccessDeniedHandler;
-import com.njupt.hpc.edu.filter.JwtAuthenticationFilter;
+import com.njupt.hpc.edu.common.components.RestAuthenticationEntryPoint;
+import com.njupt.hpc.edu.user.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,9 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Autowired
-    private RestfulAccessDeniedHandler accessDeniedHandler;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -50,23 +46,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**",
                         "/webjars/springfox-swagger-ui/**")
                 .permitAll()
-                .antMatchers("/umsUser/login") //允许登录
+                .antMatchers("/umsUser/login","/umsUser/refreshToken") //允许登录与刷新token
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()
-//                .antMatchers("/**")   //测试用
+//                .antMatchers("/**")
 //                .permitAll()
                 .anyRequest()
                 .authenticated();
+
         // 缓存禁用
         http.headers().cacheControl();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling()
                 // 未登录或token失效返回
-                .authenticationEntryPoint(authenticationEntryPoint)
-                // 接口无权限返回
-                .accessDeniedHandler(accessDeniedHandler);
+                .authenticationEntryPoint(authenticationEntryPoint);
 
     }
 

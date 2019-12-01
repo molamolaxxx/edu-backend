@@ -21,4 +21,10 @@ public interface UmsPermissionMapper extends BaseMapper<UmsPermission> {
     List<UmsPermission> findPermissionByRoleId(@Param("roleId") String roleId);
 
     List<UmsPermission> findPermissionByRoleIdList(List<String> ids);
+
+    Integer deleteRolePermissionRelation(@Param("roleId") String roleId,
+                                         @Param("permissionId") String permissionId);
+
+    Integer addRolePermissionRelation(@Param("roleId") String roleId,
+                                      @Param("permissionId") String permissionId);
 }

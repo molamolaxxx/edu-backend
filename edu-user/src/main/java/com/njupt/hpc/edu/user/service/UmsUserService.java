@@ -18,4 +18,6 @@ public interface UmsUserService extends IService<UmsUser> {
     UmsUser findUserByUsername(String username);
 
     String login(String username, String password);
+
+    String refreshToken(String token);
 }

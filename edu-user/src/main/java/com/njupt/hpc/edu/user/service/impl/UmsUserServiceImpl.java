@@ -82,4 +82,10 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
         // 生成token
         return jwtTokenUtil.generateToken(userDetails);
     }
+
+
+    @Override
+    public String refreshToken(String token) {
+        return jwtTokenUtil.refreshToken(token);
+    }
 }

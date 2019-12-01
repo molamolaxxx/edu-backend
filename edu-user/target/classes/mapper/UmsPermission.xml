@@ -27,16 +27,32 @@
 
     <select id="findPermissionByRoleIdList" resultMap="BaseResultMap">
         select
-        p.*
+            p.*
         from
-        edu.role_permission_rela rela
+            edu.role_permission_rela rela
         left join
-        edu.ums_permission p on rela.pid = p.id
+            edu.ums_permission p on rela.pid = p.id
         where
-        rela.rid in
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        order by p.id
+            rela.rid in
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        group by p.id
     </select>
+
+    <delete id="deleteRolePermissionRelation" >
+        delete
+            from edu.role_permission_rela
+        where
+            rid=#{roleId}
+        and
+            pid=#{permissionId}
+    </delete>
+
+    <insert id="addRolePermissionRelation" >
+        insert
+            into edu.role_permission_rela
+        (rid, pid)
+            values (#{roleId}, #{permissionId})
+    </insert>
 </mapper>

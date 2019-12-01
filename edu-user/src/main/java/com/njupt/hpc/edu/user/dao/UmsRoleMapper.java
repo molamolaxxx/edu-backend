@@ -22,4 +22,22 @@ public interface UmsRoleMapper extends BaseMapper<UmsRole> {
      * 根据userId查询role
      */
     List<UmsRole> findRoleByUserId(@Param("userId") String userId);
+
+    /**
+     * 删除user与role的关系
+     * @param userId
+     * @param roleId
+     * @return
+     */
+    Integer deleteUserRoleRelation(@Param("userId") String userId,
+                                   @Param("roleId") String roleId);
+
+    /**
+     * 添加user与role的关系
+     * @param userId
+     * @param roleId
+     * @return
+     */
+    Integer addUserRoleRelation(@Param("userId") String userId,
+                                   @Param("roleId") String roleId);
 }
