@@ -30,7 +30,6 @@ import java.util.List;
 @Api(tags = "用户角色", description = "用户角色")
 public class UmsRoleController {
 
-
     @Autowired
     private UmsRoleService umsRoleService;
 

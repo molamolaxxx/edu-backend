@@ -8,6 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <description>工程模块，管理创建实例，保存实例状态与结果</description>
 
     <artifactId>edu-project</artifactId>
 

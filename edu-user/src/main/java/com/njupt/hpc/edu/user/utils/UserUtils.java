@@ -3,6 +3,7 @@ package com.njupt.hpc.edu.user.utils;
 import com.njupt.hpc.edu.common.exception.EduUserException;
 import com.njupt.hpc.edu.user.model.UmsUser;
 import com.njupt.hpc.edu.user.service.UmsUserService;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Description:
  * @date : 2019-11-29 17:33
  **/
+@Component
 public class UserUtils {
 
     public static UmsUser getUserFromRequest(HttpServletRequest request, UmsUserService service){

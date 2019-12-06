@@ -1,6 +1,5 @@
 package com.njupt.hpc.edu.project.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
@@ -9,18 +8,18 @@ import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import org.springframework.web.bind.annotation.RestController;
 /**
  * <p>
  * 算法数据表 前端控制器
  * </p>
  *
  * @author molamola
- * @since 2019-11-26
+ * @since 2019-12-04
  */
 
 @RestController
@@ -49,6 +48,7 @@ public class PmsDataController {
     @PostMapping
     @ApiOperation("保存数据")
     public CommonResult save(@RequestBody PmsData data){
+        data.setId("data_"+ RandomStringUtils.randomAlphanumeric(8));
         data.setCreateTime(LocalDateTime.now());
         data.setUpdateTime(LocalDateTime.now());
         pmsDataService.save(data);
@@ -60,14 +60,14 @@ public class PmsDataController {
     public CommonResult update(@PathVariable String id, PmsData data){
         data.setId(id);
         data.setUpdateTime(LocalDateTime.now());
-        pmsDataService.updateById(data);
-        return CommonResult.success(true, "更新数据成功");
+        boolean result = pmsDataService.updateById(data);
+        return CommonResult.parseResultToResponse(result, "更新数据失败", "更新数据成功");
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("删除数据")
     public CommonResult delete(@PathVariable String id){
-        pmsDataService.removeById(id);
-        return CommonResult.success(true, "删除数据成功");
+        boolean result = pmsDataService.removeById(id);
+        return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
     }
 }

@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>edu-application</artifactId>
+    <description>项目启动模块，负责一些配置和启动类</description>
 
     <dependencies>
         <dependency>

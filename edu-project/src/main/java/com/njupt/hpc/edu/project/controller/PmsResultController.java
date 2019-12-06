@@ -5,8 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
-import com.njupt.hpc.edu.project.model.PmsAlgorithm;
-import com.njupt.hpc.edu.project.service.PmsAlgorithmService;
+import com.njupt.hpc.edu.project.model.PmsResult;
+import com.njupt.hpc.edu.project.service.PmsResultService;
+import org.apache.commons.lang.RandomStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,58 +17,59 @@ import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.RestController;
 /**
  * <p>
- * 算法表 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author molamola
- * @since 2019-11-26
+ * @since 2019-12-04
  */
 
 @RestController
-@RequestMapping("/pmsAlgorithm")
-@Api(tags = "算法表", description = "算法表")
-public class PmsAlgorithmController {
+@RequestMapping("/pmsResult")
+@Api(tags = "", description = "")
+public class PmsResultController {
 
 
     @Autowired
-    private PmsAlgorithmService pmsAlgorithmService;
+    private PmsResultService pmsResultService;
 
     @GetMapping
     @ApiOperation("列表分页查询")
     public CommonPage list(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "100") Integer pageSize){
-        IPage page = pmsAlgorithmService.page(new Page(pageNum, pageSize));
+        IPage page = pmsResultService.page(new Page(pageNum, pageSize));
         return CommonPage.restPage(page);
     }
 
     @GetMapping("/{id}")
     @ApiOperation("根据id查找")
     public CommonResult findById(@PathVariable String id){
-        return CommonResult.success(pmsAlgorithmService.getById(id));
+        return CommonResult.success(pmsResultService.getById(id));
     }
 
     @PostMapping
     @ApiOperation("保存数据")
-    public CommonResult save(@RequestBody PmsAlgorithm algorithm){
-        algorithm.setCreateTime(LocalDateTime.now());
-        algorithm.setUpdateTime(LocalDateTime.now());
-        pmsAlgorithmService.save(algorithm);
+    public CommonResult save(@RequestBody PmsResult result){
+        result.setId("result_"+ RandomStringUtils.randomAlphanumeric(8));
+        result.setCreateTime(LocalDateTime.now());
+        result.setUpdateTime(LocalDateTime.now());
+        pmsResultService.save(result);
         return CommonResult.success(true, "保存数据成功");
     }
 
     @PutMapping("/{id}")
     @ApiOperation("更新数据")
-    public CommonResult update(@PathVariable String id, PmsAlgorithm algorithm){
-        algorithm.setId(id);
-        algorithm.setUpdateTime(LocalDateTime.now());
-        pmsAlgorithmService.updateById(algorithm);
-        return CommonResult.success(true, "更新数据成功");
+    public CommonResult update(@PathVariable String id, PmsResult result){
+        result.setId(id);
+        result.setUpdateTime(LocalDateTime.now());
+        boolean result = pmsResultService.updateById(result);
+        return CommonResult.parseResultToResponse(result, "更新数据失败", "更新数据成功");
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("删除数据")
     public CommonResult delete(@PathVariable String id){
-        pmsAlgorithmService.removeById(id);
-        return CommonResult.success(true, "删除数据成功");
+        boolean result = pmsResultService.removeById(id);
+        return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
     }
 }

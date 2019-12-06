@@ -7,6 +7,7 @@ import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import ${package.Entity}.${table.entityName};
 import ${package.Service}.${table.serviceName};
+import org.apache.commons.lang.RandomStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,7 @@ public class ${table.controllerName} {
     @PostMapping
     @ApiOperation("保存数据")
     public CommonResult save(@RequestBody ${entity} ${entity?substring(3)?uncap_first}){
+        ${entity?substring(3)?uncap_first}.setId("${entity?substring(3)?uncap_first}_"+ RandomStringUtils.randomAlphanumeric(8));
         ${entity?substring(3)?uncap_first}.setCreateTime(LocalDateTime.now());
         ${entity?substring(3)?uncap_first}.setUpdateTime(LocalDateTime.now());
         ${table.serviceName?uncap_first}.save(${entity?substring(3)?uncap_first});

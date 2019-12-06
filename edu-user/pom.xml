@@ -8,6 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <description>用户模块，管理用户、角色与权限</description>
 
     <artifactId>edu-user</artifactId>
     <dependencies>

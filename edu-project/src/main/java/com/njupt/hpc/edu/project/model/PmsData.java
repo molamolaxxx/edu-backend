@@ -1,10 +1,11 @@
 package com.njupt.hpc.edu.project.model;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -12,7 +13,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author molamola
- * @since 2019-11-26
+ * @since 2019-12-04
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

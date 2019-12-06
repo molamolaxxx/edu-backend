@@ -1,18 +1,18 @@
 package com.njupt.hpc.edu.project.dao;
 
-import com.njupt.hpc.edu.project.model.PmsAlgorithm;
+import com.njupt.hpc.edu.project.model.PmsResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
 /**
  * <p>
- * 算法表 Mapper 接口
+ *  Mapper 接口
  * </p>
  *
  * @author molamola
- * @since 2019-11-26
+ * @since 2019-12-04
  */
 @Repository
-public interface PmsAlgorithmMapper extends BaseMapper<PmsAlgorithm> {
+public interface PmsResultMapper extends BaseMapper<PmsResult> {
 
 }

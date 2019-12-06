@@ -22,14 +22,14 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         // 生成用户模块
-        config("edu-user","com.njupt.hpc.edu.user"
-                ,new String[]{"ums_role","ums_user","ums_permission"})
-                .execute();
+//        config("edu-user","com.njupt.hpc.edu.user"
+//                ,new String[]{"ums_role","ums_user","ums_permission"})
+//                .execute();
 
         // 生成项目模块
-//        config("edu-project","com.njupt.hpc.edu.project"
-//                ,new String[]{"pms_project","pms_data","pms_algorithm"})
-//                .execute();
+        config("edu-project","com.njupt.hpc.edu.project"
+                ,new String[]{"pms_instance","pms_data","pms_result"})
+                .execute();
     }
 
     private static AutoGenerator config(String moduleName, String parentPackageName, String[] tableList){
@@ -42,7 +42,7 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("molamola");
         gc.setOpen(false);
-        gc.setFileOverride(false);
+        gc.setFileOverride(true);
         gc.setActiveRecord(false);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
@@ -92,8 +92,8 @@ public class CodeGenerator {
         pc.setController("controller");
         pc.setService("service");
         pc.setServiceImpl("service.impl");
-        pc.setMapper("com.njupt.hpc.edu.user.dao");
         pc.setEntity("model");
+        pc.setMapper("dao");
         mpg.setPackageInfo(pc);
 
         // 配置模板

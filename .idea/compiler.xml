@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="edu-application" />
         <module name="edu-common" />
+        <module name="edu-mq" />
         <module name="edu-project" />
         <module name="edu-user" />
       </profile>
@@ -16,6 +17,7 @@
       <module name="edu" target="1.8" />
       <module name="edu-application" target="1.8" />
       <module name="edu-common" target="1.8" />
+      <module name="edu-mq" target="1.8" />
       <module name="edu-project" target="1.8" />
       <module name="edu-user" target="1.8" />
     </bytecodeTargetLevel>
@@ -24,6 +26,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="edu-application" options="-parameters" />
       <module name="edu-common" options="-parameters" />
+      <module name="edu-mq" options="-parameters" />
       <module name="edu-project" options="-parameters" />
       <module name="edu-user" options="-parameters" />
     </option>
