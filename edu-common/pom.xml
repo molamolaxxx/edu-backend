@@ -53,9 +53,13 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.molamolaxxx/fast-redis-annotation -->
         <dependency>
-            <groupId>io.github.molamolaxxx</groupId>
-            <artifactId>fast-redis-annotation</artifactId>
-            <version>1.0.2</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.31</version>
         </dependency>
 
     </dependencies>

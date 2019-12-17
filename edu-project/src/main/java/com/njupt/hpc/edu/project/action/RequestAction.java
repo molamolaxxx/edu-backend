@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
 
-import java.util.Map;
-
 public abstract class RequestAction {
+
+    /**
+     * 请求id，用来作为全局deferresult的key
+     */
+    private String actionId;
 
     /**
      * 实例的id
@@ -29,16 +32,18 @@ public abstract class RequestAction {
     private String message;
 
     /**
-     * 一些参数
-     */
-    private Map<String, Object> param;
-
-    /**
      * 将对象转化成json文件
      * @return
      */
-    protected abstract JSON parse(RequestAction action);
+    protected abstract JSON parse();
 
+    public String getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(String actionId) {
+        this.actionId= actionId;
+    }
 
     public String getInstanceId() {
         return instanceId;
@@ -72,11 +77,4 @@ public abstract class RequestAction {
         this.actionType = actionType;
     }
 
-    public Map<String, Object> getParam() {
-        return param;
-    }
-
-    public void setParam(Map<String, Object> param) {
-        this.param = param;
-    }
 }

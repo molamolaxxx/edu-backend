@@ -19,6 +19,10 @@ public enum InstanceTypeEnum {
     private String code;
     private String desc;
 
+    public static final String _GENERATE_EVALUATE = "0";
+    public static final String _FUSION_EVALUATE = "1";
+    public static final String _SENTIMENT_EVALUATE = "2";
+
     InstanceTypeEnum(String code, String desc){
         this.code = code;
         this.desc = desc;

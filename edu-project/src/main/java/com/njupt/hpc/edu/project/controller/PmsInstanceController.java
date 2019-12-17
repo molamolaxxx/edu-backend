@@ -92,9 +92,7 @@ public class PmsInstanceController {
         return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
     }
 
-    /**
-     * for admin
-     */
+    // for admin
 
     /**
      * 查看所有实例

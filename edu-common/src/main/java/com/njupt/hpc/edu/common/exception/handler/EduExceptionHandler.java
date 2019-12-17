@@ -1,6 +1,7 @@
 package com.njupt.hpc.edu.common.exception.handler;
 
 import com.njupt.hpc.edu.common.api.CommonResult;
+import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.exception.EduUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,6 +23,13 @@ public class EduExceptionHandler {
     public CommonResult error(EduUserException e, HttpServletResponse response){
         e.printStackTrace();
         return CommonResult.failed("用户模块内部错误", e.getMessage());
+    }
+
+    @ExceptionHandler(value = EduProjectException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult error(EduProjectException e, HttpServletResponse response){
+        e.printStackTrace();
+        return CommonResult.failed("工程模块内部错误", e.getMessage());
     }
 
     /**

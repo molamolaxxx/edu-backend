@@ -1,20 +1,16 @@
 package com.njupt.hpc.edu.project.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.project.model.PmsResult;
 import com.njupt.hpc.edu.project.service.PmsResultService;
-import org.apache.commons.lang.RandomStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import org.springframework.web.bind.annotation.RestController;
 /**
  * <p>
  *  前端控制器
@@ -26,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pmsResult")
-@Api(tags = "", description = "")
+@Api(tags = "结果表", description = "结果控制器")
 public class PmsResultController {
 
 
@@ -51,8 +47,6 @@ public class PmsResultController {
     @ApiOperation("保存数据")
     public CommonResult save(@RequestBody PmsResult result){
         result.setId("result_"+ RandomStringUtils.randomAlphanumeric(8));
-        result.setCreateTime(LocalDateTime.now());
-        result.setUpdateTime(LocalDateTime.now());
         pmsResultService.save(result);
         return CommonResult.success(true, "保存数据成功");
     }
@@ -61,9 +55,8 @@ public class PmsResultController {
     @ApiOperation("更新数据")
     public CommonResult update(@PathVariable String id, PmsResult result){
         result.setId(id);
-        result.setUpdateTime(LocalDateTime.now());
-        boolean result = pmsResultService.updateById(result);
-        return CommonResult.parseResultToResponse(result, "更新数据失败", "更新数据成功");
+        return CommonResult.parseResultToResponse(pmsResultService.updateById(result),
+                "更新数据失败", "更新数据成功");
     }
 
     @DeleteMapping("/{id}")

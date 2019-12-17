@@ -18,7 +18,9 @@ mybatis-plus:
 # jwt
 jwt:
   secret: njput_bigdataEdu_hpc_molamola
-#  一个小时过期
-  expiration: 3600
+#  十个小时过期
+  expiration: 36000
   tokenHeader: Authorization
   tokenHead: Bearer
+
+

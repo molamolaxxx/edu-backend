@@ -1,12 +1,13 @@
 package com.njupt.hpc.edu.project.enumerate;
 
+import lombok.Getter;
+
 /**
  * 枚举实例发送action
  */
+@Getter
 public enum InstanceActionType {
-    /**
-     * request
-     */
+
     // 开始实例
     START(101,"开始执行实例"),
     // 停止实例
@@ -16,11 +17,20 @@ public enum InstanceActionType {
     RESULT(104,"查看评估结果"),
 
     /**
-     * response
+     * 算法模块主动响应
      */
-    NORMAL(104,"针对应用端的响应"),
     ERROR(105,"实例运行失败通知"),
     FINISH(106,"实例运行完毕通知");
+
+
+    // const
+    public static final int _START = 101;
+    public static final int _STOP = 102;
+    public static final int _INFO = 103;
+    public static final int _RESULT = 104;
+    public static final int _ERROR = 105;
+    public static final int _FINISH = 106;
+
     private Integer actionCode;
 
     private String actionDesc;

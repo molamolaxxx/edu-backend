@@ -6,6 +6,7 @@ import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.service.PmsDataService;
+import com.njupt.hpc.edu.user.service.UmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.RandomStringUtils;
@@ -27,9 +28,11 @@ import java.time.LocalDateTime;
 @Api(tags = "算法数据表", description = "算法数据表")
 public class PmsDataController {
 
-
     @Autowired
     private PmsDataService pmsDataService;
+
+    @Autowired
+    private UmsUserService userService;
 
     @GetMapping
     @ApiOperation("列表分页查询")
@@ -69,5 +72,13 @@ public class PmsDataController {
     public CommonResult delete(@PathVariable String id){
         boolean result = pmsDataService.removeById(id);
         return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
+    }
+
+    /**
+     * 上传数据
+     */
+    @PostMapping("/upload")
+    public CommonResult upload(){
+        return CommonResult.success(null);
     }
 }

@@ -4,6 +4,9 @@ package com.njupt.hpc.edu.project.action;
  * 应用模块与算法模块通信抽象接口，返回
  */
 public abstract class ResponseAction {
+
+    private String actionId;
+
     /**
      * 实例的id
      */
@@ -29,6 +32,8 @@ public abstract class ResponseAction {
      * @return
      */
     protected abstract ResponseAction parse(String result);
+
+
 
     public Integer getCode() {
         return code;

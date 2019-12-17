@@ -11,6 +11,12 @@
     <description>消息队列模块，用于算法模块与工程模块的通信</description>
 
     <artifactId>edu-mq</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>

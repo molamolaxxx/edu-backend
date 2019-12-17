@@ -1,13 +1,12 @@
 spring:
   profiles:
     active: dev
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-fast-redis:
-  use-default-redisTemplate: true
-
+#  redis:
+#    database: 0
+#    host: 127.0.0.1
+#    port: 6379
+#fast-redis:
+#  use-default-redisTemplate: true
 
 # 配置扫描xml
 mybatis-plus:
@@ -18,7 +17,9 @@ mybatis-plus:
 # jwt
 jwt:
   secret: njput_bigdataEdu_hpc_molamola
-#  一个小时过期
-  expiration: 3600
+#  十个小时过期
+  expiration: 36000
   tokenHeader: Authorization
   tokenHead: Bearer
+
+

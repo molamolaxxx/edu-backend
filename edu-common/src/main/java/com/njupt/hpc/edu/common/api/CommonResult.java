@@ -72,6 +72,13 @@ public class CommonResult<T> {
     }
 
     /**
+     * 超时验证结果返回
+     */
+    public static <T> CommonResult<T> timeout(String message) {
+        return new CommonResult<T>(ResultCode.TIMEOUT.getCode(), message, null);
+    }
+
+    /**
      * 参数验证失败返回结果
      * @param message 提示信息
      */

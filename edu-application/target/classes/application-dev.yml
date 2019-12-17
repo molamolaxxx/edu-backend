@@ -7,3 +7,8 @@ spring:
     username: root
     password: 314
     url: jdbc:mysql://127.0.0.1/edu?characterEncoding=utf-8&useSSL=false
+
+# edu数据模块配置
+edu:
+  data:
+    max-data-size: 2000000
