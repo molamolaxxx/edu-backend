@@ -2,9 +2,18 @@ package com.njupt.hpc.edu.project.action.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.njupt.hpc.edu.common.aware.EduApplicationAware;
+import com.njupt.hpc.edu.common.sys.DataConfig;
 import com.njupt.hpc.edu.project.action.RequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
+import com.njupt.hpc.edu.project.model.PmsData;
+import com.njupt.hpc.edu.project.model.PmsInstance;
+import com.njupt.hpc.edu.project.service.PmsDataService;
+import com.njupt.hpc.edu.project.service.impl.PmsDataServiceImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : molamola
@@ -14,11 +23,20 @@ import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
  **/
 public class GenerateRequestAction extends RequestAction {
 
-    public GenerateRequestAction(String actionId, String instanceId, InstanceActionType actionType) {
+    // 因为无法自动注入，所以通过aware获取bean
+    private DataConfig dataConfig = (DataConfig) EduApplicationAware
+            .getApplicationContext().getBean("dataConfig");
+
+    private PmsDataService dataService = (PmsDataServiceImpl) EduApplicationAware
+            .getApplicationContext().getBean("pmsDataServiceImpl");
+
+    public GenerateRequestAction(String actionId, PmsInstance instance,
+                                 InstanceActionType actionType, String message) {
         this.setActionId(actionId);
         this.setInstanceTypeEnum(InstanceTypeEnum.GENERATE_EVALUATE);
-        this.setInstanceId(instanceId);
+        this.setInstance(instance);
         this.setActionType(actionType);
+        this.setMessage(message);
     }
 
     @Override
@@ -43,9 +61,16 @@ public class GenerateRequestAction extends RequestAction {
     }
 
     private JSONObject handleStart(){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", 200);
-        return jsonObject;
+        JSONObject json = createCommonHeader();
+        Map dataMap = new HashMap();
+        // 找到对应数据的具体信息
+        PmsData instanceData = dataService.getById(this.getInstance().getDataId());
+        dataMap.put("dataPath",instanceData.getDataPath());
+        dataMap.put("dataType",instanceData.getDataType());
+        json.put("data",dataMap);
+        // 放置系统配置信息
+        json.put("sysConfig","none");
+        return json;
     }
 
     private JSONObject handleStop(){
@@ -54,5 +79,19 @@ public class GenerateRequestAction extends RequestAction {
 
     private JSONObject handleInfo(){
         return JSON.parseObject("");
+    }
+
+    /**
+     * 创建公共头
+     * @return
+     */
+    private JSONObject createCommonHeader(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("actionId", this.getActionId());
+        jsonObject.put("instanceId", this.getInstance().getId());
+        jsonObject.put("actionTypeId", this.getActionType().getActionCode());
+        jsonObject.put("actionTypeName", this.getActionType().getActionDesc());
+        jsonObject.put("message",this.getMessage());
+        return jsonObject;
     }
 }

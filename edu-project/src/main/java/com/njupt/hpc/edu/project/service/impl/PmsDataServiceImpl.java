@@ -1,5 +1,6 @@
 package com.njupt.hpc.edu.project.service.impl;
 
+import com.njupt.hpc.edu.common.utils.WrapperUtil;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.dao.PmsDataMapper;
 import com.njupt.hpc.edu.project.service.PmsDataService;
@@ -17,4 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> implements PmsDataService {
 
+    @Override
+    public PmsData findDataByInstanceId(String instanceId) {
+        this.getOne(WrapperUtil.querySingleWrapperBuilder("",""));
+        return null;
+    }
 }

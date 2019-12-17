@@ -3,6 +3,7 @@ package com.njupt.hpc.edu.project.action;
 import com.alibaba.fastjson.JSON;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
+import com.njupt.hpc.edu.project.model.PmsInstance;
 
 public abstract class RequestAction {
 
@@ -14,7 +15,7 @@ public abstract class RequestAction {
     /**
      * 实例的id
      */
-    private String instanceId;
+    private PmsInstance instance;
 
     /**
      * 实例的类型
@@ -45,12 +46,12 @@ public abstract class RequestAction {
         this.actionId= actionId;
     }
 
-    public String getInstanceId() {
-        return instanceId;
+    public PmsInstance getInstance() {
+        return instance;
     }
 
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
+    public void setInstance(PmsInstance instance) {
+        this.instance = instance;
     }
 
     public String getMessage() {

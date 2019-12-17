@@ -1,0 +1,26 @@
+{
+  "groups": [
+    {
+      "name": "edu.data",
+      "type": "com.njupt.hpc.edu.common.sys.DataConfig",
+      "sourceType": "com.njupt.hpc.edu.common.sys.DataConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "edu.data.data-path",
+      "type": "java.lang.String",
+      "description": "数据在服务器上存储的路径",
+      "sourceType": "com.njupt.hpc.edu.common.sys.DataConfig",
+      "defaultValue": "\/tmp\/edu"
+    },
+    {
+      "name": "edu.data.max-data-size",
+      "type": "java.lang.Long",
+      "description": "数据最大限制,默认为1m",
+      "sourceType": "com.njupt.hpc.edu.common.sys.DataConfig",
+      "defaultValue": 1000000
+    }
+  ],
+  "hints": []
+}

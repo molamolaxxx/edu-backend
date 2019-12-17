@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EduMQService {
 
-    private static String QUEUE_NAME = "edu_send_mq";
+    private static String QUEUE_NAME = "edu_j2p_mq";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;

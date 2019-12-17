@@ -1,13 +1,12 @@
 spring:
   profiles:
     active: dev
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-fast-redis:
-  use-default-redisTemplate: true
-
+#  redis:
+#    database: 0
+#    host: 127.0.0.1
+#    port: 6379
+#fast-redis:
+#  use-default-redisTemplate: true
 
 # 配置扫描xml
 mybatis-plus:

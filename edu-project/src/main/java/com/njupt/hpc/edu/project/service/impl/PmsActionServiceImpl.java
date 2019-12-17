@@ -3,6 +3,7 @@ package com.njupt.hpc.edu.project.service.impl;
 import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.DeferredResultUtil;
+import com.njupt.hpc.edu.mq.service.EduMQService;
 import com.njupt.hpc.edu.project.action.impl.GenerateRequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
@@ -10,6 +11,7 @@ import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.service.PmsActionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -22,6 +24,9 @@ import org.springframework.web.context.request.async.DeferredResult;
 @Service
 @Slf4j
 public class PmsActionServiceImpl implements PmsActionService {
+
+    @Autowired
+    private EduMQService mqService;
 
     @Override
     public DeferredResult start(PmsInstance instance) {
@@ -37,6 +42,7 @@ public class PmsActionServiceImpl implements PmsActionService {
         log.info("action_detail:"+actionStr);
 
         // 3.向队列发送json化的request,将键值对存入缓存
+        mqService.sendMessageToMQ(actionStr);
         DeferredResultCache.put(actionId, result);
 
         return result;
@@ -68,7 +74,7 @@ public class PmsActionServiceImpl implements PmsActionService {
     public String getRequestActionByInstanceType(String actionId, PmsInstance instance, InstanceActionType type){
         switch (instance.getType()){
             case InstanceTypeEnum._GENERATE_EVALUATE:{
-                GenerateRequestAction action = new GenerateRequestAction(actionId, instance.getId(), type);
+                GenerateRequestAction action = new GenerateRequestAction(actionId, instance, type, "生成模块质量评价请求");
                 return action.parse().toString();
             }
         }

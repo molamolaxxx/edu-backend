@@ -1,7 +1,9 @@
-package com.njupt.hpc.edu.config.sys;
+package com.njupt.hpc.edu.common.sys;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author : molamola
@@ -9,7 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @Description: 数据系统配置
  * @date : 2019-12-16 15:54
  **/
-
+@Configuration
+@EnableConfigurationProperties({DataConfig.class})
 @ConfigurationProperties(prefix = "edu.data")
 @Data
 public class DataConfig {
