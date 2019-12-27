@@ -3,6 +3,7 @@ package com.njupt.hpc.edu.project.controller;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.WrapperUtil;
+import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.service.PmsActionService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
@@ -40,18 +41,36 @@ public class PmsActionController {
     @Autowired
     private PmsActionService actionService;
 
-    @PostMapping("/{instanceId}")
+    @PostMapping("/{action}/{instanceId}")
     @ApiOperation("运行实例")
-    public DeferredResult<CommonResult> start(HttpServletRequest request, @PathVariable String instanceId){
+    public DeferredResult<CommonResult> start(HttpServletRequest request, @PathVariable String action,
+                                              @PathVariable String instanceId){
         // 根据实例id和用户id查找实例
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         PmsInstance instance = instanceService.getOne(WrapperUtil.queryByUserIdAndPK(instanceId, user.getId()));
         if (null == instance){
             throw new EduProjectException("根据id与用户id找不到对应的实例");
         }
-
-        DeferredResult result = actionService.start(instance);
-
-        return result;
+        InstanceActionType actionType = null;
+        // 查找对应的action
+        switch (action.toLowerCase()){
+            case "start":{
+                actionType = InstanceActionType.START;
+                break;
+            }
+            case "stop":{
+                actionType = InstanceActionType.STOP;
+                break;
+            }
+            case "info":{
+                actionType = InstanceActionType.INFO;
+                break;
+            }
+        }
+        if (null != actionType){
+            return actionService.action(instance, actionType);
+        }
+        throw new EduProjectException("找不到对应的操作");
     }
+
 }

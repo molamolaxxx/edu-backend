@@ -62,7 +62,6 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
 
     /**
      * 用户登录
-     * todo 测试
      * @param username
      * @param password
      * @return

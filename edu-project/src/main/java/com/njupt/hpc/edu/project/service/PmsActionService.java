@@ -1,5 +1,7 @@
 package com.njupt.hpc.edu.project.service;
 
+import com.njupt.hpc.edu.common.api.CommonResult;
+import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -16,5 +18,5 @@ public interface PmsActionService {
     /**
      * 运行一个实例
      */
-    DeferredResult start(PmsInstance instance);
+    DeferredResult<CommonResult> action(PmsInstance instance, InstanceActionType actionType);
 }

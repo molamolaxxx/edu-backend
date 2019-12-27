@@ -23,7 +23,7 @@ public abstract class ResponseAction {
     private String message;
 
     /**
-     * 返回的数据(json)
+     * 返回的数据T
      */
     private String data;
 

@@ -13,7 +13,6 @@
         <module>edu-common</module>
         <module>edu-user</module>
         <module>edu-project</module>
-        <module>edu-mq</module>
     </modules>
 
     <parent>

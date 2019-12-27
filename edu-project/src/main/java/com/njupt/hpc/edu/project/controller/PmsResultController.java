@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pmsResult")
-@Api(tags = "结果表", description = "结果控制器")
+@Api(tags = "评价结果接口", description = "评价结果接口")
 public class PmsResultController {
 
 

@@ -28,11 +28,6 @@ public abstract class RequestAction {
     private InstanceActionType actionType;
 
     /**
-     * 发送消息
-     */
-    private String message;
-
-    /**
      * 将对象转化成json文件
      * @return
      */
@@ -52,14 +47,6 @@ public abstract class RequestAction {
 
     public void setInstance(PmsInstance instance) {
         this.instance = instance;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public InstanceTypeEnum getInstanceTypeEnum() {

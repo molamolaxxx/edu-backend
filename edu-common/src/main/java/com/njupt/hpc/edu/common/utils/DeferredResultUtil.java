@@ -25,6 +25,7 @@ public class DeferredResultUtil {
             // 删除对应键，防止python模块超时返回时占用，使缓存产生冗余
             DeferredResultCache.del(actionId);
         });
+
         return result;
     }
 }

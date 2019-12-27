@@ -101,7 +101,7 @@ public class CommonResult<T> {
     }
 
     public static CommonResult<? extends Object> parseResultToResponse(boolean result, String failedMsg, String successMsg){
-        if (result)
+        if (!result)
             return CommonResult.failed(failedMsg);
         else
             return CommonResult.success(true, successMsg);

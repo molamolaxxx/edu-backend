@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="edu-application" />
         <module name="edu-common" />
-        <module name="edu-mq" />
         <module name="edu-project" />
         <module name="edu-user" />
       </profile>

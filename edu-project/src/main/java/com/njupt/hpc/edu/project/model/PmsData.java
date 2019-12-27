@@ -53,7 +53,7 @@ public class PmsData implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 0:纯文本数据 1:json数据 2:xml数据
+     * 0:csv数据 1:json数据 2:xml数据
      */
     private String dataType;
 

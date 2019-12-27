@@ -31,12 +31,11 @@ public class GenerateRequestAction extends RequestAction {
             .getApplicationContext().getBean("pmsDataServiceImpl");
 
     public GenerateRequestAction(String actionId, PmsInstance instance,
-                                 InstanceActionType actionType, String message) {
+                                 InstanceActionType actionType) {
         this.setActionId(actionId);
         this.setInstanceTypeEnum(InstanceTypeEnum.GENERATE_EVALUATE);
         this.setInstance(instance);
         this.setActionType(actionType);
-        this.setMessage(message);
     }
 
     @Override
@@ -67,6 +66,7 @@ public class GenerateRequestAction extends RequestAction {
         PmsData instanceData = dataService.getById(this.getInstance().getDataId());
         dataMap.put("dataPath",instanceData.getDataPath());
         dataMap.put("dataType",instanceData.getDataType());
+        // 放置数据的信息
         json.put("data",dataMap);
         // 放置系统配置信息
         json.put("sysConfig","none");
@@ -74,11 +74,11 @@ public class GenerateRequestAction extends RequestAction {
     }
 
     private JSONObject handleStop(){
-        return JSON.parseObject("");
+        return createCommonHeader();
     }
 
     private JSONObject handleInfo(){
-        return JSON.parseObject("");
+        return createCommonHeader();
     }
 
     /**
@@ -89,9 +89,13 @@ public class GenerateRequestAction extends RequestAction {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("actionId", this.getActionId());
         jsonObject.put("instanceId", this.getInstance().getId());
+        // action类型的id与name
         jsonObject.put("actionTypeId", this.getActionType().getActionCode());
         jsonObject.put("actionTypeName", this.getActionType().getActionDesc());
-        jsonObject.put("message",this.getMessage());
+        // 实例类型的id与name
+        jsonObject.put("instanceTypeId", this.getInstanceTypeEnum().getCode());
+        jsonObject.put("instanceTypeName", this.getInstanceTypeEnum().getDesc());
+
         return jsonObject;
     }
 }
