@@ -30,8 +30,6 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
                 break;
             }
             // 停止与完成，将实例设置成完成状态
-            case InstanceActionType._STOP: {
-            }
             case InstanceActionType._FINISH: {
                 updateInstanceStateDetail(InstanceId, InstanceStateEnum.FINISH.getCode());
                 break;

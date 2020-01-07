@@ -6,6 +6,7 @@ package com.njupt.hpc.edu.project.data.parser;
  * @Description: 将rdf数据转化为三元组
  * @date : 2019-12-27 14:50
  **/
+@Deprecated
 public class RDFDataParser implements DataParser{
 
     @Override

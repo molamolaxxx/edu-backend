@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.njupt.hpc.edu.common.aware.EduApplicationAware;
 import com.njupt.hpc.edu.common.sys.DataConfig;
+import com.njupt.hpc.edu.common.sys.GenerateConfig;
 import com.njupt.hpc.edu.project.action.RequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
@@ -29,6 +30,9 @@ public class GenerateRequestAction extends RequestAction {
 
     private PmsDataService dataService = (PmsDataServiceImpl) EduApplicationAware
             .getApplicationContext().getBean("pmsDataServiceImpl");
+
+    private GenerateConfig generateConfig = (GenerateConfig) EduApplicationAware
+            .getApplicationContext().getBean("generateConfig");
 
     public GenerateRequestAction(String actionId, PmsInstance instance,
                                  InstanceActionType actionType) {
@@ -59,6 +63,10 @@ public class GenerateRequestAction extends RequestAction {
         return result;
     }
 
+    public String parse2String(){
+        return this.parse().toString();
+    }
+
     private JSONObject handleStart(){
         JSONObject json = createCommonHeader();
         Map dataMap = new HashMap();
@@ -68,8 +76,15 @@ public class GenerateRequestAction extends RequestAction {
         dataMap.put("dataType",instanceData.getDataType());
         // 放置数据的信息
         json.put("data",dataMap);
-        // 放置系统配置信息
-        json.put("sysConfig","none");
+        // 从cache中获取相应的实例配置，如果获取不到，沿用默认的系统配置
+        // 放置系统配置信息（生成模块的配置）
+        GenerateConfig generateConfigInRedis = generateConfig.loadConfigInCache(this.getInstance().getId());
+        if (null == generateConfigInRedis) {
+            json.put("sysConfig", generateConfig.parseToJsonObject());
+        }
+        else {
+            json.put("sysConfig", generateConfigInRedis.parseToJsonObject());
+        }
         return json;
     }
 
@@ -87,6 +102,7 @@ public class GenerateRequestAction extends RequestAction {
      */
     private JSONObject createCommonHeader(){
         JSONObject jsonObject = new JSONObject();
+        // action的id与实例id
         jsonObject.put("actionId", this.getActionId());
         jsonObject.put("instanceId", this.getInstance().getId());
         // action类型的id与name

@@ -78,7 +78,7 @@ public class PmsInstanceController {
 
     @PutMapping("/user/{instanceId}")
     @ApiOperation("更新实例（用户限定）")
-    public CommonResult update(HttpServletRequest request, @PathVariable String instanceId,@RequestBody PmsInstance instance){
+    public CommonResult update(HttpServletRequest request, @PathVariable String instanceId, @RequestBody PmsInstance instance){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         instance.setId(instanceId);
         instance.setUpdateTime(LocalDateTime.now());

@@ -15,13 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PmsDataService extends IService<PmsData> {
 
     /**
-     * 根据实例id查找数据信息
-     * @param instanceId
-     * @return
-     */
-    PmsData findDataByInstanceId(String instanceId);
-
-    /**
      * 新建数据
      * @param data
      */
@@ -47,4 +40,5 @@ public interface PmsDataService extends IService<PmsData> {
      * @return
      */
     Boolean remove(String dataId, String userId);
+
 }

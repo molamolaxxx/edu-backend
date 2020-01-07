@@ -5,19 +5,24 @@ import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.DeferredResultUtil;
-import com.njupt.hpc.edu.project.mq.EduMQService;
 import com.njupt.hpc.edu.project.action.impl.GenerateRequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionResponseCode;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
+import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
+import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.PmsInstance;
+import com.njupt.hpc.edu.project.mq.EduMQService;
 import com.njupt.hpc.edu.project.service.PmsActionService;
+import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
+
+import java.io.File;
 
 /**
  * @author : molamola
@@ -35,15 +40,18 @@ public class PmsActionServiceImpl implements PmsActionService {
     @Autowired
     private PmsInstanceService instanceService;
 
+    @Autowired
+    private PmsDataService dataService;
+
     @Override
     public DeferredResult action(PmsInstance instance, InstanceActionType actionType) {
         // 构建actionId与deferResult
         String actionId = "action_"+ RandomStringUtils.randomAlphanumeric(8);
-        DeferredResult result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
+        DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
         // 1.检查instance状态，数据是否存在、合法
-        if (!(checkInstanceLegality(instance) && checkDataLegality(instance.getId()))){
-            throw new EduProjectException("实例或数据不合法");
-        }
+        checkInstanceLegality(instance, actionType);
+        checkDataLegality(instance.getDataId());
+
         // 2.构建对应的request（开始执行）
         String actionStr = getRequestActionByInstanceType(actionId, instance, actionType);
         log.info("action_detail:"+actionStr);
@@ -57,7 +65,7 @@ public class PmsActionServiceImpl implements PmsActionService {
             CommonResult commonResult = (CommonResult)result.getResult();
             JSONObject actionResponse = (JSONObject) commonResult.getData();
             if (actionResponse.get("code").equals(InstanceActionResponseCode.ACTION_SUCCESS.getCode())){
-                // 设置实例开始时间与实例运行状态
+                // 设置实例时间状态与实例运行状态
                 log.info("设置实例开始时间与实例运行状态");
                 instanceService.updateInstanceState(instance.getId(), (String) actionResponse.get("actionTypeId"));
             }
@@ -66,19 +74,39 @@ public class PmsActionServiceImpl implements PmsActionService {
     }
 
     /**
-     * todo 检查实例合法性
+     * 检查实例合法性
      * @return
      */
-    public boolean checkInstanceLegality(PmsInstance instance){
-        return true;
+    public void checkInstanceLegality(PmsInstance instance, InstanceActionType actionType){
+        if (!instance.getState().equals(InstanceStateEnum.READY.getCode()) &&
+                actionType.getActionCode().equals(InstanceActionType._START)) {
+            throw new EduProjectException("实例状态不合法:实例不可运行");
+        }
+        else if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
+                actionType.getActionCode().equals(InstanceActionType._STOP)){
+            throw new EduProjectException("实例状态不合法:实例不可停止");
+        }
+        else if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
+                actionType.getActionCode().equals(InstanceActionType._INFO)){
+            throw new EduProjectException("实例状态不合法:实例不可获取信息");
+        }
     }
 
     /**
-     * todo 检查数据合法性
+     * 检查数据合法性
      * @return
      */
-    public boolean checkDataLegality(String instanceId){
-        return true;
+    public void checkDataLegality(String dataId){
+        PmsData data = dataService.getById(dataId);
+        if (null == data){
+            throw new EduProjectException("实例操作失败:不存在数据记录");
+        }
+        if (data.getDataSize().equals("0")){
+            throw new EduProjectException("实例操作失败:数据大小为0");
+        }
+        if (!new File(data.getDataPath()).exists()){
+            throw new EduProjectException("实例操作失败:数据路径不存在");
+        }
     }
 
     /**
@@ -90,11 +118,20 @@ public class PmsActionServiceImpl implements PmsActionService {
      */
     public String getRequestActionByInstanceType(String actionId, PmsInstance instance, InstanceActionType type){
         switch (instance.getType()){
+            // 生成
             case InstanceTypeEnum._GENERATE_EVALUATE:{
                 GenerateRequestAction action = new GenerateRequestAction(actionId, instance, type);
-                return action.parse().toString();
+                return action.parse2String();
+            }
+            // 聚合
+            case InstanceTypeEnum._FUSION_EVALUATE:{
+                return "";
+            }
+            // 情感分析
+            case InstanceTypeEnum._SENTIMENT_EVALUATE:{
+                return "";
             }
         }
-        return "no matched action";
+        throw new EduProjectException("没有符合的实例请求转换器");
     }
 }

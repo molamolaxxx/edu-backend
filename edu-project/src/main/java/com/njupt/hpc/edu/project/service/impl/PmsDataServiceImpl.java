@@ -35,18 +35,14 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
 
     private static HashMap<String, String> dataSuffixMap;
 
+    private static String CACHE_SUFFIX = "cache";
+
     @PostConstruct
     public void setDataSuffixSet(){
         dataSuffixMap = new HashMap();
         dataSuffixMap.put("csv", "0");
         dataSuffixMap.put("json", "1");
         dataSuffixMap.put("rdf", "2");
-    }
-
-    @Override
-    public PmsData findDataByInstanceId(String instanceId) {
-        this.getOne(WrapperUtil.querySingleWrapperBuilder("",""));
-        return null;
     }
 
     @Override

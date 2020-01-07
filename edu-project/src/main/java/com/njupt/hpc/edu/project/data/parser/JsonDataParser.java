@@ -6,6 +6,7 @@ package com.njupt.hpc.edu.project.data.parser;
  * @Description: 将json数据转化为三元组数据
  * @date : 2019-12-27 14:45
  **/
+@Deprecated
 public class JsonDataParser implements DataParser{
 
     @Override

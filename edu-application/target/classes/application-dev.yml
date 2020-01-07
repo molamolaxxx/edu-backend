@@ -14,4 +14,5 @@ spring:
 edu:
   data:
     max-data-size: 2000000
+    data-path: /home/mola/IdeaProjects/edu/data-cache
 
