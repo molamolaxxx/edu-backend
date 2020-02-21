@@ -9,6 +9,11 @@
       "name": "edu.generate",
       "type": "com.njupt.hpc.edu.common.sys.GenerateConfig",
       "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig"
+    },
+    {
+      "name": "edu.user",
+      "type": "com.njupt.hpc.edu.common.sys.UserConfig",
+      "sourceType": "com.njupt.hpc.edu.common.sys.UserConfig"
     }
   ],
   "properties": [
@@ -25,11 +30,6 @@
       "description": "数据最大限制,默认为1m",
       "sourceType": "com.njupt.hpc.edu.common.sys.DataConfig",
       "defaultValue": 1000000
-    },
-    {
-      "name": "edu.generate.entity-max-thread-count",
-      "type": "java.lang.Integer",
-      "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig"
     },
     {
       "name": "edu.generate.entity-max-thread-count",
@@ -59,11 +59,6 @@
     {
       "name": "edu.generate.tuple-max-thread-count",
       "type": "java.lang.Integer",
-      "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig"
-    },
-    {
-      "name": "edu.generate.tuple-max-thread-count",
-      "type": "java.lang.Integer",
       "description": "三元组评价最大线程数(1-4)",
       "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig",
       "defaultValue": 4
@@ -73,6 +68,13 @@
       "type": "java.lang.Integer",
       "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig",
       "defaultValue": 10
+    },
+    {
+      "name": "edu.user.header-icon-path",
+      "type": "java.lang.String",
+      "description": "用户头像在服务器上存储的位置",
+      "sourceType": "com.njupt.hpc.edu.common.sys.UserConfig",
+      "defaultValue": "\/tmp\/edu\/header-icon"
     }
   ],
   "hints": []

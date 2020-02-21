@@ -78,5 +78,9 @@ public class PmsInstance implements Serializable {
      */
     private String description;
 
+    /**
+     * 以json形式保存的配置
+     */
+    private String config;
 
 }

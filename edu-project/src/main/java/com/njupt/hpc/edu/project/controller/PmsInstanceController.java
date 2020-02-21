@@ -4,21 +4,23 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
+import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
 import com.njupt.hpc.edu.common.utils.WrapperUtil;
-import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
 import com.njupt.hpc.edu.project.model.PmsInstance;
+import com.njupt.hpc.edu.project.model.dto.InstanceDTO;
+import com.njupt.hpc.edu.project.model.vo.InstanceItemVO;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import com.njupt.hpc.edu.user.model.UmsUser;
 import com.njupt.hpc.edu.user.service.UmsUserService;
 import com.njupt.hpc.edu.user.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -48,8 +50,12 @@ public class PmsInstanceController {
     public CommonPage listByUserId(HttpServletRequest request, @RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "100") Integer pageSize){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        IPage page = pmsInstanceService.page(new Page(pageNum, pageSize),
+        IPage<PmsInstance> page = pmsInstanceService.page(new Page(pageNum, pageSize),
                 WrapperUtil.querySingleWrapperBuilder("uid",user.getId()));
+        // 将model转化成前端显示的vo
+        List voList = page.getRecords().stream().map(item -> BeanUtilsPlug
+                .copyPropertiesReturnTarget(item, new InstanceItemVO())).collect(Collectors.toList());
+        page.setRecords(voList);
         return CommonPage.restPage(page);
     }
 
@@ -64,25 +70,20 @@ public class PmsInstanceController {
     }
 
     @PostMapping("/user")
-    @ApiOperation("保存实例（用户限定）")
-    public CommonResult save(HttpServletRequest request, @RequestBody PmsInstance instance){
+    @ApiOperation("创建实例（用户限定）")
+    public CommonResult create(HttpServletRequest request, @RequestBody InstanceDTO dto){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        instance.setId("instance_"+ RandomStringUtils.randomAlphanumeric(8));
-        instance.setUid(user.getId());
-        instance.setCreateTime(LocalDateTime.now());
-        instance.setUpdateTime(LocalDateTime.now());
-        instance.setState(InstanceStateEnum.READY.getCode());
-        pmsInstanceService.save(instance);
-        return CommonResult.success(true, "保存实例成功");
+        dto.setUid(user.getId());
+        pmsInstanceService.create(dto);
+        return CommonResult.success(true, "创建实例成功");
     }
 
     @PutMapping("/user/{instanceId}")
     @ApiOperation("更新实例（用户限定）")
-    public CommonResult update(HttpServletRequest request, @PathVariable String instanceId, @RequestBody PmsInstance instance){
+    public CommonResult update(HttpServletRequest request, @PathVariable String instanceId, @RequestBody InstanceDTO dto){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        instance.setId(instanceId);
-        instance.setUpdateTime(LocalDateTime.now());
-        boolean result = pmsInstanceService.update(instance, WrapperUtil.queryByUserIdAndPK(instanceId, user.getId()));
+        dto.setUid(user.getId());
+        boolean result = pmsInstanceService.update(dto, instanceId);
         return CommonResult.parseResultToResponse(result, "更新实例失败", "更新实例成功");
     }
 
@@ -90,8 +91,15 @@ public class PmsInstanceController {
     @ApiOperation("删除实例（用户限定）")
     public CommonResult delete(HttpServletRequest request, @PathVariable String instanceId){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        boolean result = pmsInstanceService.remove(WrapperUtil.queryByUserIdAndPK(instanceId, user.getId()));
+        boolean result = pmsInstanceService.delete(instanceId, user.getId());
         return CommonResult.parseResultToResponse(result, "删除实例失败", "删除实例成功");
+    }
+
+    @GetMapping("/user/running")
+    @ApiOperation("查看所有正在运行中的实例id")
+    public CommonResult catAllRunningInstance(HttpServletRequest request){
+        UmsUser user = UserUtils.getUserFromRequest(request, userService);
+        return CommonResult.success(pmsInstanceService.catAllRunningInstanceId());
     }
 
     // for admin

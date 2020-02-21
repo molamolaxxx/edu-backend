@@ -1,4 +1,4 @@
-package com.njupt.hpc.edu.user.dto;
+package com.njupt.hpc.edu.user.model.dto;
 
 import lombok.Data;
 

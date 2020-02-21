@@ -4,21 +4,24 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
-import com.njupt.hpc.edu.user.dto.LoginForm;
-import com.njupt.hpc.edu.user.dto.UserInfo;
+import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
+import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.user.model.UmsUser;
+import com.njupt.hpc.edu.user.model.dto.LoginForm;
+import com.njupt.hpc.edu.user.model.dto.UserInfoDTO;
+import com.njupt.hpc.edu.user.model.vo.UserInfoVO;
 import com.njupt.hpc.edu.user.service.UmsPermissionService;
 import com.njupt.hpc.edu.user.service.UmsRoleService;
 import com.njupt.hpc.edu.user.service.UmsUserService;
 import com.njupt.hpc.edu.user.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -62,11 +65,52 @@ public class UmsUserController {
     public CommonResult userInfo(HttpServletRequest request){
         // 用户信息
         UmsUser user = UserUtils.getUserFromRequest(request, umsUserService);
-        UserInfo info = new UserInfo();
+        UserInfoVO info = new UserInfoVO();
         info.setUmsUser(user);
         info.setRoles(umsRoleService.listRolesByUserId(user.getId()));
         info.setPermissions(permissionService.listPermissionsByUserId(user.getId()));
         return CommonResult.success(info);
+    }
+
+    /**
+     * 上传用户头像
+     */
+    @PostMapping("/headerIcon")
+    @ApiOperation("上传用户头像")
+    public CommonResult uploadHeaderIcon(MultipartFile header, HttpServletRequest request){
+        // 用户信息
+        UmsUser user = UserUtils.getUserFromRequest(request, umsUserService);
+        String url = umsUserService.uploadHeaderIcon(header, user.getId());
+        return CommonResult.success(url);
+    }
+
+    /**
+     * 用户修改个人信息
+     */
+    @PutMapping("/userInfo")
+    @ApiOperation("更新用户信息")
+    public CommonResult updateUserInfo(HttpServletRequest request, @RequestBody UserInfoDTO dto){
+        // 用户信息
+        UmsUser user = UserUtils.getUserFromRequest(request, umsUserService);
+        UmsUser update = (UmsUser) BeanUtilsPlug.copyPropertiesReturnTarget(dto, user);
+        update.setUpdateTime(LocalDateTime.now());
+        boolean result = umsUserService.updateById(update);
+        return CommonResult.parseResultToResponse(result, "更新数据失败", "更新数据成功");
+    }
+
+
+    /**
+     * 用户修改密码
+     */
+    @PutMapping("/password")
+    @ApiOperation("用户修改密码")
+    public CommonResult updatePassword(HttpServletRequest request, @RequestBody HashMap<String, String> passwordMap){
+        // 用户信息
+        UmsUser user = UserUtils.getUserFromRequest(request, umsUserService);
+        String old = passwordMap.get("old");
+        String now = passwordMap.get("new");
+        umsUserService.updatePassword(old, now, user);
+        return CommonResult.success(true, "修改密码成功");
     }
 
 
@@ -123,7 +167,7 @@ public class UmsUserController {
     @ApiOperation("保存数据")
     @PreAuthorize("hasAuthority('ums:user:save')")
     public CommonResult save(@RequestBody UmsUser user){
-        user.setId("user_"+ RandomStringUtils.randomAlphanumeric(8));
+        user.setId(IdUtil.generateId("user"));
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         // 设置密码
@@ -135,7 +179,7 @@ public class UmsUserController {
     @PutMapping("/{id}")
     @ApiOperation("更新数据")
     @PreAuthorize("hasAuthority('ums:user:update')")
-    public CommonResult update(@PathVariable String id, UmsUser user){
+    public CommonResult update(@PathVariable String id, @RequestBody UmsUser user){
         user.setId(id);
         user.setUpdateTime(LocalDateTime.now());
         // 设置密码

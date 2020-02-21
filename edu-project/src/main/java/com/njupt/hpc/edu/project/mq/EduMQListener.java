@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
+import com.njupt.hpc.edu.project.enumerate.QueueEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -27,7 +28,7 @@ public class EduMQListener {
     private EduMQService mqService;
 
     @RabbitHandler
-    @RabbitListener(queues = "edu_p2j_mq", containerFactory="rabbitListenerContainerFactory")
+    @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_NAME, containerFactory="rabbitListenerContainerFactory")
     public void handler(byte[] message){
         JSONObject jsonObject = JSON.parseObject(new String(message, StandardCharsets.UTF_8));
         log.info("收到python模块的回复:"+jsonObject);
@@ -57,5 +58,14 @@ public class EduMQListener {
         if (actionTypeId.equals(InstanceActionType._FINISH)){
             mqService.handlerFinish(instanceId);
         }
+    }
+
+    /**
+     * 死信队列监听
+     */
+    @RabbitHandler
+    @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_CANCEL_NAME)
+    public void handlerCancel(String message) {
+        log.info("死信队列监听:{}", message);
     }
 }

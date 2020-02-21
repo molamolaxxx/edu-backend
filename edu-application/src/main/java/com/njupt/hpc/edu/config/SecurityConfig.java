@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/","/*.html","favicon.icon","/**/*.html","/**/*.css","/**/*.js",
                         "/swagger-resources/**",
                         "/v2/api-docs/**",
+                        "/iconHeader/**",
                         "/webjars/springfox-swagger-ui/**")
                 .permitAll()
                 .antMatchers("/umsUser/login","/umsUser/refreshToken") //允许登录与刷新token

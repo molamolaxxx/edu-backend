@@ -5,6 +5,7 @@ import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.DeferredResultUtil;
+import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.project.action.impl.GenerateRequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionResponseCode;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
@@ -17,7 +18,6 @@ import com.njupt.hpc.edu.project.service.PmsActionService;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -46,7 +46,7 @@ public class PmsActionServiceImpl implements PmsActionService {
     @Override
     public DeferredResult action(PmsInstance instance, InstanceActionType actionType) {
         // 构建actionId与deferResult
-        String actionId = "action_"+ RandomStringUtils.randomAlphanumeric(8);
+        String actionId = IdUtil.generateId("action");
         DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
         // 1.检查instance状态，数据是否存在、合法
         checkInstanceLegality(instance, actionType);

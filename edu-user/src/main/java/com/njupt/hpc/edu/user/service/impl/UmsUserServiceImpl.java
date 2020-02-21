@@ -1,12 +1,15 @@
 package com.njupt.hpc.edu.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.exception.EduUserException;
+import com.njupt.hpc.edu.common.sys.UserConfig;
 import com.njupt.hpc.edu.common.utils.JwtTokenUtil;
 import com.njupt.hpc.edu.user.component.EduUserDetailsService;
 import com.njupt.hpc.edu.user.dao.UmsUserMapper;
 import com.njupt.hpc.edu.user.model.UmsUser;
 import com.njupt.hpc.edu.user.service.UmsUserService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,8 +17,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +50,19 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UserConfig userConfig;
+
+    private HashSet<String> allowHeaderSuffixSet = new HashSet<>();
+
+    @PostConstruct
+    public void initAllowHeaderSuffixSet(){
+        allowHeaderSuffixSet.add("jpg");
+        allowHeaderSuffixSet.add("jpeg");
+        allowHeaderSuffixSet.add("png");
+        allowHeaderSuffixSet.add("bmp");
+    }
 
     /**
      * 根据username查询用户
@@ -86,5 +108,55 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     @Override
     public String refreshToken(String token) {
         return jwtTokenUtil.refreshToken(token);
+    }
+
+    /**
+     * 用户头像上传
+     * @param header
+     * @return
+     */
+    @Override
+    public String uploadHeaderIcon(MultipartFile header, String userId) {
+        String iconRootPath = userConfig.getHeaderIconPath();
+        if (!iconRootPath.endsWith(File.separator))
+            iconRootPath += File.separator;
+        checkSuffix(header.getOriginalFilename());
+        // 以用户id构建iconPath
+        String iconPath = iconRootPath + userId + "-" + header.getOriginalFilename();
+
+        try {
+            FileUtils.writeByteArrayToFile(new File(iconPath), header.getBytes());
+        } catch (IOException e) {
+            throw new EduProjectException("上传头像失败");
+        }
+        // 拼接icon的url
+        String iconUrl = "/iconHeader/"+userId + "-" + header.getOriginalFilename();
+
+        return iconUrl;
+    }
+
+    @Override
+    public void updatePassword(String old, String now, UmsUser user) {
+        // 1.判断老密码是否正确
+        // 根据用户名获取user
+        UserDetails userDetails = detailsService.loadUserByUsername(user.getName());
+        if (!passwordEncoder.matches(old, userDetails.getPassword())){
+            throw new BadCredentialsException("原密码不正确");
+        }
+        // 2.修改密码与更新时间
+        user.setPassword(passwordEncoder.encode(now));
+        user.setUpdateTime(LocalDateTime.now());
+
+        // 3.更新
+        this.updateById(user);
+    }
+
+    private void checkSuffix(String fileName){
+        String suffix =fileName.substring(
+                fileName.lastIndexOf(".")+1).toLowerCase();
+
+        if (!allowHeaderSuffixSet.contains(suffix)){
+            throw new EduProjectException("上传头像不支持后缀"+suffix);
+        }
     }
 }

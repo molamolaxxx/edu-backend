@@ -1,6 +1,8 @@
 package com.njupt.hpc.edu.common.sys;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,12 +23,12 @@ public class GenerateConfig {
     /**
      * 实体评价最大线程数(2-8)
      */
-    private Integer EntityMaxThreadCount = 8;
+    private Integer entityMaxThreadCount = 8;
 
     /**
      * 三元组评价最大线程数(1-4)
      */
-    private Integer TupleMaxThreadCount = 4;
+    private Integer tupleMaxThreadCount = 4;
 
     // 关系置信度的阈值(0-100，越高评价参考系的置信度就越高)
     private Integer tupleConfidenceThreshold = 0;
@@ -41,20 +43,27 @@ public class GenerateConfig {
     // 关系评价占总评价的权重（0-1越大关系评价占总评分的比例越大，属性评价则越小)
     private Double relationWeight = 0.7;
 
-    // todo 加载在缓存中的配置
-    public GenerateConfig loadConfigInCache(String instanceId){
-        return null;
+    // 检查实例中的配置
+    public void checkConfigInInstance(String json){
+        // 可能会出现异常
+        GenerateConfig generateConfig =  JSON.parseObject(json, GenerateConfig.class);
+        BeanUtilsPlug.copyPropertiesReturnTarget(generateConfig, this);
     }
 
     public JSONObject parseToJsonObject(){
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("EntityMaxThreadCount", getEntityMaxThreadCount());
-        jsonObject.put("TupleMaxThreadCount", getTupleMaxThreadCount());
+        jsonObject.put("entityMaxThreadCount", getEntityMaxThreadCount());
+        jsonObject.put("tupleMaxThreadCount", getTupleMaxThreadCount());
         jsonObject.put("tupleConfidenceThreshold", getTupleConfidenceThreshold());
         jsonObject.put("tupleTopK", getTupleTopK());
         jsonObject.put("entitySimThreshold", getEntitySimThreshold());
         jsonObject.put("relationWeight", getRelationWeight());
         return jsonObject;
+    }
+
+    public static void main(String[] args) {
+        GenerateConfig generateConfig = new GenerateConfig();
+        generateConfig.checkConfigInInstance("{'entityMaxThreadCount':66}");
     }
 
 }

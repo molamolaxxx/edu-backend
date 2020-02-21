@@ -2,6 +2,9 @@ package com.njupt.hpc.edu.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.njupt.hpc.edu.project.model.PmsInstance;
+import com.njupt.hpc.edu.project.model.dto.InstanceDTO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,4 +23,31 @@ public interface PmsInstanceService extends IService<PmsInstance> {
      * 3.错误 到-1 设置结束时间
      */
     void updateInstanceState(String instanceId, String actionTypeId);
+
+    /**
+     * 查看所有正在运行实例的id
+     * @return
+     */
+    List<String> catAllRunningInstanceId();
+
+    /**
+     * 删除实例
+     * @param instanceId
+     * @param userId
+     * @return
+     */
+    Boolean delete(String instanceId, String userId);
+
+    /**
+     * 更新实例
+     * @param instanceId
+     * @return
+     */
+    Boolean update(InstanceDTO dto, String instanceId);
+
+    /**
+     * 创建实例
+     * @param dto
+     */
+    void create(InstanceDTO dto);
 }

@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
+import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.user.model.UmsRole;
 import com.njupt.hpc.edu.user.service.UmsRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -110,7 +110,7 @@ public class UmsRoleController {
     @ApiOperation("保存数据")
     @PreAuthorize("hasAuthority('ums:role:save')")
     public CommonResult save(@RequestBody UmsRole role){
-        role.setId("role_"+ RandomStringUtils.randomAlphanumeric(8));
+        role.setId(IdUtil.generateId("role"));
         role.setCreateTime(LocalDateTime.now());
         role.setUpdateTime(LocalDateTime.now());
         umsRoleService.save(role);

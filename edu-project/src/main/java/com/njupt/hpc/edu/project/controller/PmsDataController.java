@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
+import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
 import com.njupt.hpc.edu.common.utils.WrapperUtil;
 import com.njupt.hpc.edu.project.model.PmsData;
+import com.njupt.hpc.edu.project.model.dto.DataDTO;
+import com.njupt.hpc.edu.project.model.vo.DataVO;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.user.model.UmsUser;
 import com.njupt.hpc.edu.user.service.UmsUserService;
@@ -17,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * <p>
  * 算法数据表 前端控制器
@@ -51,8 +56,12 @@ public class PmsDataController {
     public CommonPage list(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "100") Integer pageSize, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        IPage page = pmsDataService.page(new Page(pageNum, pageSize),
+        IPage<PmsData> page = pmsDataService.page(new Page(pageNum, pageSize),
                 WrapperUtil.querySingleWrapperBuilder("uid",user.getId()));
+        // 将model转化成前端显示的vo
+        List voList = page.getRecords().stream().map(item -> BeanUtilsPlug
+                .copyPropertiesReturnTarget(item, new DataVO())).collect(Collectors.toList());
+        page.setRecords(voList);
         return CommonPage.restPage(page);
     }
 
@@ -72,31 +81,25 @@ public class PmsDataController {
 
     /**
      * 用户新建数据
-     * @param data
+     * @param dto
      * @param request
      * @return
      */
     @PostMapping("/user")
     @ApiOperation("用户新建数据")
-    public CommonResult create(@RequestBody PmsData data, HttpServletRequest request){
+    public CommonResult create(@RequestBody DataDTO dto, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        data.setUid(user.getId());
-        pmsDataService.create(data);
+        dto.setUid(user.getId());
+        pmsDataService.create(dto);
         return CommonResult.success(true, "新建数据成功");
     }
 
     @PutMapping("/user/{dataId}")
     @ApiOperation("更新数据")
-    public CommonResult update(@PathVariable String dataId, @RequestParam String name,
-                               @RequestParam String desc, HttpServletRequest request){
+    public CommonResult update(@PathVariable String dataId, @RequestBody DataDTO dto, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        PmsData data = new PmsData();
-        data.setId(dataId);
-        data.setUpdateTime(LocalDateTime.now());
-        data.setUid(user.getId());
-        data.setName(name);
-        data.setDescription(desc);
-        boolean result = pmsDataService.update(data, WrapperUtil.queryByUserIdAndPK(dataId, user.getId()));
+        dto.setUid(user.getId());
+        boolean result = pmsDataService.update(dto, dataId);
         return CommonResult.parseResultToResponse(result, "更新数据失败", "更新数据成功");
     }
 

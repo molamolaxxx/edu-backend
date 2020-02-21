@@ -8,7 +8,6 @@ import com.njupt.hpc.edu.project.model.PmsResult;
 import com.njupt.hpc.edu.project.service.PmsResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 /**
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "评价结果接口", description = "评价结果接口")
 public class PmsResultController {
 
-
     @Autowired
     private PmsResultService pmsResultService;
 
@@ -41,14 +39,6 @@ public class PmsResultController {
     @ApiOperation("根据id查找")
     public CommonResult findById(@PathVariable String id){
         return CommonResult.success(pmsResultService.getById(id));
-    }
-
-    @PostMapping
-    @ApiOperation("保存数据")
-    public CommonResult save(@RequestBody PmsResult result){
-        result.setId("result_"+ RandomStringUtils.randomAlphanumeric(8));
-        pmsResultService.save(result);
-        return CommonResult.success(true, "保存数据成功");
     }
 
     @PutMapping("/{id}")

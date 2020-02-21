@@ -3,9 +3,12 @@ package com.njupt.hpc.edu.project.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.sys.DataConfig;
+import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
+import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.common.utils.WrapperUtil;
 import com.njupt.hpc.edu.project.dao.PmsDataMapper;
 import com.njupt.hpc.edu.project.model.PmsData;
+import com.njupt.hpc.edu.project.model.dto.DataDTO;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -46,8 +49,9 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     }
 
     @Override
-    public Boolean create(PmsData data) {
-        data.setId("data_"+ RandomStringUtils.randomAlphanumeric(8));
+    public Boolean create(DataDTO dto) {
+        PmsData data = (PmsData) BeanUtilsPlug.copyPropertiesReturnTarget(dto, new PmsData());
+        data.setId(IdUtil.generateId("data"));
         data.setCreateTime(LocalDateTime.now());
         data.setUpdateTime(LocalDateTime.now());
         // 1.检查数据路径（是否为空，是否存在数据, 是否为支持的数据类型）
@@ -106,8 +110,10 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     }
 
     @Override
-    public Boolean update(PmsData data) {
-        return null;
+    public Boolean update(DataDTO dto, String dataId) {
+        PmsData data = (PmsData) BeanUtilsPlug.copyPropertiesReturnTarget(dto, new PmsData());
+        data.setUpdateTime(LocalDateTime.now());
+        return this.update(data, WrapperUtil.queryByUserIdAndPK(dataId, data.getUid()));
     }
 
     @Override

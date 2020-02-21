@@ -1,14 +1,21 @@
 package com.njupt.hpc.edu.project.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.njupt.hpc.edu.common.exception.EduProjectException;
+import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
+import com.njupt.hpc.edu.common.utils.IdUtil;
+import com.njupt.hpc.edu.common.utils.WrapperUtil;
 import com.njupt.hpc.edu.project.dao.PmsInstanceMapper;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
 import com.njupt.hpc.edu.project.model.PmsInstance;
+import com.njupt.hpc.edu.project.model.dto.InstanceDTO;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -42,6 +49,67 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
         }
     }
 
+    @Override
+    public List<String> catAllRunningInstanceId() {
+        List<PmsInstance> instanceList = this.list(WrapperUtil
+                .querySingleWrapperBuilder("state", InstanceStateEnum.RUNNING.getCode()));
+        List<String> instanceIdList = instanceList.stream().map(e -> e.getId()).collect(Collectors.toList());
+        return instanceIdList;
+    }
+
+    @Override
+    public Boolean delete(String instanceId, String userId) {
+        // 检测实例是否能被删除
+        checkInstanceDeleteable(instanceId);
+        return this.remove(WrapperUtil.queryByUserIdAndPK(instanceId, userId));
+    }
+
+    @Override
+    public Boolean update(InstanceDTO dto, String instanceId) {
+        // 检测实例是否能被修改
+        checkInstanceChangeable(instanceId);
+        PmsInstance instance = (PmsInstance) BeanUtilsPlug
+                .copyPropertiesReturnTarget(dto, new PmsInstance());
+        instance.setId(instanceId);
+        instance.setUpdateTime(LocalDateTime.now());
+        return this.update(instance, WrapperUtil.queryByUserIdAndPK(instanceId, dto.getUid()));
+    }
+
+    @Override
+    public void create(InstanceDTO dto) {
+        PmsInstance instance = (PmsInstance) BeanUtilsPlug
+                .copyPropertiesReturnTarget(dto, new PmsInstance());
+        instance.setId(IdUtil.generateId("instance"));
+        instance.setCreateTime(LocalDateTime.now());
+        instance.setUpdateTime(LocalDateTime.now());
+        instance.setState(InstanceStateEnum.READY.getCode());
+        this.save(instance);
+    }
+
+    /**
+     * 检查实例是否能被删除
+     */
+    private void checkInstanceDeleteable(String instanceId){
+        // 判断实例是否能被删除
+        PmsInstance instanceToDel = this.getById(instanceId);
+        if (null != instanceToDel &&
+                instanceToDel.getState().equals(InstanceStateEnum.RUNNING.getCode())){
+            throw new EduProjectException("实例正在运行，无法被删除");
+        }
+    }
+
+    /**
+     * 检测实例是否能被修改
+     */
+    private void checkInstanceChangeable(String instanceId){
+        // 判断实例是否能被修改
+        PmsInstance instanceToChange = this.getById(instanceId);
+        if (null != instanceToChange &&
+                !instanceToChange.getState().equals(InstanceStateEnum.READY.getCode())){
+            throw new EduProjectException("实例处于无法被修改的状态");
+        }
+    }
+
     /**
      * 具体执行更新实例运行状态
      * @param InstanceId 实例id
@@ -60,4 +128,5 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
         }
         this.updateById(instance);
     }
+
 }

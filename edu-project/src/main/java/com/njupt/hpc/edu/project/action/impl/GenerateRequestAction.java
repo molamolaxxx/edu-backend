@@ -12,6 +12,7 @@ import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.impl.PmsDataServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @Description: 生成模块requestAction
  * @date : 2019-12-07 00:29
  **/
+@Slf4j
 public class GenerateRequestAction extends RequestAction {
 
     // 因为无法自动注入，所以通过aware获取bean
@@ -76,15 +78,17 @@ public class GenerateRequestAction extends RequestAction {
         dataMap.put("dataType",instanceData.getDataType());
         // 放置数据的信息
         json.put("data",dataMap);
-        // 从cache中获取相应的实例配置，如果获取不到，沿用默认的系统配置
+        // 从实例中获取相应的实例配置，如果获取不到，沿用默认的系统配置
         // 放置系统配置信息（生成模块的配置）
-        GenerateConfig generateConfigInRedis = generateConfig.loadConfigInCache(this.getInstance().getId());
-        if (null == generateConfigInRedis) {
+        try {
+            generateConfig.checkConfigInInstance(this.getInstance().getConfig());
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            log.info("instanceId:"+ getInstance().getId() +"配置出错");
             json.put("sysConfig", generateConfig.parseToJsonObject());
+            return json;
         }
-        else {
-            json.put("sysConfig", generateConfigInRedis.parseToJsonObject());
-        }
+        json.put("sysConfig", generateConfig.parseToJsonObject());
         return json;
     }
 

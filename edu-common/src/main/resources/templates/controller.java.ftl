@@ -67,7 +67,7 @@ public class ${table.controllerName} {
 
     @PostMapping
     @ApiOperation("保存数据")
-    public CommonResult save(@RequestBody ${entity} ${entity?substring(3)?uncap_first}){
+    public CommonResult create(@RequestBody ${entity} ${entity?substring(3)?uncap_first}){
         ${entity?substring(3)?uncap_first}.setId("${entity?substring(3)?uncap_first}_"+ RandomStringUtils.randomAlphanumeric(8));
         ${entity?substring(3)?uncap_first}.setCreateTime(LocalDateTime.now());
         ${entity?substring(3)?uncap_first}.setUpdateTime(LocalDateTime.now());

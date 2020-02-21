@@ -1,6 +1,7 @@
 package com.njupt.hpc.edu.project.mq;
 
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
+import com.njupt.hpc.edu.project.enumerate.QueueEnum;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class EduMQService {
 
-    private static String QUEUE_NAME = "edu_j2p_mq";
-
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -24,7 +23,9 @@ public class EduMQService {
     private PmsInstanceService instanceService;
 
     public Boolean sendMessageToMQ(String message){
-        rabbitTemplate.convertAndSend(QUEUE_NAME, message);
+        rabbitTemplate.convertAndSend(QueueEnum.JAVA_TO_PYTHON_QUEUE.getExchange(),
+                QueueEnum.JAVA_TO_PYTHON_QUEUE.getRouteKey(),
+                message);
         return true;
     }
 

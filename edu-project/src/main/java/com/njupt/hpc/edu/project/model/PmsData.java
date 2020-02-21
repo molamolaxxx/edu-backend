@@ -67,5 +67,9 @@ public class PmsData implements Serializable {
      */
     private String dataPath;
 
+    /**
+     * 数据对应什么类型的实例
+     */
+    private String instanceType;
 
 }

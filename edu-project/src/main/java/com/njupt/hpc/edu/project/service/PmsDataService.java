@@ -2,6 +2,7 @@ package com.njupt.hpc.edu.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.njupt.hpc.edu.project.model.PmsData;
+import com.njupt.hpc.edu.project.model.dto.DataDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,9 +17,9 @@ public interface PmsDataService extends IService<PmsData> {
 
     /**
      * 新建数据
-     * @param data
+     * @param dto
      */
-    Boolean create(PmsData data);
+    Boolean create(DataDTO dto);
 
     /**
      * 上传数据
@@ -31,7 +32,7 @@ public interface PmsDataService extends IService<PmsData> {
      * @param
      * @return
      */
-    Boolean update(PmsData data);
+    Boolean update(DataDTO dto, String userId);
 
     /**
      * 删除数据

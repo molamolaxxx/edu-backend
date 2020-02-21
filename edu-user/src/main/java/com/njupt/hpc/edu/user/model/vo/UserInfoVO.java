@@ -1,4 +1,4 @@
-package com.njupt.hpc.edu.user.dto;
+package com.njupt.hpc.edu.user.model.vo;
 
 import com.njupt.hpc.edu.user.model.UmsPermission;
 import com.njupt.hpc.edu.user.model.UmsRole;
@@ -14,7 +14,7 @@ import java.util.List;
  * @date : 2019-12-01 17:34
  **/
 @Data
-public class UserInfo {
+public class UserInfoVO {
 
     private UmsUser umsUser;
 
