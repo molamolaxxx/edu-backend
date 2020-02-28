@@ -80,6 +80,16 @@ public class PmsDataController {
     }
 
     /**
+     * 用户根据实例类型查找
+     */
+    @GetMapping("/instance")
+    @ApiOperation("根据实例类型查找")
+    public CommonResult findByInstanceType(@RequestParam String typeId, HttpServletRequest request) {
+        UmsUser user = UserUtils.getUserFromRequest(request, userService);
+        return CommonResult.success(pmsDataService.findByInstanceType(typeId));
+    }
+
+    /**
      * 用户新建数据
      * @param dto
      * @param request

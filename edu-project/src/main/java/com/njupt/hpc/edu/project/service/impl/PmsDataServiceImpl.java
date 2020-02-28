@@ -1,5 +1,6 @@
 package com.njupt.hpc.edu.project.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.sys.DataConfig;
@@ -9,6 +10,7 @@ import com.njupt.hpc.edu.common.utils.WrapperUtil;
 import com.njupt.hpc.edu.project.dao.PmsDataMapper;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.DataDTO;
+import com.njupt.hpc.edu.project.model.vo.DataVO;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -21,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -125,5 +129,16 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
             throw new EduProjectException("删除文件失败");
         }
         return this.remove(WrapperUtil.queryByUserIdAndPK(dataId, userId));
+    }
+
+    @Override
+    public List<DataVO> findByInstanceType(String typeId) {
+        QueryWrapper<PmsData> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("instance_type", typeId);
+        List<PmsData> dataList = this.list(queryWrapper);
+        List<DataVO> result = dataList.stream()
+                .map(item -> (DataVO) BeanUtilsPlug.copyPropertiesReturnTarget(item, new DataVO()))
+                .collect(Collectors.toList());
+        return result;
     }
 }

@@ -3,7 +3,10 @@ package com.njupt.hpc.edu.project.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.DataDTO;
+import com.njupt.hpc.edu.project.model.vo.DataVO;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -42,4 +45,9 @@ public interface PmsDataService extends IService<PmsData> {
      */
     Boolean remove(String dataId, String userId);
 
+    /**
+     * 根据实例类型查找数据
+     * @param typeId
+     */
+    List<DataVO> findByInstanceType(String typeId);
 }
