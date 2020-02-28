@@ -17,7 +17,7 @@ public interface DataParser {
      * @param path
      * @return
      */
-    CSVContentVO parseCSV(String path);
+    CSVContentVO parseCSV(String path, Integer offset, Integer limit);
 
     /**
      * 转化data到图谱数据格式
@@ -37,4 +37,10 @@ public interface DataParser {
      * @return
      */
     GraphContentVO parseResultGraph(String path);
+
+    /**
+     * 清除缓存
+     * @param path
+     */
+    void clear(String path);
 }

@@ -14,10 +14,19 @@ import java.util.List;
 public class CSVContentVO {
 
     // 页面偏移量
-    private int offset;
+    private Integer offset;
 
     // 每页多少信息
-    private int limit;
+    private Integer limit;
+
+    // 总共多少页
+    private Integer total;
+
+    public CSVContentVO(Integer offset, Integer limit, Integer total) {
+        this.offset = offset;
+        this.limit = limit;
+        this.total = total;
+    }
 
     /**
      * 保存三元组的列表
