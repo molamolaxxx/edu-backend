@@ -24,7 +24,7 @@ public interface DataParser {
      * @param path
      * @return
      */
-    GraphContentVO parseGraph(String path);
+    GraphContentVO parseGraph(String path, Integer offset, Integer limit);
 
     /**
      * 转化result到csv格式

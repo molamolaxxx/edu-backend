@@ -67,5 +67,6 @@ public class EduMQListener {
     @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_CANCEL_NAME)
     public void handlerCancel(String message) {
         log.info("死信队列监听:{}", message);
+        // todo 当失效消息为停止运行时，死信队列必须重试
     }
 }

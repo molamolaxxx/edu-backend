@@ -45,6 +45,9 @@ public class GenerateConfig {
 
     // 检查实例中的配置
     public void checkConfigInInstance(String json){
+        if (null == json) {
+            return;
+        }
         // 可能会出现异常
         GenerateConfig generateConfig =  JSON.parseObject(json, GenerateConfig.class);
         BeanUtilsPlug.copyPropertiesReturnTarget(generateConfig, this);
@@ -63,7 +66,7 @@ public class GenerateConfig {
 
     public static void main(String[] args) {
         GenerateConfig generateConfig = new GenerateConfig();
-        generateConfig.checkConfigInInstance("{'entityMaxThreadCount':66}");
+        generateConfig.checkConfigInInstance(null);
     }
 
 }

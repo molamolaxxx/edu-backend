@@ -44,10 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/","/*.html","favicon.icon","/**/*.html","/**/*.css","/**/*.js",
                         "/swagger-resources/**",
                         "/v2/api-docs/**",
-                        "/iconHeader/**",
+                        "/iconHeader/**",  //头像可访问
                         "/webjars/springfox-swagger-ui/**")
                 .permitAll()
                 .antMatchers("/umsUser/login","/umsUser/refreshToken") //允许登录与刷新token
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/pmsShow/**")   // 展示界面可访问
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()

@@ -49,5 +49,5 @@ public interface PmsInstanceService extends IService<PmsInstance> {
      * 创建实例
      * @param dto
      */
-    void create(InstanceDTO dto);
+    PmsInstance create(InstanceDTO dto);
 }

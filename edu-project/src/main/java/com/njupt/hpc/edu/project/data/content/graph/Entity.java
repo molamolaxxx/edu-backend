@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class Entity extends JSONObject {
 
+    private final static String NONE_VALUE = "none";
+
     public Entity(){}
 
     public Entity(String name) {
@@ -19,6 +21,13 @@ public class Entity extends JSONObject {
     }
 
     public Entity(String name, String type) {
+        // 如果构建实体时传入值为null，则传入默认值
+        if (null == name) {
+            name = NONE_VALUE;
+        }
+        if (null == type) {
+            type = NONE_VALUE;
+        }
         this.put("name", name);
         this.put("type", type);
     }

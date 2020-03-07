@@ -55,7 +55,9 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     @Override
     public Boolean create(DataDTO dto) {
         PmsData data = (PmsData) BeanUtilsPlug.copyPropertiesReturnTarget(dto, new PmsData());
-        data.setId(IdUtil.generateId("data"));
+        if (data.getId() == null) {
+            data.setId(IdUtil.generateId("data"));
+        }
         data.setCreateTime(LocalDateTime.now());
         data.setUpdateTime(LocalDateTime.now());
         // 1.检查数据路径（是否为空，是否存在数据, 是否为支持的数据类型）

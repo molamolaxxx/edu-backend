@@ -2,8 +2,8 @@ package com.njupt.hpc.edu.common.cache;
 
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : molamola
@@ -14,8 +14,8 @@ import java.util.Map;
  **/
 public class DeferredResultCache {
 
-    // 使用线程安全的Hashtable
-    private static Map<String, DeferredResult> deferredResultMap = new Hashtable<>();
+    // 使用线程安全的Hashmap
+    private static Map<String, DeferredResult> deferredResultMap = new ConcurrentHashMap<>();
 
     public static DeferredResult get(String actionId){
         return deferredResultMap.get(actionId);

@@ -4,14 +4,15 @@ import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.CSVUtils;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.csv.CSVLine;
+import com.njupt.hpc.edu.project.data.content.graph.Entity;
 import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
+import com.njupt.hpc.edu.project.data.content.graph.Relation;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
 @Component
 public class GenerateDataParser implements DataParser {
 
-    private Map<String, List<CSVLine>> csvContentMap = new HashMap<>();
+    private Map<String, List<CSVLine>> csvContentMap = new ConcurrentHashMap<>();
 
-    private Map<String, GraphContentVO> graphContentMap = new HashMap<>();
+    // private Map<String, GraphContentVO> graphContentMap = new ConcurrentHashMap<>();
 
     @Override
     public CSVContentVO parseCSV(String path, Integer offset, Integer limit) {
@@ -64,8 +65,44 @@ public class GenerateDataParser implements DataParser {
     }
 
     @Override
-    public GraphContentVO parseGraph(String path) {
-        return null;
+    public GraphContentVO parseGraph(String path, Integer offset, Integer limit) {
+        // 先进行csv的转换
+        CSVContentVO first = this.parseCSV(path, offset, limit);
+        List<CSVLine> lines = first.getResultList();
+        // "实体1" -> "1"
+        Map<String, String> keyWordMap = new HashMap<>();
+        // "1" -> "entity"
+        Map<String, Entity> entityMap = new HashMap<>();
+        int point = 0;
+        // 循环csvlist
+        Iterator<CSVLine> iterator = lines.iterator();
+        while (iterator.hasNext()) {
+            CSVLine line = iterator.next();
+            String firstEntityName = line.getFirst();
+            String endEntityName = line.getEnd();
+            // 如果map中不包含实体名，则放入
+            if (!keyWordMap.keySet().contains(firstEntityName)){
+                keyWordMap.put(firstEntityName, String.valueOf(point));
+                entityMap.put(String.valueOf(point++), new Entity(firstEntityName, "first"));
+            }
+            if (!keyWordMap.keySet().contains(endEntityName)) {
+                keyWordMap.put(endEntityName, String.valueOf(point));
+                entityMap.put(String.valueOf(point++), new Entity(endEntityName, "end"));
+            }
+        }
+
+        // 再一次循环csvlist，构建返回参数
+        List<Relation> relationList = new ArrayList<>();
+        iterator = lines.iterator();
+        while (iterator.hasNext()) {
+            CSVLine line = iterator.next();
+            Relation r = new Relation(keyWordMap.get(line.getFirst()),
+                                      keyWordMap.get(line.getEnd()),
+                                      line.getRelation());
+            relationList.add(r);
+        }
+
+        return new GraphContentVO(entityMap, relationList);
     }
 
     @Override
@@ -97,6 +134,5 @@ public class GenerateDataParser implements DataParser {
     @Override
     public void clear(String path) {
         csvContentMap.remove(path);
-        graphContentMap.remove(path);
     }
 }

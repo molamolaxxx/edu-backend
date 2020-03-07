@@ -38,4 +38,9 @@ public class GraphContentVO {
      * ]
      */
     private List<Relation> relationList;
+
+    public GraphContentVO(Map<String, Entity> entityMap, List<Relation> relationList) {
+        this.entityMap = entityMap;
+        this.relationList = relationList;
+    }
 }

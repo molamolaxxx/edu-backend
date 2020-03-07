@@ -46,4 +46,11 @@ public class EduMQService {
         instanceService.updateInstanceState(instanceId, InstanceActionType._ERROR);
         // todo 2.向socket客户端发送消息
     }
+
+    /**
+     * todo 死信队列处理超时的stop请求
+     */
+    public void handleTimeoutStopAction() {
+
+    }
 }

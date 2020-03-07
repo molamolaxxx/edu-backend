@@ -76,14 +76,17 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
     }
 
     @Override
-    public void create(InstanceDTO dto) {
+    public PmsInstance create(InstanceDTO dto) {
         PmsInstance instance = (PmsInstance) BeanUtilsPlug
                 .copyPropertiesReturnTarget(dto, new PmsInstance());
-        instance.setId(IdUtil.generateId("instance"));
+        if (instance.getId() == null) {
+            instance.setId(IdUtil.generateId("instance"));
+        }
         instance.setCreateTime(LocalDateTime.now());
         instance.setUpdateTime(LocalDateTime.now());
         instance.setState(InstanceStateEnum.READY.getCode());
         this.save(instance);
+        return instance;
     }
 
     /**
@@ -117,6 +120,9 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
      */
     private void updateInstanceStateDetail(String InstanceId, String state){
         PmsInstance instance = this.getById(InstanceId);
+        if (null == instance) {
+            throw new EduProjectException("实例不存在，无法更新其状态");
+        }
         instance.setState(state);
         // 如果是开始操作，填充起始时间
         if (state.equals(InstanceStateEnum.RUNNING.getCode())){
