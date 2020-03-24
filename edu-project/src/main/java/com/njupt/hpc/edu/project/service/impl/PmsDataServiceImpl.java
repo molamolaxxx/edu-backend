@@ -48,8 +48,8 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     public void setDataSuffixSet(){
         dataSuffixMap = new HashMap();
         dataSuffixMap.put("csv", "0");
-        dataSuffixMap.put("json", "1");
-        dataSuffixMap.put("rdf", "2");
+//        dataSuffixMap.put("json", "1");
+//        dataSuffixMap.put("rdf", "2");
     }
 
     @Override
