@@ -55,12 +55,12 @@ public class RabbitConfig {
                 .durable(QueueEnum.JAVA_TO_PYTHON_QUEUE.getName())
                 .withArgument("x-dead-letter-exchange", QueueEnum.JAVA_TO_PYTHON_CANCEL.getExchange())//到期后转发的交换机
                 .withArgument("x-dead-letter-routing-key", QueueEnum.JAVA_TO_PYTHON_CANCEL.getRouteKey())//到期后转发的路由键
-                .withArgument("x-message-ttl", 5000L)
+                .withArgument("x-message-ttl", 4000L)
                 .build();
     }
 
     /**
-     * 接收python的消息
+     * 接收python的消息队列
      * @return
      */
     @Bean

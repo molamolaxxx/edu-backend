@@ -10,10 +10,12 @@ import org.apache.commons.lang.RandomStringUtils;
  **/
 public class IdUtil {
 
-    public static String generateId(String module){
-        return String.format("%s_%s%s", module,
-                RandomStringUtils.randomAlphanumeric(8),
-                String.valueOf(System.currentTimeMillis()).substring(0, 8));
+    public static synchronized String generateId(String module){
+        String stamp = new Long(System.currentTimeMillis()).toString();
+        return String.format("%s%s_%s",
+                stamp.substring(8),
+                RandomStringUtils.randomAlphanumeric(5),
+                module);
     }
 
     public static void main(String[] args) {

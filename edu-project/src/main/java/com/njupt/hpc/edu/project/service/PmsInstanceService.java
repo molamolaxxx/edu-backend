@@ -50,4 +50,9 @@ public interface PmsInstanceService extends IService<PmsInstance> {
      * @param dto
      */
     PmsInstance create(InstanceDTO dto);
+
+    /**
+     * 销毁临时实例、数据、结果
+     */
+    Boolean deleteTempInstance(PmsInstance instance);
 }

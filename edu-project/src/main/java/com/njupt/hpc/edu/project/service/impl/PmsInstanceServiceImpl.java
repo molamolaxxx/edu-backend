@@ -10,8 +10,13 @@ import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.model.dto.InstanceDTO;
+import com.njupt.hpc.edu.project.service.PmsActionService;
+import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
+import com.njupt.hpc.edu.project.service.PmsResultService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +32,19 @@ import java.util.stream.Collectors;
  */
 @Service
 public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsInstance> implements PmsInstanceService {
+
+    @Autowired
+    private PmsActionService actionService;
+
+    @Autowired
+    private PmsDataService dataService;
+
+    @Autowired
+    private PmsInstanceService instanceService;
+
+    @Autowired
+    private PmsResultService resultService;
+
 
     @Override
     public void updateInstanceState(String InstanceId, String actionTypeId) {
@@ -135,4 +153,21 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
         this.updateById(instance);
     }
 
+    @Transactional
+    @Override
+    public Boolean deleteTempInstance(PmsInstance instance) {
+        // 如果实例是运行状态，发消息改变算法端状态
+        if (instance.getState().equals(InstanceStateEnum.RUNNING.getCode())){
+            // 死信队列确保消息能够送达
+            actionService.action(instance, InstanceActionType.STOP);
+        }
+        // 直接删除实例
+        instanceService.removeById(instance.getId());
+        // 删除实例对应数据
+        dataService.removeById(instance.getDataId());
+        // 删除结果
+        resultService.deleteByInstanceId(instance.getId());
+
+        return true;
+    }
 }

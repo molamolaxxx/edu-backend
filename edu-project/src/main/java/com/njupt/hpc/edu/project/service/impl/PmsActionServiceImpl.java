@@ -45,9 +45,19 @@ public class PmsActionServiceImpl implements PmsActionService {
 
     @Override
     public DeferredResult action(PmsInstance instance, InstanceActionType actionType) {
+
         // 构建actionId与deferResult
         String actionId = IdUtil.generateId("action");
         DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
+
+        // 如果是info消息
+        if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
+                actionType.getActionCode().equals(InstanceActionType._INFO)){
+            // 直接返回
+            result.setResult(CommonResult.success(true));
+            return result;
+        }
+
         // 1.检查instance状态，数据是否存在、合法
         checkInstanceLegality(instance, actionType);
         checkDataLegality(instance.getDataId());
@@ -85,10 +95,6 @@ public class PmsActionServiceImpl implements PmsActionService {
         else if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
                 actionType.getActionCode().equals(InstanceActionType._STOP)){
             throw new EduProjectException("实例状态不合法:实例不可停止");
-        }
-        else if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
-                actionType.getActionCode().equals(InstanceActionType._INFO)){
-            throw new EduProjectException("实例状态不合法:实例不可获取信息");
         }
     }
 

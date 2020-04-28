@@ -40,10 +40,14 @@ public class GenerateDataParser implements DataParser {
             } catch (IOException e) {
                 throw new EduProjectException("读取csv文件时发生IO错误");
             }
+            // csv检查
             lines = csvLines.stream().map(line -> {
                 String[] split = line.split(",");
                 if (split.length != 3) {
                     split = line.split(" ");
+                }
+                if (split.length != 3) {
+                    throw new EduProjectException("数据解析失败！请阅读三元组csv格式规范，上传正确格式的csv");
                 }
                 CSVLine csvLine = new CSVLine();
                 csvLine.put("first", split[0]);
@@ -135,4 +139,5 @@ public class GenerateDataParser implements DataParser {
     public void clear(String path) {
         csvContentMap.remove(path);
     }
+
 }

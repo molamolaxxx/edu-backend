@@ -4,7 +4,6 @@ import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
-import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
 import com.njupt.hpc.edu.project.enumerate.ShowEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.PmsInstance;
@@ -12,13 +11,14 @@ import com.njupt.hpc.edu.project.model.dto.ShowInstanceDTO;
 import com.njupt.hpc.edu.project.service.PmsActionService;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
+import com.njupt.hpc.edu.project.service.PmsResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
+
+import java.util.Map;
 
 /**
  * @author : molamola
@@ -38,14 +38,17 @@ public class ShowInstanceController {
     private PmsInstanceService instanceService;
 
     @Autowired
+    private PmsResultService resultService;
+
+    @Autowired
     private PmsActionService actionService;
 
     /**
      * 创建临时匿名实例（每隔30分钟检查一次，删除已完成无用实例）
      */
-    @PostMapping("/create")
+    @PostMapping("/{dataId}")
     @ApiOperation("创建临时实例")
-    public CommonResult create(String dataId) {
+    public CommonResult create(@PathVariable String dataId, @RequestBody Map<String, String> config) {
         // 查询数据
         PmsData data = dataService.getById(dataId);
         if (null == data) {
@@ -56,6 +59,7 @@ public class ShowInstanceController {
         instanceDTO.setId(IdUtil.generateId("temp"));
         instanceDTO.setUid(ShowEnum.VISITOR_NAME.getName());
         instanceDTO.setDescription("这是展示用实例");
+        instanceDTO.setConfig(config.get("config"));
         instanceDTO.setName(ShowEnum.TEMP_INSTANCE_NAME.getName());
         instanceDTO.setDataId(dataId);
         instanceDTO.setType(data.getInstanceType());
@@ -63,33 +67,36 @@ public class ShowInstanceController {
         return CommonResult.success(instanceDTO);
     }
 
-    @PostMapping("/start")
+    @PostMapping("/start/{instanceId}")
     @ApiOperation("开始临时实例")
-    public DeferredResult<CommonResult> start(String instanceId) {
+    public DeferredResult<CommonResult> start(@PathVariable String instanceId) {
         PmsInstance instance = checkTempInstance(instanceId);
         return actionService.action(instance, InstanceActionType.START);
     }
 
-    @PostMapping("/info")
+    @PostMapping("/stop/{instanceId}")
+    @ApiOperation("开始临时实例")
+    public DeferredResult<CommonResult> stop(@PathVariable String instanceId) {
+        PmsInstance instance = checkTempInstance(instanceId);
+        return actionService.action(instance, InstanceActionType.STOP);
+    }
+
+    @GetMapping("/info/{instanceId}")
     @ApiOperation("获取临时实例的信息")
-    public DeferredResult<CommonResult> info(String instanceId) {
+    public DeferredResult<CommonResult> info(@PathVariable String instanceId) {
         PmsInstance instance = checkTempInstance(instanceId);
         return actionService.action(instance, InstanceActionType.INFO);
     }
 
-    @PostMapping("/destroy")
+    @DeleteMapping("/{instanceId}")
     @ApiOperation("销毁临时实例")
-    public CommonResult destroy(String instanceId) {
+    public CommonResult destroy(@PathVariable String instanceId) {
         PmsInstance instance = checkTempInstance(instanceId);
-        // 如果实例是运行状态，发消息改变算法端状态
-        if (instance.getState().equals(InstanceStateEnum.RUNNING)){
-            // 死信队列确保消息能够送达
-            actionService.action(instance, InstanceActionType.STOP);
+        // 删除操作的幂等
+        if (null == instance) {
+            return CommonResult.success(true);
         }
-        // 直接删除实例
-        instanceService.removeById(instanceId);
-        // 删除实例对应数据
-        dataService.removeById(instance.getDataId());
+        instanceService.deleteTempInstance(instance);
         return CommonResult.success(true);
     }
 
@@ -97,9 +104,9 @@ public class ShowInstanceController {
     private PmsInstance checkTempInstance(String instanceId) {
         PmsInstance instance = instanceService.getById(instanceId);
         if (null == instance) {
-            throw new EduProjectException("匿名实例不存在");
+            return null;
         }
-        if (!instanceId.startsWith("temp")) {
+        if (!instanceId.endsWith("temp")) {
             throw new EduProjectException("实例为非匿名实例，调用失败");
         }
         return instance;

@@ -13,6 +13,11 @@ public abstract class ResponseAction {
     private String instanceId;
 
     /**
+     * action类型
+     */
+    private String actionTypeId;
+
+    /**
      * 定义返回码
      */
     private Integer code;
@@ -33,7 +38,21 @@ public abstract class ResponseAction {
      */
     protected abstract ResponseAction parse(String result);
 
+    public void setActionId(String actionId) {
+        this.actionId = actionId;
+    }
 
+    public String getActionId() {
+        return actionId;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 
     public Integer getCode() {
         return code;

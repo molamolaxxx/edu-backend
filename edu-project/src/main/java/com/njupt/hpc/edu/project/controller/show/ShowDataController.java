@@ -7,6 +7,7 @@ import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
 import com.njupt.hpc.edu.project.data.parser.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.ShowEnum;
+import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.ShowDataDTO;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import io.swagger.annotations.Api;
@@ -86,6 +87,11 @@ public class ShowDataController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除临时数据")
     public CommonResult delete(@PathVariable String id) {
+        PmsData result = dataService.getById(id);
+        // 删除操作的幂等
+        if (null == result) {
+            return CommonResult.success(true);
+        }
         // 删除数据
         dataService.remove(id, ShowEnum.VISITOR_NAME.getName());
         return CommonResult.success(true);

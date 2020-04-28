@@ -2,7 +2,6 @@ package com.njupt.hpc.edu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author : molamola
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
  * @date : 2019-11-23 21:32
  **/
 @SpringBootApplication
-@ComponentScan({"com.mola.redis.*","com.njupt.hpc.edu"})
 public class EduApplication {
 
     public static void main(String[] args) {

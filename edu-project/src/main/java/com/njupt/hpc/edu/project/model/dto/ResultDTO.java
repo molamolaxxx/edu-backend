@@ -1,24 +1,21 @@
-package com.njupt.hpc.edu.project.model;
+package com.njupt.hpc.edu.project.model.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author molamola
- * @since 2019-12-04
- */
+ * @author : molamola
+ * @Project: edu
+ * @Description:
+ * @date : 2020-04-15 15:41
+ **/
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class PmsResult implements Serializable {
+public class ResultDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,14 +38,4 @@ public class PmsResult implements Serializable {
      * 结果明细文件地址
      */
     private String path;
-
-    /**
-     * 结果创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 结果更新时间
-     */
-    private LocalDateTime updateTime;
 }

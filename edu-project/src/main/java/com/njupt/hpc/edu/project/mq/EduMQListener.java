@@ -6,7 +6,9 @@ import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.QueueEnum;
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,9 @@ public class EduMQListener {
 
     @RabbitHandler
     @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_NAME, containerFactory="rabbitListenerContainerFactory")
-    public void handler(byte[] message){
+    public void handler(byte[] message, Channel channel, Message msg){
         JSONObject jsonObject = JSON.parseObject(new String(message, StandardCharsets.UTF_8));
+
         log.info("收到python模块的回复:"+jsonObject);
         String actionId = (String) jsonObject.get("actionId");
         String instanceId = (String)jsonObject.get("instanceId");
@@ -52,11 +55,15 @@ public class EduMQListener {
          */
         // 实例运行失败
         if (actionTypeId.equals(InstanceActionType._ERROR)){
-            mqService.handlerError(instanceId);
+            // 消息拒绝
+            mqService.rejectMessage(channel, msg);
+            mqService.handlerError(instanceId, jsonObject);
         }
         // 实例运行完成
         if (actionTypeId.equals(InstanceActionType._FINISH)){
-            mqService.handlerFinish(instanceId);
+            // 消息确认
+            mqService.ackMessage(channel, msg);
+            mqService.handlerFinish(instanceId, jsonObject);
         }
     }
 
@@ -65,8 +72,27 @@ public class EduMQListener {
      */
     @RabbitHandler
     @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_CANCEL_NAME)
-    public void handlerCancel(String message) {
-        log.info("死信队列监听:{}", message);
-        // todo 当失效消息为停止运行时，死信队列必须重试
+    public void handlerCancel(String message,Channel channel, Message msg) {
+        JSONObject jsonObject = JSON.parseObject(message);
+        log.info("消息超时，进入死信队列被消费:"+jsonObject);
+        String actionId = (String) jsonObject.get("actionId");
+        String instanceId = (String)jsonObject.get("instanceId");
+        String actionTypeId = (String) jsonObject.get("actionTypeId");
+
+        // 消息确认被消费
+        mqService.rejectMessage(channel, msg);
+
+        // 将对应的异步请求返回超时
+        if (null != actionId && DeferredResultCache.get(actionId) != null) {
+            log.info("存在等待请求,可以执行返回逻辑");
+            DeferredResultCache.get(actionId).setResult(CommonResult.timeout("任务未送达，请求超时"));
+            DeferredResultCache.del(actionId);
+        }
+
+        // 当失效消息为停止运行时，死信队列必须重试，保证消息被消费
+        if (actionTypeId.equals(InstanceActionType._STOP)) {
+            log.info("消息为停止实例操作，进行再次发送:"+jsonObject);
+            mqService.sendMessageToMQ(message);
+        }
     }
 }
