@@ -27,4 +27,11 @@ public interface PmsResultService extends IService<PmsResult> {
      * @return
      */
     Boolean deleteByInstanceId(String instanceId);
+
+    /**
+     * 根据外键instanceId删除result
+     * @param instanceId
+     * @return
+     */
+    ResultDTO findByInstanceId(String instanceId);
 }

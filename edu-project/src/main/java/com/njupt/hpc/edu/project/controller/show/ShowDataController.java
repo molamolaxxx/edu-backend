@@ -5,7 +5,7 @@ import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
-import com.njupt.hpc.edu.project.data.parser.GenerateDataParser;
+import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.ShowEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.ShowDataDTO;
@@ -39,7 +39,7 @@ public class ShowDataController {
     @GetMapping("/table")
     @ApiOperation("获取csv文件的表格数据")
     public CommonResult<CSVContentVO> table(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
-        return CommonResult.success(generateDataParser.parseCSV(path, 1, 100));
+        return CommonResult.success(generateDataParser.parseDataCSV(path, 1, 100));
     }
 
     @GetMapping("/graph")

@@ -16,7 +16,7 @@ public class BeanUtilsPlug {
      * @param target
      * @return
      */
-    public static Object copyPropertiesReturnTarget(Object source ,Object target){
+    public static <T>  T copyPropertiesReturnTarget(T source ,T target){
         BeanUtils.copyProperties(source,target);
         return target;
     }
@@ -27,7 +27,7 @@ public class BeanUtilsPlug {
      * @param target
      * @return
      */
-    public static Object copyPropertiesReturnSource(Object source ,Object target){
+    public static <T>  T copyPropertiesReturnSource(T source ,T target){
         BeanUtils.copyProperties(source,target);
         return source;
     }

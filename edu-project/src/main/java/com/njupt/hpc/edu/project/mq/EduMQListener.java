@@ -54,13 +54,13 @@ public class EduMQListener {
          * 2.FINISH("106","实例运行完毕通知");
          */
         // 实例运行失败
-        if (actionTypeId.equals(InstanceActionType._ERROR)){
+        if (null != actionTypeId && actionTypeId.equals(InstanceActionType._ERROR)){
             // 消息拒绝
             mqService.rejectMessage(channel, msg);
             mqService.handlerError(instanceId, jsonObject);
         }
         // 实例运行完成
-        if (actionTypeId.equals(InstanceActionType._FINISH)){
+        if (null != actionTypeId && actionTypeId.equals(InstanceActionType._FINISH)){
             // 消息确认
             mqService.ackMessage(channel, msg);
             mqService.handlerFinish(instanceId, jsonObject);

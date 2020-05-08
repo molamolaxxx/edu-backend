@@ -40,6 +40,7 @@ public class PmsResultController {
     public CommonResult findById(@PathVariable String id){
         return CommonResult.success(pmsResultService.getById(id));
     }
+
     @PutMapping("/{id}")
     @ApiOperation("更新数据")
     public CommonResult update(@PathVariable String id, PmsResult result){

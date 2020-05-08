@@ -51,4 +51,12 @@ public class PmsResultServiceImpl extends ServiceImpl<PmsResultMapper, PmsResult
         }
         return false;
     }
+
+    @Override
+    public ResultDTO findByInstanceId(String instanceId) {
+        QueryWrapper<PmsResult> wrapper = new QueryWrapper<>();
+        wrapper.eq("instance_id", instanceId);
+        PmsResult one = this.getOne(wrapper);
+        return (ResultDTO) BeanUtilsPlug.copyPropertiesReturnTarget(one, new ResultDTO());
+    }
 }
