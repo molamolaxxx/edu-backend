@@ -13,6 +13,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+
 /**
  * @author : molamola
  * @Project: edu
@@ -56,6 +59,12 @@ public class ShowResultController {
         ResultDTO result = resultService.findByInstanceId(instanceId);
 
         return CommonResult.success(dataParser.parseResultDetail(result.getPath(), offset, limit));
+    }
+
+    @GetMapping("/detail/download/{id}")
+    @ApiOperation("下载结果明细文件")
+    public void downloadDetail(@PathVariable String id, HttpServletResponse response) throws IOException {
+        resultService.downloadDetail(id, response);
     }
 
     // 检查匿名实例的合法性

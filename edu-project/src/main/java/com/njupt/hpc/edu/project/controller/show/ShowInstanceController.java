@@ -46,9 +46,11 @@ public class ShowInstanceController {
     /**
      * 创建临时匿名实例（每隔30分钟检查一次，删除已完成无用实例）
      */
-    @PostMapping("/{dataId}")
+    @PostMapping("/{userId}/{dataId}")
     @ApiOperation("创建临时实例")
-    public CommonResult create(@PathVariable String dataId, @RequestBody Map<String, String> config) {
+    public CommonResult create(@PathVariable("userId") String userId,
+                               @PathVariable("dataId") String dataId,
+                               @RequestBody Map<String, String> config) {
         // 查询数据
         PmsData data = dataService.getById(dataId);
         if (null == data) {
@@ -57,7 +59,7 @@ public class ShowInstanceController {
         // 创建一个临时实例
         ShowInstanceDTO instanceDTO = new ShowInstanceDTO();
         instanceDTO.setId(IdUtil.generateId("temp"));
-        instanceDTO.setUid(ShowEnum.VISITOR_NAME.getName());
+        instanceDTO.setUid(userId);
         instanceDTO.setDescription("这是展示用实例");
         instanceDTO.setConfig(config.get("config"));
         instanceDTO.setName(ShowEnum.TEMP_INSTANCE_NAME.getName());

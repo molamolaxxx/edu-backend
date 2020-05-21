@@ -56,7 +56,8 @@ public class ShowDataController {
     @PostMapping
     @ApiOperation("上传并创建临时数据")
     public CommonResult upload(@RequestParam("file") MultipartFile file,
-                               @RequestParam("type") String instanceType) {
+                               @RequestParam("type") String instanceType,
+                               @RequestParam("uid") String userId) {
         // 只允许上传小于1k的数据
         try {
             if (file.getBytes().length > 1024) {
@@ -69,7 +70,7 @@ public class ShowDataController {
         // 创建临时数据
         ShowDataDTO dataDTO = new ShowDataDTO();
         dataDTO.setId(IdUtil.generateId("temp"));
-        dataDTO.setUid(ShowEnum.VISITOR_NAME.getName());
+        dataDTO.setUid(userId);
         dataDTO.setDataPath(path);
         dataDTO.setInstanceType(instanceType);
         dataDTO.setName(ShowEnum.TEMP_DATA_NAME.getName());
@@ -93,7 +94,7 @@ public class ShowDataController {
             return CommonResult.success(true);
         }
         // 删除数据
-        dataService.remove(id, ShowEnum.VISITOR_NAME.getName());
+        dataService.remove(id);
         return CommonResult.success(true);
     }
 }
