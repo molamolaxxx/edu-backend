@@ -17,7 +17,6 @@ public class GenerateResponseAction extends ResponseAction {
         this.setActionId((String) jsonObject.get("actionId"));
         this.setInstanceId((String)jsonObject.get("instanceId"));
         this.setInstanceId((String) jsonObject.get("actionTypeId"));
-
         return this;
     }
 }

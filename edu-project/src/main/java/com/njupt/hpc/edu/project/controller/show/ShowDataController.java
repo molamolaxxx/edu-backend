@@ -45,7 +45,7 @@ public class ShowDataController {
     @GetMapping("/table")
     @ApiOperation("获取csv文件的表格数据")
     public CommonResult<CSVContentVO> table(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
-        if(type==InstanceTypeEnum.GENERATE_EVALUATE.getCode()) {
+        if(type.equals(InstanceTypeEnum.GENERATE_EVALUATE.getCode())) {
             return CommonResult.success(generateDataParser.parseDataCSV(path, 1, 100));
         }
         else return CommonResult.success(fusionDataParser.parseDataCSV(path, 1, 100));
@@ -55,7 +55,7 @@ public class ShowDataController {
     @GetMapping("/graph")
     @ApiOperation("获取csv文件的图谱数据")
     public CommonResult<GraphContentVO> graph(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
-        if(type==InstanceTypeEnum.GENERATE_EVALUATE.getCode()) {
+        if(type.equals(InstanceTypeEnum.GENERATE_EVALUATE.getCode())){
             return CommonResult.success(generateDataParser.parseGraph(path, 1, 100));
         }
         else return CommonResult.success(fusionDataParser.parseGraph(path, 1, 100));

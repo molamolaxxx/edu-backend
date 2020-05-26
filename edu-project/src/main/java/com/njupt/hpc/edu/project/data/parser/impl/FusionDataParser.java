@@ -29,6 +29,7 @@ public class FusionDataParser extends BasicParser {
         // 从缓存中读取csv
         List<CSVLine> tupleLines = csvContentMap.get(path);
         if (null == tupleLines) {
+            tupleLines=new ArrayList<>();
             // 如果缓存中读不到csv
             List<String> recodeLines = null;
             try {
