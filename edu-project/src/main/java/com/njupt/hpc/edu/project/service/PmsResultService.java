@@ -1,8 +1,11 @@
 package com.njupt.hpc.edu.project.service;
 
-import com.njupt.hpc.edu.project.model.PmsResult;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.njupt.hpc.edu.project.model.PmsResult;
 import com.njupt.hpc.edu.project.model.dto.ResultDTO;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -27,4 +30,16 @@ public interface PmsResultService extends IService<PmsResult> {
      * @return
      */
     Boolean deleteByInstanceId(String instanceId);
+
+    /**
+     * 根据外键instanceId删除result
+     * @param instanceId
+     * @return
+     */
+    ResultDTO findByInstanceId(String instanceId);
+
+    /**
+     * 下载明细
+     */
+    Boolean downloadDetail(String id, HttpServletResponse response) throws IOException;
 }

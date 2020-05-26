@@ -28,7 +28,13 @@ public class TestController {
     @GetMapping("/testCSVParser")
     @ApiOperation("测试csv的转化器")
     public CSVContentVO testCSVParser(@RequestParam("offset") Integer offset, @RequestParam("limit") Integer limit) {
-        return generateDataParser.parseCSV("/home/mola/IdeaProjects/edu/data-cache/z2CigmFq-test.csv", offset, limit);
+        return generateDataParser.parseDataCSV("/home/mola/IdeaProjects/edu/data-cache/z2CigmFq-test.csv", offset, limit);
+    }
+
+    @GetMapping("/testResultDetailParser")
+    @ApiOperation("测试csv的转化器")
+    public CSVContentVO testResultDetailParser(@RequestParam("offset") Integer offset, @RequestParam("limit") Integer limit) {
+        return generateDataParser.parseResultDetail("/home/mola/PycharmProjects/entity_accuracy/app/result/result_87396AtYLg_temp.csv", offset, limit);
     }
 
     @GetMapping("/testGraphParser")

@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -123,14 +124,15 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     }
 
     @Override
-    public Boolean remove(String dataId, String userId) {
+    @Transactional
+    public Boolean remove(String dataId) {
         // 删除对应的文件
         PmsData data = this.getById(dataId);
         String dataPath = data.getDataPath();
         if (!FileUtils.deleteQuietly(new File(dataPath))){
             throw new EduProjectException("删除文件失败");
         }
-        return this.remove(WrapperUtil.queryByUserIdAndPK(dataId, userId));
+        return this.removeById(dataId);
     }
 
     @Override
@@ -143,4 +145,5 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
                 .collect(Collectors.toList());
         return result;
     }
+
 }

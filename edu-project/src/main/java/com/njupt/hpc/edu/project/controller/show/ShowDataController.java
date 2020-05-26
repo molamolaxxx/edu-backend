@@ -5,9 +5,13 @@ import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
+<<<<<<< HEAD
 import com.njupt.hpc.edu.project.data.parser.impl.FusionDataParser;
 import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
+=======
+import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca
 import com.njupt.hpc.edu.project.enumerate.ShowEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.ShowDataDTO;
@@ -43,10 +47,14 @@ public class ShowDataController {
     @GetMapping("/table")
     @ApiOperation("获取csv文件的表格数据")
     public CommonResult<CSVContentVO> table(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
+<<<<<<< HEAD
         if(type==InstanceTypeEnum.GENERATE_EVALUATE.getCode()) {
             return CommonResult.success(generateDataParser.parseCSV(path, 1, 100));
         }
         else return CommonResult.success(fusionDataParser.parseDataCSV(path, 1, 100));
+=======
+        return CommonResult.success(generateDataParser.parseDataCSV(path, 1, 100));
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca
     }
 
     @GetMapping("/graph")
@@ -66,7 +74,8 @@ public class ShowDataController {
     @PostMapping
     @ApiOperation("上传并创建临时数据")
     public CommonResult upload(@RequestParam("file") MultipartFile file,
-                               @RequestParam("type") String instanceType) {
+                               @RequestParam("type") String instanceType,
+                               @RequestParam("uid") String userId) {
         // 只允许上传小于1k的数据
         try {
             if (file.getBytes().length > 1024) {
@@ -79,7 +88,7 @@ public class ShowDataController {
         // 创建临时数据
         ShowDataDTO dataDTO = new ShowDataDTO();
         dataDTO.setId(IdUtil.generateId("temp"));
-        dataDTO.setUid(ShowEnum.VISITOR_NAME.getName());
+        dataDTO.setUid(userId);
         dataDTO.setDataPath(path);
         dataDTO.setInstanceType(instanceType);
         dataDTO.setName(ShowEnum.TEMP_DATA_NAME.getName());
@@ -103,7 +112,7 @@ public class ShowDataController {
             return CommonResult.success(true);
         }
         // 删除数据
-        dataService.remove(id, ShowEnum.VISITOR_NAME.getName());
+        dataService.remove(id);
         return CommonResult.success(true);
     }
 }

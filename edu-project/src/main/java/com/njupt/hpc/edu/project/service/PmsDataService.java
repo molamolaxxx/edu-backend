@@ -40,14 +40,14 @@ public interface PmsDataService extends IService<PmsData> {
     /**
      * 删除数据
      * @param dataId
-     * @param userId
      * @return
      */
-    Boolean remove(String dataId, String userId);
+    Boolean remove(String dataId);
 
     /**
      * 根据实例类型查找数据
      * @param typeId
      */
     List<DataVO> findByInstanceType(String typeId);
+
 }

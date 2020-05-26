@@ -138,7 +138,11 @@ public class GenerateDataParser implements DataParser {
      * 转化三元组数据的function
      * @return
      */
+<<<<<<< HEAD:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/impl/GenerateDataParser.java
     protected Function<String, CSVLine> parseTupleDataFunc() {
+=======
+    private Function<String, CSVLine> parseTupleDataFunc() {
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/GenerateDataParser.java
         return line -> {
             String[] split = line.split(",");
             if (split.length != 5) {
@@ -161,7 +165,11 @@ public class GenerateDataParser implements DataParser {
      * 转化结果数据的function
      * @return
      */
+<<<<<<< HEAD:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/impl/GenerateDataParser.java
     protected Function<String, CSVLine> parseResultDetailFunc() {
+=======
+    private Function<String, CSVLine> parseResultDetailFunc() {
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/GenerateDataParser.java
         return line -> {
             String[] split = line.split(",");
             if (split.length != 12) {
@@ -192,7 +200,11 @@ public class GenerateDataParser implements DataParser {
     }
 
     // 将参考三元组文本转化成json
+<<<<<<< HEAD:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/impl/GenerateDataParser.java
     protected  JSONObject getRefer(String referText) {
+=======
+    private  JSONObject getRefer(String referText) {
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/GenerateDataParser.java
         referText = referText.substring(1,referText.length()-1);
         String[] split = referText.split("-");
         JSONObject jo = new JSONObject();
@@ -203,10 +215,18 @@ public class GenerateDataParser implements DataParser {
     }
 
     // 准确度保留五位
+<<<<<<< HEAD:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/impl/GenerateDataParser.java
     protected String cutLength(String raw) {
+=======
+    private String cutLength(String raw) {
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/GenerateDataParser.java
         if (raw.length() >5) {
             return raw.substring(0,6);
         }
         return raw;
     }
+<<<<<<< HEAD:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/impl/GenerateDataParser.java
 }
+=======
+}
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca:edu-project/src/main/java/com/njupt/hpc/edu/project/data/parser/GenerateDataParser.java

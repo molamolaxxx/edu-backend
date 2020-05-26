@@ -20,7 +20,11 @@ public interface DataParser {
      * @param path
      * @return
      */
+<<<<<<< HEAD
     default CSVContentVO parseCSV(String path, Integer offset, Integer limit, Function<String,CSVLine> function){
+=======
+    default CSVContentVO parseCSV(String path, Integer offset, Integer limit, Function<String, CSVLine> function){
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca
         throw new RuntimeException("need to override");
     }
 
@@ -57,4 +61,8 @@ public interface DataParser {
      */
     default CSVContentVO parseDataCSV(String path, int offset, int limit){return null;}
     default CSVContentVO parseResultDetail(String path, int offset, int limit){return null;}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> cd110bc58dccd8d2ac7c7d32cb28c9af2e4c89ca

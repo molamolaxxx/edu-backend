@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
+import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.user.model.UmsPermission;
 import com.njupt.hpc.edu.user.service.UmsPermissionService;
 import io.swagger.annotations.Api;
@@ -115,7 +116,7 @@ public class UmsPermissionController {
     @ApiOperation("保存数据")
     @PreAuthorize("hasAuthority('ums:permission:save')")
     public CommonResult save(@RequestBody UmsPermission permission){
-        permission.setId("permission_"+ RandomStringUtils.randomAlphanumeric(8));
+        permission.setId(IdUtil.generateId("permission"));
         permission.setCreateTime(LocalDateTime.now());
         permission.setUpdateTime(LocalDateTime.now());
         umsPermissionService.save(permission);
