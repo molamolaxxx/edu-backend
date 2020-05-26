@@ -6,6 +6,7 @@ import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.DeferredResultUtil;
 import com.njupt.hpc.edu.common.utils.IdUtil;
+import com.njupt.hpc.edu.project.action.impl.FusionRequestAction;
 import com.njupt.hpc.edu.project.action.impl.GenerateRequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionResponseCode;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
@@ -49,14 +50,13 @@ public class PmsActionServiceImpl implements PmsActionService {
         // 构建actionId与deferResult
         String actionId = IdUtil.generateId("action");
         DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
-
         // 如果是info消息
-        if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
-                actionType.getActionCode().equals(InstanceActionType._INFO)){
-            // 直接返回
-            result.setResult(CommonResult.success(true));
-            return result;
-        }
+//        if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
+//                actionType.getActionCode().equals(InstanceActionType._INFO)){
+//            // 直接返回
+//            result.setResult(CommonResult.success(true));
+//            return result;
+//        }
 
         // 1.检查instance状态，数据是否存在、合法
         checkInstanceLegality(instance, actionType);
@@ -69,7 +69,6 @@ public class PmsActionServiceImpl implements PmsActionService {
         // 3.向队列发送json化的request,将键值对存入缓存
         mqService.sendMessageToMQ(actionStr);
         DeferredResultCache.put(actionId, result);
-
         // 4.获取返回值，用于判断下一步的操作
         result.onCompletion(() -> {
             CommonResult commonResult = (CommonResult)result.getResult();
@@ -131,7 +130,8 @@ public class PmsActionServiceImpl implements PmsActionService {
             }
             // 聚合
             case InstanceTypeEnum._FUSION_EVALUATE:{
-                return "";
+                FusionRequestAction fusionRequestAction = new FusionRequestAction(actionId, instance, type);
+                return fusionRequestAction.parse2String();
             }
             // 情感分析
             case InstanceTypeEnum._SENTIMENT_EVALUATE:{

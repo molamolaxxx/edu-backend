@@ -2,7 +2,7 @@ package com.njupt.hpc.edu.project.controller;
 
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
-import com.njupt.hpc.edu.project.data.parser.GenerateDataParser;
+import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

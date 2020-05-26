@@ -19,13 +19,17 @@ public class CSVContentVO {
     // 每页多少信息
     private Integer limit;
 
-    // 总共多少页
+    // 总共多少条
     private Integer total;
 
-    public CSVContentVO(Integer offset, Integer limit, Integer total) {
+    // 总共多少页
+    private Integer pages;
+
+    public CSVContentVO(Integer offset, Integer limit, Integer total, Integer pages) {
         this.offset = offset;
         this.limit = limit;
         this.total = total;
+        this.pages = pages;
     }
 
     /**

@@ -29,6 +29,7 @@ public class EduMQListener {
     @Autowired
     private EduMQService mqService;
 
+
     @RabbitHandler
     @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_NAME, containerFactory="rabbitListenerContainerFactory")
     public void handler(byte[] message, Channel channel, Message msg){
