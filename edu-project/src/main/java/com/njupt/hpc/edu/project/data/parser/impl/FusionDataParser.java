@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @create: 2020-05-21 16:57
  **/
 @Component
-public class FusionDataParser extends GenerateDataParser{
+public class FusionDataParser extends BasicParser{
 
     //单纯写解析融合csv方法
     public CSVContentVO parseFusionCSV(String path, Integer offset, Integer limit,
@@ -58,11 +58,11 @@ public class FusionDataParser extends GenerateDataParser{
         return csvContentVO;
     }
 
-    //重写parseDataCSV方法
+
+    @Override
     public CSVContentVO parseDataCSV(String path, int offset, int limit) {
         return this.parseFusionCSV(path, offset, limit, parseRecord2TupleDataFunc());
     }
-
 
     /**
      * 将记录转化成三元组数据的function
@@ -107,6 +107,12 @@ public class FusionDataParser extends GenerateDataParser{
             csvLines.add(csvLine);
             return csvLines;
         };
+    }
+
+
+    @Override
+    public CSVContentVO parseResultDetail(String path, int offset, int limit) {
+        return null;
     }
 
 

@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @create: 2020-05-13 16:02
  **/
 @Configuration
-@EnableConfigurationProperties({GenerateConfig.class})
+@EnableConfigurationProperties({FusionConfig.class})
 @ConfigurationProperties(prefix = "edu.fusion")
 @Data
 public class FusionConfig {
