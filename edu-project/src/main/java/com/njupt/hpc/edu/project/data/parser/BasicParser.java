@@ -1,4 +1,4 @@
-package com.njupt.hpc.edu.project.data.parser.impl;
+package com.njupt.hpc.edu.project.data.parser;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.csv.CSVLine;
 import com.njupt.hpc.edu.project.data.content.graph.Entity;

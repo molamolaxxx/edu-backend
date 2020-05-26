@@ -4,6 +4,7 @@ import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.CSVUtils;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.csv.CSVLine;
+import com.njupt.hpc.edu.project.data.parser.BasicParser;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  * @create: 2020-05-21 16:57
  **/
 @Component
-public class FusionDataParser extends BasicParser{
+public class FusionDataParser extends BasicParser {
 
     //单纯写解析融合csv方法
     public CSVContentVO parseFusionCSV(String path, Integer offset, Integer limit,
