@@ -26,9 +26,9 @@ public abstract class BasicParser {
         // 先进行csv的转换
         CSVContentVO first = this.parseDataCSV(path, offset, limit);
         List<CSVLine> lines = first.getResultList();
-        // "实体1" -> "1"
+        // "实体1" -> "对应的实体id"
         Map<String, String> keyWordMap = new HashMap<>();
-        // "1" -> "entity"
+        // "实体id" -> "entity"
         Map<String, Entity> entityMap = new HashMap<>();
         int point = 0;
         // 循环csvlist

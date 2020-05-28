@@ -21,27 +21,23 @@ import org.springframework.context.annotation.Configuration;
 public class FusionConfig {
 
     /**
-     * 实体评价最大线程数(2-8)
+     * 实例评价最大线程数(1-4)
      */
-    private Integer entityMaxThreadCount = 8;
+    private Integer instanceMaxThreadCount = 4;
 
     /**
-     * 三元组评价最大线程数(1-4)
+     * 实体评价最大线程数(1-8)
      */
-    private Integer tupleMaxThreadCount = 4;
+    private Integer entityMaxThreadCount = 8;
+    /**
+     * 实体属性相似度权重
+     */
+    private Double entityAttributeSimWeight = 0.5;
 
-    // 关系置信度的阈值(0-100，越高评价参考系的置信度就越高)
-    private Integer tupleConfidenceThreshold = 0;
-
-    // 在候选关系对，查找topk个参考关系（任意，越多参考的数量越大，更加精准，但单次计算量加大）
-    private Integer tupleTopK = 10;
-
-    // 进入候选三元组的实体相似度阈值(只有高于此相似度的实体可以进入候选三元组)
-    // (0 - 100越大越严格)
-    private Double entitySimThreshold = 80.0;
-
-    // 关系评价占总评价的权重（0-1越大关系评价占总评分的比例越大，属性评价则越小)
-    private Double relationWeight = 0.7;
+    /**
+     * 实体冗余阀值
+     */
+    private Double entityRedunceWeight = 0.97;
 
     // 检查实例中的配置
     public void checkConfigInInstance(String json){
@@ -55,12 +51,10 @@ public class FusionConfig {
 
     public JSONObject parseToJsonObject(){
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("instanceMaxThreadCount", getInstanceMaxThreadCount());
         jsonObject.put("entityMaxThreadCount", getEntityMaxThreadCount());
-        jsonObject.put("tupleMaxThreadCount", getTupleMaxThreadCount());
-        jsonObject.put("tupleConfidenceThreshold", getTupleConfidenceThreshold());
-        jsonObject.put("tupleTopK", getTupleTopK());
-        jsonObject.put("entitySimThreshold", getEntitySimThreshold());
-        jsonObject.put("relationWeight", getRelationWeight());
+        jsonObject.put("entityAttributeSimWeight", getEntityAttributeSimWeight());
+        jsonObject.put("entityRedunceWeight", getEntityRedunceWeight());
         return jsonObject;
     }
 

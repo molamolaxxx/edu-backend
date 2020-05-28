@@ -5,10 +5,10 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1/edu?characterEncoding=utf-8&useSSL=false
+    password: 123456
+    url: jdbc:mysql://121.199.60.143/edu?characterEncoding=utf-8&useSSL=false
   rabbitmq:
-    host: 127.0.0.1
+    host: 121.199.60.143
 
 # edu数据模块配置
 edu:

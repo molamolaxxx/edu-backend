@@ -87,6 +87,7 @@ public class FusionDataParser extends BasicParser {
                 String[] attribute_arry=attribute.split(":");
                 //属性值不能为空
                 if(attribute_arry[1].isEmpty()) continue;
+                csvLine.put("id",split[0]);
                 csvLine.put("first", split[1]);
                 csvLine.put("relation",attribute_arry[0]);
                 csvLine.put("end", attribute_arry[1]);
@@ -97,12 +98,14 @@ public class FusionDataParser extends BasicParser {
             for (String label:labels) {
                 if(label.isEmpty()) continue;
                 CSVLine csvLine = new CSVLine();
+                csvLine.put("id",split[0]);
                 csvLine.put("first", split[1]);
                 csvLine.put("relation","类别");
                 csvLine.put("end",label);
                 csvLines.add(csvLine);
             }
             CSVLine csvLine = new CSVLine();
+            csvLine.put("id",split[0]);
             csvLine.put("first", split[1]);
             csvLine.put("relation","定义");
             csvLine.put("end", split[4]);
