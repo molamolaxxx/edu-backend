@@ -37,42 +37,32 @@
       "defaultValue": 1000000
     },
     {
+      "name": "edu.fusion.entity-attribute-sim-weight",
+      "type": "java.lang.Double",
+      "description": "实体属性相似度权重",
+      "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
+      "defaultValue": 0.5
+    },
+    {
       "name": "edu.fusion.entity-max-thread-count",
       "type": "java.lang.Integer",
-      "description": "实体评价最大线程数(2-8)",
+      "description": "实体评价最大线程数(1-8)",
       "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
       "defaultValue": 8
     },
     {
-      "name": "edu.fusion.entity-sim-threshold",
+      "name": "edu.fusion.entity-redunce-weight",
       "type": "java.lang.Double",
+      "description": "实体冗余阀值",
       "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
-      "defaultValue": 80
+      "defaultValue": 0.97
     },
     {
-      "name": "edu.fusion.relation-weight",
-      "type": "java.lang.Double",
-      "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
-      "defaultValue": 0.7
-    },
-    {
-      "name": "edu.fusion.tuple-confidence-threshold",
+      "name": "edu.fusion.instance-max-thread-count",
       "type": "java.lang.Integer",
-      "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
-      "defaultValue": 0
-    },
-    {
-      "name": "edu.fusion.tuple-max-thread-count",
-      "type": "java.lang.Integer",
-      "description": "三元组评价最大线程数(1-4)",
+      "description": "实例评价最大线程数(1-4)",
       "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
       "defaultValue": 4
-    },
-    {
-      "name": "edu.fusion.tuple-top-k",
-      "type": "java.lang.Integer",
-      "sourceType": "com.njupt.hpc.edu.common.sys.FusionConfig",
-      "defaultValue": 10
     },
     {
       "name": "edu.generate.entity-max-thread-count",

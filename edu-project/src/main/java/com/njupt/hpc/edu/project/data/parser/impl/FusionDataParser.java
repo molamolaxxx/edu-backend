@@ -114,10 +114,41 @@ public class FusionDataParser extends BasicParser {
         };
     }
 
+    /**
+     * 转化冗余结果的function
+     * @return
+     */
 
+    protected Function<String, CSVLine> parseRedundanceResultDetailFunc(){
+        return line -> {
+            String[] split = line.split(",");
+            if (split.length != 5) {
+                split = line.split(" ");
+            }
+            if (split.length != 5) {
+                throw new EduProjectException("数据解析失败！请阅读三元组csv格式规范，上传正确格式的csv");
+            }
+            if (split[0].equals("实体Id")) {
+                // 删去列标题
+                return null;
+            }
+            CSVLine csvLine = new CSVLine();
+            csvLine.put("entity_id", split[0]);
+            csvLine.put("redundance_entity_id", split[1]);
+            csvLine.put("attribute_sim", split[2]);
+            csvLine.put("description_sim", split[3]);
+            csvLine.put("entity_sim", split[4]);
+            return csvLine;
+        };
+    }
+    /**
+    * @Autor:Su
+    * @Description 冗余结果解析页面
+    * @Param
+    */
     @Override
     public CSVContentVO parseResultDetail(String path, int offset, int limit) {
-        return null;
+        return this.parseCSV(path, offset, limit, parseRedundanceResultDetailFunc());
     }
 
 

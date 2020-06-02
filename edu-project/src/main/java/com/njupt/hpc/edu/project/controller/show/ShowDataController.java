@@ -73,7 +73,7 @@ public class ShowDataController {
                                @RequestParam("uid") String userId) {
         // 只允许上传小于1k的数据
         try {
-            if (file.getBytes().length > 1024) {
+            if (file.getBytes().length > 1024*1024) {
                 throw new EduProjectException("展示文件上传不得大于1mb");
             }
         } catch (IOException e) {
