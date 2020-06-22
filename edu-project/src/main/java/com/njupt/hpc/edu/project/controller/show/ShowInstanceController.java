@@ -77,7 +77,7 @@ public class ShowInstanceController {
     }
 
     @PostMapping("/stop/{instanceId}")
-    @ApiOperation("开始临时实例")
+    @ApiOperation("停止临时实例")
     public DeferredResult<CommonResult> stop(@PathVariable String instanceId) {
         PmsInstance instance = checkTempInstance(instanceId);
         return actionService.action(instance, InstanceActionType.STOP);

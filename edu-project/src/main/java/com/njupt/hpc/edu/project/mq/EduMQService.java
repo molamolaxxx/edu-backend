@@ -57,7 +57,7 @@ public class EduMQService {
         dto.setId(IdUtil.generateId("temp"));
         dto.setContent(jsonObject.get("finalMonitorResult").toString());
         dto.setInstanceId(instanceId);
-        dto.setPath((String) jsonObject.get("resultPath"));
+        dto.setPath(jsonObject.get("resultPath").toString());
         resultService.create(dto);
     }
 

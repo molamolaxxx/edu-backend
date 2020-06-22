@@ -66,6 +66,11 @@ public class FusionDataParser extends BasicParser {
         return this.parseFusionCSV(path, offset, limit, parseRecord2TupleDataFunc());
     }
 
+    @Override
+    public CSVContentVO parseResultDetail(String path, int offset, int limit) {
+        return null;
+    }
+
     /**
      * 将记录转化成三元组数据的function
      * @return
@@ -141,14 +146,48 @@ public class FusionDataParser extends BasicParser {
             return csvLine;
         };
     }
+
+    /**
+     * 转化信息缺失度结果的function
+     * @return
+     */
+
+    protected Function<String, CSVLine> parseInfoLackResultDetailFunc(){
+        return line -> {
+            String[] split = line.split(",");
+            if (split.length != 4) {
+                split = line.split(" ");
+            }
+            if (split.length != 4) {
+                throw new EduProjectException("数据解析失败！请阅读三元组csv格式规范，上传正确格式的csv");
+            }
+            if (split[0].equals("实体Id")) {
+                // 删去列标题
+                return null;
+            }
+            CSVLine csvLine = new CSVLine();
+            csvLine.put("entityId", split[0]);
+            csvLine.put("entityName", split[1]);
+            csvLine.put("lackAttrList", split[2]);
+            csvLine.put("entityInfoLackRate", split[3]);
+            return csvLine;
+        };
+    }
     /**
     * @Autor:Su
     * @Description 冗余结果解析页面
     * @Param
     */
-    @Override
-    public CSVContentVO parseResultDetail(String path, int offset, int limit) {
+    public CSVContentVO parseRedundanceResultDetail(String path,int offset, int limit) {
         return this.parseCSV(path, offset, limit, parseRedundanceResultDetailFunc());
+    }
+    /**
+     * @Autor:Su
+     * @Description 信息缺失度结果解析页面
+     * @Param
+     */
+    public CSVContentVO parseInfoLackResultDetail(String path,int offset, int limit) {
+        return this.parseCSV(path, offset, limit, parseInfoLackResultDetailFunc());
     }
 
 

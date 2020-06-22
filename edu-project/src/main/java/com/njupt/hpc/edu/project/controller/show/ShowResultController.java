@@ -1,5 +1,7 @@
 package com.njupt.hpc.edu.project.controller.show;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author : molamola
@@ -54,7 +57,9 @@ public class ShowResultController {
 
     @GetMapping("/detail/{instanceId}")
     @ApiOperation("分页展示模块获取结果详细数据")
+    //还需要额外传结果明细的类型（冗余或信息缺失）
     public CommonResult<CSVContentVO> detail(@PathVariable String instanceId,
+                                             @RequestParam("resultType") String resultType,
                                              @RequestParam("offset") Integer offset,
                                              @RequestParam("limit") Integer limit) {
         PmsInstance instance=checkTempInstance(instanceId);
@@ -68,7 +73,14 @@ public class ShowResultController {
             return CommonResult.success(generateDataParser.parseResultDetail(result.getPath(), offset, limit));
         }
         else {
-            return CommonResult.success(fusionDataParser.parseResultDetail(result.getPath(), offset, limit));
+            //根据结果明细类型，选择合适的解析函数
+            JSONObject jsonObject = JSON.parseObject(result.getPath());
+            String redundance_path=(String)jsonObject.get("redundance");
+            String infoLack_path=(String)jsonObject.get("infoLack");
+            if("redundance".equals(resultType)){
+                return CommonResult.success(fusionDataParser.parseRedundanceResultDetail(redundance_path, offset, limit));
+            }
+            else return CommonResult.success(fusionDataParser.parseInfoLackResultDetail(infoLack_path, offset, limit));
         }
     }
 

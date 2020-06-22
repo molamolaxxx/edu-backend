@@ -78,6 +78,10 @@ public class PmsActionServiceImpl implements PmsActionService {
                 log.info("设置实例开始时间与实例运行状态");
                 instanceService.updateInstanceState(instance.getId(), (String) actionResponse.get("actionTypeId"));
             }
+            //若停止，则调用运行完成的操作
+            if(actionResponse.get("actionTypeId").equals(InstanceActionType.STOP.getActionCode())){
+                mqService.handlerFinish(instance.getId(), actionResponse);
+            }
         });
         return result;
     }
