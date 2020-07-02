@@ -6,6 +6,11 @@ import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
 import com.njupt.hpc.edu.common.utils.WrapperUtil;
+import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
+import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
+import com.njupt.hpc.edu.project.data.parser.impl.FusionDataParser;
+import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
+import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.DataDTO;
 import com.njupt.hpc.edu.project.model.vo.DataVO;
@@ -42,6 +47,12 @@ public class PmsDataController {
 
     @Autowired
     private UmsUserService userService;
+
+    @Autowired
+    GenerateDataParser generateDataParser;
+
+    @Autowired
+    FusionDataParser fusionDataParser;
 
     // for user
 
@@ -100,8 +111,8 @@ public class PmsDataController {
     public CommonResult create(@RequestBody DataDTO dto, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         dto.setUid(user.getId());
-        pmsDataService.create(dto);
-        return CommonResult.success(true, "新建数据成功");
+        DataVO dataVO=pmsDataService.create(dto);
+        return CommonResult.success(dataVO, "新建数据成功");
     }
 
     @PutMapping("/user/{dataId}")
@@ -126,8 +137,33 @@ public class PmsDataController {
      */
     @PostMapping("/upload")
     @ApiOperation("上传数据")
-    public CommonResult upload(MultipartFile file, HttpServletRequest request){
+    public CommonResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         return CommonResult.success(pmsDataService.upload(file));
+    }
+
+    /**
+     * 上传数据的表格可视化
+     */
+    @GetMapping("/table")
+    @ApiOperation("获取csv文件的表格数据")
+    public CommonResult<CSVContentVO> table(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
+        if(type.equals(InstanceTypeEnum.GENERATE_EVALUATE.getCode())) {
+            return CommonResult.success(generateDataParser.parseDataCSV(path, 1, 100));
+        }
+        else return CommonResult.success(fusionDataParser.parseDataCSV(path, 1, 100));
+
+    }
+
+    /**
+     * 上传数据的图谱可视化
+     */
+    @GetMapping("/graph")
+    @ApiOperation("获取csv文件的图谱数据")
+    public CommonResult<GraphContentVO> graph(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
+        if(type.equals(InstanceTypeEnum.GENERATE_EVALUATE.getCode())){
+            return CommonResult.success(generateDataParser.parseGraph(path, 1, 100));
+        }
+        else return CommonResult.success(fusionDataParser.parseGraph(path, 1, 100));
     }
 }

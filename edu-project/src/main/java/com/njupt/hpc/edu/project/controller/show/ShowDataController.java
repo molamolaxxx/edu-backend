@@ -88,11 +88,13 @@ public class ShowDataController {
         dataDTO.setInstanceType(instanceType);
         dataDTO.setName(ShowEnum.TEMP_DATA_NAME.getName());
         dataDTO.setDescription("这是展示用数据");
-        Boolean result = dataService.create(dataDTO);
-        if (result) {
-            return CommonResult.success(dataDTO);
-        }
-        return CommonResult.failed("创建临时数据失败");
+//        Boolean result = dataService.create(dataDTO);
+//        if (result) {
+//            return CommonResult.success(dataDTO);
+//        }
+//        return CommonResult.failed("创建临时数据失败");
+        dataService.create(dataDTO);
+        return CommonResult.success(dataDTO);
     }
 
     /**

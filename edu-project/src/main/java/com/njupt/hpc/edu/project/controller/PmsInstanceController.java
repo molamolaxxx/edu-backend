@@ -74,8 +74,8 @@ public class PmsInstanceController {
     public CommonResult create(HttpServletRequest request, @RequestBody InstanceDTO dto){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         dto.setUid(user.getId());
-        pmsInstanceService.create(dto);
-        return CommonResult.success(true, "创建实例成功");
+        InstanceItemVO instanceVO=pmsInstanceService.create(dto);
+        return CommonResult.success(instanceVO, "创建实例成功");
     }
 
     @PutMapping("/user/{instanceId}")
@@ -96,10 +96,10 @@ public class PmsInstanceController {
     }
 
     @GetMapping("/user/running")
-    @ApiOperation("查看所有正在运行中的实例id")
-    public CommonResult catAllRunningInstance(HttpServletRequest request){
+    @ApiOperation("普通用户查看所有正在运行中的实例id")
+    public CommonResult catAllRunningInstanceByUserId(HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
-        return CommonResult.success(pmsInstanceService.catAllRunningInstanceId());
+        return CommonResult.success(pmsInstanceService.catAllRunningInstanceIdForUser(user.getId()));
     }
 
     // for admin
@@ -107,6 +107,12 @@ public class PmsInstanceController {
     /**
      * 查看所有实例
      */
+    @GetMapping("/admin/running")
+    @ApiOperation("管理员查看所有正在运行中的实例id")
+    public CommonResult catAllRunningInstance(HttpServletRequest request){
+        UmsUser user = UserUtils.getUserFromRequest(request, userService);
+        return CommonResult.success(pmsInstanceService.catAllRunningInstanceIdForAdmin());
+    }
 
     /**
      * 删除实例
