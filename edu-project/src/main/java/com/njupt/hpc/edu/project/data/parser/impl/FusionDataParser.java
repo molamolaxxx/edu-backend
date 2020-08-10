@@ -91,7 +91,7 @@ public class FusionDataParser extends BasicParser {
                 CSVLine csvLine = new CSVLine();
                 String[] attribute_arry=attribute.split(":");
                 //属性值不能为空
-                if(attribute_arry[1].isEmpty()) continue;
+                if(attribute_arry.length==1) continue;
                 csvLine.put("id",split[0]);
                 csvLine.put("first", split[1]);
                 csvLine.put("relation",attribute_arry[0]);

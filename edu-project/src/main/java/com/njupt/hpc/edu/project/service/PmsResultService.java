@@ -6,6 +6,7 @@ import com.njupt.hpc.edu.project.model.dto.ResultDTO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * <p>
@@ -42,4 +43,10 @@ public interface PmsResultService extends IService<PmsResult> {
      * 下载明细
      */
     Boolean downloadDetail(String id, HttpServletResponse response) throws IOException;
+
+    /**
+    *@Description: 根据uid查询结果集
+    *@Author: Su
+    */
+    List<PmsResult> findByUid(String uid);
 }

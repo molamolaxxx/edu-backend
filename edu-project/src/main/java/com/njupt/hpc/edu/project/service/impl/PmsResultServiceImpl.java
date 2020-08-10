@@ -10,12 +10,14 @@ import com.njupt.hpc.edu.project.model.PmsResult;
 import com.njupt.hpc.edu.project.model.dto.ResultDTO;
 import com.njupt.hpc.edu.project.service.PmsResultService;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -28,6 +30,8 @@ import java.time.LocalDateTime;
 @Service
 public class PmsResultServiceImpl extends ServiceImpl<PmsResultMapper, PmsResult> implements PmsResultService {
 
+    @Autowired
+    private PmsResultMapper pmsResultMapper;
     @Override
     public Boolean create(ResultDTO dto) {
         if (dto.getId() == null) {
@@ -92,5 +96,10 @@ public class PmsResultServiceImpl extends ServiceImpl<PmsResultMapper, PmsResult
             bufferedOutputStream.close();
         }
         return true;
+    }
+
+    @Override
+    public List<PmsResult> findByUid(String uid) {
+        return pmsResultMapper.findByUid(uid);
     }
 }
