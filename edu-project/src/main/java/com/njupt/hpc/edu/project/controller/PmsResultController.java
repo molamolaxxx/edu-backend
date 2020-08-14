@@ -63,7 +63,7 @@ public class PmsResultController {
 
     @GetMapping("/user")
     @ApiOperation("列表分页查询")
-    public CommonPage list(HttpServletRequest request,@RequestParam(defaultValue = "1") Integer pageNum,
+    public CommonResult list(HttpServletRequest request,@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "100") Integer pageSize){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         IPage page = pmsResultService.page(new Page(pageNum, pageSize));
@@ -72,7 +72,7 @@ public class PmsResultController {
         List voList = pmsResults.stream().map(item -> BeanUtilsPlug
                 .copyPropertiesReturnTarget(item, new ResultDTO())).collect(Collectors.toList());
         page.setRecords(voList);
-        return CommonPage.restPage(page);
+        return CommonResult.success(CommonPage.restPage(page));
     }
 
     @GetMapping("/detail/file/{instanceId}")

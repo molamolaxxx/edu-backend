@@ -64,7 +64,7 @@ public class PmsDataController {
      */
     @GetMapping("/user")
     @ApiOperation("列表分页查询")
-    public CommonPage list(@RequestParam(defaultValue = "1") Integer pageNum,
+    public CommonResult list(@RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "100") Integer pageSize, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         IPage<PmsData> page = pmsDataService.page(new Page(pageNum, pageSize),
@@ -73,7 +73,7 @@ public class PmsDataController {
         List voList = page.getRecords().stream().map(item -> BeanUtilsPlug
                 .copyPropertiesReturnTarget(item, new DataVO())).collect(Collectors.toList());
         page.setRecords(voList);
-        return CommonPage.restPage(page);
+        return CommonResult.success(CommonPage.restPage(page));
     }
 
     /**

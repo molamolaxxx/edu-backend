@@ -47,7 +47,7 @@ public class PmsInstanceController {
      */
     @GetMapping("/user")
     @ApiOperation("列表分页查询（用户限定）")
-    public CommonPage listByUserId(HttpServletRequest request, @RequestParam(defaultValue = "1") Integer pageNum,
+    public CommonResult listByUserId(HttpServletRequest request, @RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "100") Integer pageSize){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
         IPage<PmsInstance> page = pmsInstanceService.page(new Page(pageNum, pageSize),
@@ -56,7 +56,7 @@ public class PmsInstanceController {
         List voList = page.getRecords().stream().map(item -> BeanUtilsPlug
                 .copyPropertiesReturnTarget(item, new InstanceItemVO())).collect(Collectors.toList());
         page.setRecords(voList);
-        return CommonPage.restPage(page);
+        return CommonResult.success(CommonPage.restPage(page));
     }
 
     /**
