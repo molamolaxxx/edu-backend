@@ -8,7 +8,6 @@ import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
 import com.njupt.hpc.edu.project.data.parser.impl.FusionDataParser;
 import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
-import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.ShowEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.ShowDataDTO;

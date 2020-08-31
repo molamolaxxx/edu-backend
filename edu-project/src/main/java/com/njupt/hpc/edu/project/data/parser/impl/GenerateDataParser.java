@@ -2,16 +2,12 @@ package com.njupt.hpc.edu.project.data.parser.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.njupt.hpc.edu.common.exception.EduProjectException;
-import com.njupt.hpc.edu.common.utils.CSVUtils;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.content.csv.CSVLine;
 import com.njupt.hpc.edu.project.data.parser.BasicParser;
 import org.springframework.stereotype.Component;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * @author : molamola
