@@ -4,6 +4,8 @@ import com.njupt.hpc.edu.project.model.PmsResult;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -14,5 +16,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PmsResultMapper extends BaseMapper<PmsResult> {
+    /**
+    *@Description: 根据uid查询所有评价结果
+    *@Param:
+    *@return:
+    *@Author: Su
+    */
+    List<PmsResult> findByUid(String uid);
 
 }

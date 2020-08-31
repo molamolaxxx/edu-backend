@@ -3,6 +3,7 @@ package com.njupt.hpc.edu.project.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.model.dto.InstanceDTO;
+import com.njupt.hpc.edu.project.model.vo.InstanceItemVO;
 
 import java.util.List;
 
@@ -25,10 +26,16 @@ public interface PmsInstanceService extends IService<PmsInstance> {
     void updateInstanceState(String instanceId, String actionTypeId);
 
     /**
-     * 查看所有正在运行实例的id
+     * 普通用户查看所有正在运行实例的id
      * @return
      */
-    List<String> catAllRunningInstanceId();
+    List<String> catAllRunningInstanceIdForUser(String userId);
+
+    /**
+     * 管理员查看所有正在运行实例的id
+     * @return
+     */
+    List<String> catAllRunningInstanceIdForAdmin();
 
     /**
      * 删除实例
@@ -49,7 +56,7 @@ public interface PmsInstanceService extends IService<PmsInstance> {
      * 创建实例
      * @param dto
      */
-    PmsInstance create(InstanceDTO dto);
+    InstanceItemVO create(InstanceDTO dto);
 
     /**
      * 销毁临时实例、数据、结果

@@ -53,8 +53,8 @@ public class PmsActionServiceImpl implements PmsActionService {
         // 如果是info消息
         if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
                 actionType.getActionCode().equals(InstanceActionType._INFO)){
-            // 直接返回实例最终状态码
-            result.setResult(CommonResult.success(instance.getState()));
+            // 直接返回
+            result.setResult(CommonResult.success(true));
             return result;
         }
 
@@ -77,6 +77,10 @@ public class PmsActionServiceImpl implements PmsActionService {
                 // 设置实例时间状态与实例运行状态
                 log.info("设置实例开始时间与实例运行状态");
                 instanceService.updateInstanceState(instance.getId(), (String) actionResponse.get("actionTypeId"));
+            }
+            //若停止，则调用运行完成的操作
+            if(actionResponse.get("actionTypeId").equals(InstanceActionType.STOP.getActionCode())){
+                mqService.handlerFinish(instance.getId(), actionResponse);
             }
         });
         return result;

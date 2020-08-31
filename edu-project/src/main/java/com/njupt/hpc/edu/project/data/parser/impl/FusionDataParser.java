@@ -29,6 +29,7 @@ public class FusionDataParser extends BasicParser {
         // 从缓存中读取csv
         List<CSVLine> tupleLines = csvContentMap.get(path);
         if (null == tupleLines) {
+            tupleLines=new ArrayList<>();
             // 如果缓存中读不到csv
             List<String> recodeLines = null;
             try {
@@ -65,6 +66,11 @@ public class FusionDataParser extends BasicParser {
         return this.parseFusionCSV(path, offset, limit, parseRecord2TupleDataFunc());
     }
 
+    @Override
+    public CSVContentVO parseResultDetail(String path, int offset, int limit) {
+        return null;
+    }
+
     /**
      * 将记录转化成三元组数据的function
      * @return
@@ -85,7 +91,8 @@ public class FusionDataParser extends BasicParser {
                 CSVLine csvLine = new CSVLine();
                 String[] attribute_arry=attribute.split(":");
                 //属性值不能为空
-                if(attribute_arry[1].isEmpty()) continue;
+                if(attribute_arry.length==1) continue;
+                csvLine.put("id",split[0]);
                 csvLine.put("first", split[1]);
                 csvLine.put("relation",attribute_arry[0]);
                 csvLine.put("end", attribute_arry[1]);
@@ -96,12 +103,14 @@ public class FusionDataParser extends BasicParser {
             for (String label:labels) {
                 if(label.isEmpty()) continue;
                 CSVLine csvLine = new CSVLine();
+                csvLine.put("id",split[0]);
                 csvLine.put("first", split[1]);
                 csvLine.put("relation","类别");
                 csvLine.put("end",label);
                 csvLines.add(csvLine);
             }
             CSVLine csvLine = new CSVLine();
+            csvLine.put("id",split[0]);
             csvLine.put("first", split[1]);
             csvLine.put("relation","定义");
             csvLine.put("end", split[4]);
@@ -110,10 +119,75 @@ public class FusionDataParser extends BasicParser {
         };
     }
 
+    /**
+     * 转化冗余结果的function
+     * @return
+     */
 
-    @Override
-    public CSVContentVO parseResultDetail(String path, int offset, int limit) {
-        return null;
+    protected Function<String, CSVLine> parseRedundanceResultDetailFunc(){
+        return line -> {
+            String[] split = line.split(",");
+            if (split.length != 5) {
+                split = line.split(" ");
+            }
+            if (split.length != 5) {
+                throw new EduProjectException("数据解析失败！请阅读三元组csv格式规范，上传正确格式的csv");
+            }
+            if (split[0].equals("实体Id")) {
+                // 删去列标题
+                return null;
+            }
+            CSVLine csvLine = new CSVLine();
+            csvLine.put("entity_id", split[0]);
+            csvLine.put("redundance_entity_id", split[1]);
+            csvLine.put("attribute_sim", split[2]);
+            csvLine.put("description_sim", split[3]);
+            csvLine.put("entity_sim", split[4]);
+            return csvLine;
+        };
+    }
+
+    /**
+     * 转化信息缺失度结果的function
+     * @return
+     */
+
+    protected Function<String, CSVLine> parseInfoLackResultDetailFunc(){
+        return line -> {
+            String[] split = line.split(",");
+            if (split.length != 4) {
+                split = line.split(" ");
+            }
+            if (split.length != 4) {
+                throw new EduProjectException("数据解析失败！请阅读三元组csv格式规范，上传正确格式的csv");
+            }
+            if (split[0].equals("实体Id")) {
+                // 删去列标题
+                return null;
+            }
+            CSVLine csvLine = new CSVLine();
+            csvLine.put("entityId", split[0]);
+            csvLine.put("entityName", split[1]);
+            csvLine.put("lackAttrList", split[2]);
+            csvLine.put("entityInfoLackRate", split[3]);
+            return csvLine;
+        };
+    }
+    /**
+    * @Autor:Su
+    * @Description 冗余结果解析页面
+    * @Param
+    */
+    public CSVContentVO parseRedundanceResultDetail(String path,int offset, int limit) {
+        return this.parseCSV(path, offset, limit, parseRedundanceResultDetailFunc());
+    }
+    /**
+     * @Autor:Su
+     * @Description 信息缺失度结果解析页面
+     * @Param
+     */
+    public CSVContentVO parseInfoLackResultDetail(String path,int offset, int limit) {
+        return this.parseCSV(path, offset, limit, parseInfoLackResultDetailFunc());
     }
 
 

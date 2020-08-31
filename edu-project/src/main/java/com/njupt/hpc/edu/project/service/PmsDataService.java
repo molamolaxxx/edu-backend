@@ -18,11 +18,16 @@ import java.util.List;
  */
 public interface PmsDataService extends IService<PmsData> {
 
+//    /**
+//     * 新建数据
+//     * @param dto
+//     */
+//    Boolean create(DataDTO dto);
     /**
      * 新建数据
      * @param dto
      */
-    Boolean create(DataDTO dto);
+    DataVO create(DataDTO dto);
 
     /**
      * 上传数据

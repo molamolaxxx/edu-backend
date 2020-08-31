@@ -8,12 +8,14 @@ import com.njupt.hpc.edu.project.enumerate.ShowEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.model.dto.ShowInstanceDTO;
+import com.njupt.hpc.edu.project.model.vo.InstanceItemVO;
 import com.njupt.hpc.edu.project.service.PmsActionService;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import com.njupt.hpc.edu.project.service.PmsResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -65,7 +67,7 @@ public class ShowInstanceController {
         instanceDTO.setName(ShowEnum.TEMP_INSTANCE_NAME.getName());
         instanceDTO.setDataId(dataId);
         instanceDTO.setType(data.getInstanceType());
-        PmsInstance instance = instanceService.create(instanceDTO);
+        instanceService.create(instanceDTO);
         return CommonResult.success(instanceDTO);
     }
 
@@ -77,7 +79,7 @@ public class ShowInstanceController {
     }
 
     @PostMapping("/stop/{instanceId}")
-    @ApiOperation("开始临时实例")
+    @ApiOperation("停止临时实例")
     public DeferredResult<CommonResult> stop(@PathVariable String instanceId) {
         PmsInstance instance = checkTempInstance(instanceId);
         return actionService.action(instance, InstanceActionType.STOP);

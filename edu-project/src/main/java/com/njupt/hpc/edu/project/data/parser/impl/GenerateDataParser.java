@@ -22,43 +22,14 @@ import java.util.stream.Collectors;
 @Component
 public class GenerateDataParser extends BasicParser {
 
-    public CSVContentVO parseGenerateCSV(String path, Integer offset, Integer limit,
-                                 Function<String, CSVLine> function) {
-        // 从缓存中读取csv
-        List<CSVLine> lines = csvContentMap.get(path);
-        if (null == lines) {
-            // 如果缓存中读不到csv
-            List<String> csvLines = null;
-            try {
-                csvLines = CSVUtils.readCSV(new File(path));
-            } catch (IOException e) {
-                throw new EduProjectException("读取csv文件时发生IO错误");
-            }
-            // csv检查
-            lines = csvLines.stream().map(function).collect(Collectors.toList());
-            // 检查第一行是否为null，function默认为将标题行置为Null
-            if (null == lines.get(0)) lines.remove(0);
-            // 存入缓存
-            csvContentMap.put(path, lines);
-        }
-        // 对lines进行分页读取
-        Integer pages = lines.size() % limit == 0 ? lines.size() / limit : lines.size() / limit + 1;
-        Integer start = validIndex((offset - 1)* limit, lines.size());
-        Integer stop =  validIndex(offset * limit, lines.size());
-        List<CSVLine> result = lines.subList(start, stop);
-        CSVContentVO csvContentVO = new CSVContentVO(offset, limit, lines.size(), pages);
-        csvContentVO.setResultList(result);
-        return csvContentVO;
-    }
-
 
     public CSVContentVO parseDataCSV(String path, int offset, int limit) {
-        return this.parseGenerateCSV(path, offset, limit, parseTupleDataFunc());
+        return this.parseCSV(path, offset, limit, parseTupleDataFunc());
     }
 
     @Override
     public CSVContentVO parseResultDetail(String path, int offset, int limit) {
-        return this.parseGenerateCSV(path, offset, limit, parseResultDetailFunc());
+        return this.parseCSV(path, offset, limit, parseResultDetailFunc());
     }
 
     /**
@@ -131,7 +102,6 @@ public class GenerateDataParser extends BasicParser {
         return jo;
     }
     // 准确度保留五位
-
     protected String cutLength(String raw) {
         if (raw.length() >5) {
             return raw.substring(0,6);

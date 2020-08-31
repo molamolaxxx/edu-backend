@@ -10,6 +10,7 @@ import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.model.dto.InstanceDTO;
+import com.njupt.hpc.edu.project.model.vo.InstanceItemVO;
 import com.njupt.hpc.edu.project.service.PmsActionService;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -68,9 +71,18 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
     }
 
     @Override
-    public List<String> catAllRunningInstanceId() {
-        List<PmsInstance> instanceList = this.list(WrapperUtil
-                .querySingleWrapperBuilder("state", InstanceStateEnum.RUNNING.getCode()));
+    public List<String> catAllRunningInstanceIdForUser(String userId) {
+        Map<String, Object> queryMap=new HashMap<>();
+        queryMap.put("state",InstanceStateEnum.RUNNING.getCode());
+        queryMap.put("uid",userId);
+        List<PmsInstance> instanceList = this.list(WrapperUtil.queryWrapperBuilder(queryMap));
+        List<String> instanceIdList = instanceList.stream().map(e -> e.getId()).collect(Collectors.toList());
+        return instanceIdList;
+    }
+
+    @Override
+    public List<String> catAllRunningInstanceIdForAdmin() {
+        List<PmsInstance> instanceList = this.list(WrapperUtil.querySingleWrapperBuilder("state",InstanceStateEnum.RUNNING.getCode()));
         List<String> instanceIdList = instanceList.stream().map(e -> e.getId()).collect(Collectors.toList());
         return instanceIdList;
     }
@@ -94,7 +106,7 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
     }
 
     @Override
-    public PmsInstance create(InstanceDTO dto) {
+    public InstanceItemVO create(InstanceDTO dto) {
         PmsInstance instance = (PmsInstance) BeanUtilsPlug
                 .copyPropertiesReturnTarget(dto, new PmsInstance());
         if (instance.getId() == null) {
@@ -104,7 +116,8 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
         instance.setUpdateTime(LocalDateTime.now());
         instance.setState(InstanceStateEnum.READY.getCode());
         this.save(instance);
-        return instance;
+        InstanceItemVO instanceVO=(InstanceItemVO) BeanUtilsPlug.copyPropertiesReturnTarget(instance,new InstanceItemVO());
+        return instanceVO;
     }
 
     /**

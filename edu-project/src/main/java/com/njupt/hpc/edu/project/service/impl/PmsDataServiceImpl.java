@@ -54,7 +54,7 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     }
 
     @Override
-    public Boolean create(DataDTO dto) {
+    public DataVO create(DataDTO dto) {
         PmsData data = (PmsData) BeanUtilsPlug.copyPropertiesReturnTarget(dto, new PmsData());
         if (data.getId() == null) {
             data.setId(IdUtil.generateId("data"));
@@ -87,7 +87,8 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
         }
         // 5.保存数据
         this.save(data);
-        return true;
+        DataVO dataVO=(DataVO) BeanUtilsPlug.copyPropertiesReturnTarget(data, new DataVO());
+        return dataVO;
     }
 
     @Override

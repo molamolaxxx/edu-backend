@@ -8,6 +8,7 @@ import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
 import com.njupt.hpc.edu.project.data.parser.impl.FusionDataParser;
 import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
+import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;
 import com.njupt.hpc.edu.project.enumerate.ShowEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.ShowDataDTO;
@@ -54,7 +55,7 @@ public class ShowDataController {
     @GetMapping("/graph")
     @ApiOperation("获取csv文件的图谱数据")
     public CommonResult<GraphContentVO> graph(@RequestParam("path") String path, @RequestParam("instanceType") String type) {
-        if(type.equals(InstanceTypeEnum.GENERATE_EVALUATE.getCode())) {
+        if(type.equals(InstanceTypeEnum.GENERATE_EVALUATE.getCode())){
             return CommonResult.success(generateDataParser.parseGraph(path, 1, 100));
         }
         else return CommonResult.success(fusionDataParser.parseGraph(path, 1, 100));
@@ -72,7 +73,7 @@ public class ShowDataController {
                                @RequestParam("uid") String userId) {
         // 只允许上传小于1k的数据
         try {
-            if (file.getBytes().length > 1024) {
+            if (file.getBytes().length > 1024*1024) {
                 throw new EduProjectException("展示文件上传不得大于1mb");
             }
         } catch (IOException e) {
@@ -87,11 +88,13 @@ public class ShowDataController {
         dataDTO.setInstanceType(instanceType);
         dataDTO.setName(ShowEnum.TEMP_DATA_NAME.getName());
         dataDTO.setDescription("这是展示用数据");
-        Boolean result = dataService.create(dataDTO);
-        if (result) {
-            return CommonResult.success(dataDTO);
-        }
-        return CommonResult.failed("创建临时数据失败");
+//        Boolean result = dataService.create(dataDTO);
+//        if (result) {
+//            return CommonResult.success(dataDTO);
+//        }
+//        return CommonResult.failed("创建临时数据失败");
+        dataService.create(dataDTO);
+        return CommonResult.success(dataDTO);
     }
 
     /**
