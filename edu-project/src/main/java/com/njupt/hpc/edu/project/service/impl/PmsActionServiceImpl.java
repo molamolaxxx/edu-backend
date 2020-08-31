@@ -51,12 +51,12 @@ public class PmsActionServiceImpl implements PmsActionService {
         String actionId = IdUtil.generateId("action");
         DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
         // 如果是info消息
-//        if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
-//                actionType.getActionCode().equals(InstanceActionType._INFO)){
-//            // 直接返回
-//            result.setResult(CommonResult.success(true));
-//            return result;
-//        }
+        if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
+                actionType.getActionCode().equals(InstanceActionType._INFO)){
+            // 直接返回实例最终状态码
+            result.setResult(CommonResult.success(instance.getState()));
+            return result;
+        }
 
         // 1.检查instance状态，数据是否存在、合法
         checkInstanceLegality(instance, actionType);

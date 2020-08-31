@@ -5,7 +5,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: root
+    password: 314
     url: jdbc:mysql://127.0.0.1/edu?characterEncoding=utf-8&useSSL=false
   rabbitmq:
     host: 127.0.0.1
@@ -14,5 +14,5 @@ spring:
 edu:
   data:
     max-data-size: 2000000
-    data-path: C:\Users\Administrator\Desktop\edu-backend\data-cache
+    data-path: /home/mola/IdeaProjects/edu/data-cache
 
