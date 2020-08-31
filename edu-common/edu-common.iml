@@ -57,6 +57,13 @@
     <orderEntry type="library" scope="TEST" name="Maven: io.github.swagger2markup:markup-document-builder:1.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-codec:commons-codec:1.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: nl.jworks.markdown_to_asciidoc:markdown_to_asciidoc:1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.pegdown:pegdown:1.4.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.parboiled:parboiled-java:1.1.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.parboiled:parboiled-core:1.1.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm-tree:4.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm-analysis:4.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm-util:4.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jsoup:jsoup:1.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.swagger:swagger-compat-spec-parser:1.0.25" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.swagger:swagger-parser:1.0.25" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-ext:1.7.25" level="project" />
