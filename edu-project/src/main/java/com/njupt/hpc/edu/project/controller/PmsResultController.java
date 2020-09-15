@@ -117,6 +117,7 @@ public class PmsResultController {
     @GetMapping("/{id}")
     @ApiOperation("根据id查找")
     public CommonResult findById(@PathVariable String id){
+        System.out.println(pmsResultService.getById(id));
         return CommonResult.success(pmsResultService.getById(id));
     }
 

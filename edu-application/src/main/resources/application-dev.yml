@@ -8,7 +8,7 @@ spring:
     password: root
     url: jdbc:mysql://localhost/edu?characterEncoding=utf-8&useSSL=false
   rabbitmq:
-    host: localhost
+    host: 121.199.60.143
 
 # edu数据模块配置
 edu:

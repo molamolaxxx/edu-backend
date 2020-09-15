@@ -34,7 +34,6 @@ public class EduMQListener {
     @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_NAME, containerFactory="rabbitListenerContainerFactory")
     public void handler(byte[] message, Channel channel, Message msg){
         JSONObject jsonObject = JSON.parseObject(new String(message, StandardCharsets.UTF_8));
-
         log.info("收到python模块的回复:"+jsonObject);
         String actionId = (String) jsonObject.get("actionId");
         String instanceId = (String)jsonObject.get("instanceId");
