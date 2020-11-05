@@ -27,9 +27,12 @@ public class CodeGenerator {
 //                .execute();
 
         // 生成项目模块
-        config("edu-project","com.njupt.hpc.edu.project"
-                ,new String[]{"pms_instance","pms_data","pms_result"})
-                .execute();
+//        config("edu-project","com.njupt.hpc.edu.project"
+//                ,new String[]{"pms_instance","pms_data","pms_result"})
+//                .execute();
+        config("test","com.mola.test"
+        ,new String[]{"job_instance","job_detail","domain_info","job_instance_log"})
+        .execute();
     }
 
     private static AutoGenerator config(String moduleName, String parentPackageName, String[] tableList){
@@ -38,7 +41,8 @@ public class CodeGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir")+"/"+moduleName;
+//        String projectPath = System.getProperty("user.dir")+"/"+moduleName;
+        String projectPath = "/home/mola/codeGenDir"+"/"+moduleName;
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("molamola");
         gc.setOpen(false);
@@ -58,7 +62,7 @@ public class CodeGenerator {
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);
-        dsc.setUrl("jdbc:mysql://localhost:3306/edu?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/ise_01?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");

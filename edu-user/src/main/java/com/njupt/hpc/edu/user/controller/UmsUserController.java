@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -194,5 +195,12 @@ public class UmsUserController {
     public CommonResult delete(@PathVariable String id){
         boolean result = umsUserService.removeById(id);
         return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
+    }
+
+    public static void main(String[] args) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encoded = encoder.encode("123456");
+        System.out.println(encoded);
+        System.out.println(encoder.matches("123456", encoded));
     }
 }
