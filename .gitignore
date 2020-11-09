@@ -1,2 +1,14 @@
-/.idea/
+#maven
+target/
+
+#IDEA
+.idea/
+*.iml
+
+#eclipse
+.settings/
+.metadata/
+.classpath
+.project
+Services/
 /data-cache/
