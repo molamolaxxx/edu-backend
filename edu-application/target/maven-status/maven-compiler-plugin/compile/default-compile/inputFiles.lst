@@ -1,8 +1,8 @@
-/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/component/EduUserDetailsService.java
-/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/component/EduUserDetails.java
 /home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/SecurityConfig.java
 /home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/MapperConfig.java
-/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/filter/JwtAuthenticationFilter.java
+/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/RedisConfig.java
+/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/MvcConfig.java
 /home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/Swagger2Config.java
-/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/component/BaseExceptionHandler.java
+/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/RabbitConfig.java
 /home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/EduApplication.java
+/home/mola/IdeaProjects/edu/edu-application/src/main/java/com/njupt/hpc/edu/config/GlobalCorsConfig.java

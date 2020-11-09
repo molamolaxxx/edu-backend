@@ -20,6 +20,6 @@ jwt:
 #  十个小时过期
   expiration: 36000
   tokenHeader: Authorization
-  tokenHead: Bearer
+  tokenHead: Bearers
 
 

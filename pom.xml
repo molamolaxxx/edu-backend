@@ -15,6 +15,10 @@
         <module>edu-project</module>
     </modules>
 
+    <properties>
+        <skipTests>true</skipTests>
+    </properties>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>

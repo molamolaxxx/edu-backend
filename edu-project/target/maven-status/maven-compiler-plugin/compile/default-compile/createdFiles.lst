@@ -1,15 +1,5 @@
-com/njupt/hpc/edu/project/service/PmsProjectService.class
-com/njupt/hpc/edu/project/service/PmsAlgorithmService.class
 com/njupt/hpc/edu/project/model/PmsData.class
 com/njupt/hpc/edu/project/controller/PmsDataController.class
-com/njupt/hpc/edu/project/model/PmsProject.class
-com/njupt/hpc/edu/project/service/impl/PmsProjectServiceImpl.class
-com/njupt/hpc/edu/project/dao/PmsProjectMapper.class
-com/njupt/hpc/edu/project/dao/PmsAlgorithmMapper.class
-com/njupt/hpc/edu/project/dao/PmsDataMapper.class
 com/njupt/hpc/edu/project/service/impl/PmsDataServiceImpl.class
 com/njupt/hpc/edu/project/service/PmsDataService.class
-com/njupt/hpc/edu/project/controller/PmsProjectController.class
-com/njupt/hpc/edu/project/controller/PmsAlgorithmController.class
-com/njupt/hpc/edu/project/service/impl/PmsAlgorithmServiceImpl.class
-com/njupt/hpc/edu/project/model/PmsAlgorithm.class
+com/njupt/hpc/edu/project/dao/PmsDataMapper.class

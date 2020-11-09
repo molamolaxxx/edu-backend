@@ -1,1 +1,5 @@
-/home/mola/IdeaProjects/edu/edu-application/src/test/java/com/njupt/hpc/user/UmsRoleMapperTest.java
+/home/mola/IdeaProjects/edu/edu-application/src/test/java/com/njupt/hpc/edu/user/dao/UmsRoleMapperTest.java
+/home/mola/IdeaProjects/edu/edu-application/src/test/java/com/njupt/hpc/edu/user/service/PmsInstanceServiceImpl.java
+/home/mola/IdeaProjects/edu/edu-application/src/test/java/com/njupt/hpc/edu/user/dao/UmsPermissionMapperTest.java
+/home/mola/IdeaProjects/edu/edu-application/src/test/java/com/njupt/hpc/edu/user/test.java
+/home/mola/IdeaProjects/edu/edu-application/src/test/java/com/njupt/hpc/edu/user/service/UmsUserServiceTest.java

@@ -1,10 +1,10 @@
-com/njupt/hpc/edu/common/api/IErrorCode.class
-com/njupt/hpc/edu/common/exception/EduUserException.class
 com/njupt/hpc/edu/common/generator/CodeGenerator$2.class
 com/njupt/hpc/edu/common/api/ResultCode.class
 com/njupt/hpc/edu/common/generator/CodeGenerator.class
 com/njupt/hpc/edu/common/api/CommonPage.class
 com/njupt/hpc/edu/common/utils/WrapperUtil.class
 com/njupt/hpc/edu/common/generator/CodeGenerator$1.class
-com/njupt/hpc/edu/common/api/CommonResult.class
 com/njupt/hpc/edu/common/utils/JwtTokenUtil.class
+com/njupt/hpc/edu/common/api/IErrorCode.class
+com/njupt/hpc/edu/common/exception/EduUserException.class
+com/njupt/hpc/edu/common/api/CommonResult.class

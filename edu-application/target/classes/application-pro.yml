@@ -1,2 +1,21 @@
+# 学校服务器
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://10.166.38.82/edu?characterEncoding=utf-8&useSSL=false
+  rabbitmq:
+    host: 10.166.38.82
+
+# edu数据模块配置
+edu:
+  data:
+    max-data-size: 2000000
+    data-path: /tmp/edu/datacache
+
 jackson:
   default-property-inclusion: non_null
