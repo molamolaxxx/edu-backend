@@ -9,3 +9,32 @@ jdbc://10.166.38.82:3306
 
 # splash
 10.166.38.82:8050
+
+# swagger测试
+http://10.166.38.82:8080/swagger-ui.html
+
+# 项目地址
+/home/node/edu/project
+java：系统目录
+python：算法
+nginx：{
+    html : 项目地址
+}
+
+# 中间件启动
+依次启动mysql、rabbitMQ
+
+# java项目构建启动
+1、edu根目录  mvn:install
+2、启动模块edu-application    mvn:package
+3、将target下全量jar移到/home/node/edu/project/java下
+4、java -jar xxx.jar --spring.profiles.active=pro
+
+
+# 前端构建
+1、npm run build打包
+2、将dist目录下statics与index.html移动到nginx目录/home/node/edu/project/nginx/html
+3、启动nginx容器
+
+# 算法构建
+...
