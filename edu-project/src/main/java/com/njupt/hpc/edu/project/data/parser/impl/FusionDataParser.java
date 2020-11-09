@@ -154,9 +154,9 @@ public class FusionDataParser extends BasicParser {
 
     protected Function<String, CSVLine> parseInfoLackResultDetailFunc(){
         return line -> {
-            String[] split = line.split(",");
+            String[] split = line.split("\t");
             if (split.length != 4) {
-                split = line.split(" ");
+                split = line.split("    ");
             }
             if (split.length != 4) {
                 throw new EduProjectException("数据解析失败！请阅读三元组csv格式规范，上传正确格式的csv");
