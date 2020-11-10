@@ -128,6 +128,7 @@ public class PmsDataController {
     @ApiOperation("删除数据")
     public CommonResult delete(@PathVariable String dataId, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
+        // todo 适配oss
         boolean result = pmsDataService.remove(dataId);
         return CommonResult.parseResultToResponse(result, "删除数据失败", "删除数据成功");
     }
@@ -139,6 +140,7 @@ public class PmsDataController {
     @ApiOperation("上传数据")
     public CommonResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request){
         UmsUser user = UserUtils.getUserFromRequest(request, userService);
+        // todo 适配oss
         return CommonResult.success(pmsDataService.upload(file));
     }
 

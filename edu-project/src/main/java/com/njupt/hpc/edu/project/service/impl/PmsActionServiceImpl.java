@@ -127,19 +127,15 @@ public class PmsActionServiceImpl implements PmsActionService {
      */
     public String getRequestActionByInstanceType(String actionId, PmsInstance instance, InstanceActionType type){
         switch (instance.getType()){
-            // 生成
+            // 生成评价
             case InstanceTypeEnum._GENERATE_EVALUATE:{
                 GenerateRequestAction action = new GenerateRequestAction(actionId, instance, type);
                 return action.parse2String();
             }
-            // 聚合
+            // 聚合评价
             case InstanceTypeEnum._FUSION_EVALUATE:{
                 FusionRequestAction fusionRequestAction = new FusionRequestAction(actionId, instance, type);
                 return fusionRequestAction.parse2String();
-            }
-            // 情感分析
-            case InstanceTypeEnum._SENTIMENT_EVALUATE:{
-                return "";
             }
         }
         throw new EduProjectException("没有符合的实例请求转换器");

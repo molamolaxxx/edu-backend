@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * <p>
  * 算法数据表 服务实现类
  * </p>
- *
+ * todo 适配oss
  * @author molamola
  * @since 2019-12-04
  */
