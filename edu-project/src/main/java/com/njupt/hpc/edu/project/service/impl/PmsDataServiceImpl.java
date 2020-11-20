@@ -12,6 +12,7 @@ import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.dto.DataDTO;
 import com.njupt.hpc.edu.project.model.vo.DataVO;
 import com.njupt.hpc.edu.project.service.PmsDataService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,11 @@ import java.util.stream.Collectors;
  * <p>
  * 算法数据表 服务实现类
  * </p>
- * todo 适配oss
  * @author molamola
  * @since 2019-12-04
  */
 @Service
+@Slf4j
 public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> implements PmsDataService {
 
     @Autowired
@@ -49,7 +50,7 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
     public void setDataSuffixSet(){
         dataSuffixMap = new HashMap();
         dataSuffixMap.put("csv", "0");
-//        dataSuffixMap.put("json", "1");
+        dataSuffixMap.put("json", "1");
 //        dataSuffixMap.put("rdf", "2");
     }
 
@@ -131,7 +132,7 @@ public class PmsDataServiceImpl extends ServiceImpl<PmsDataMapper, PmsData> impl
         PmsData data = this.getById(dataId);
         String dataPath = data.getDataPath();
         if (!FileUtils.deleteQuietly(new File(dataPath))){
-            throw new EduProjectException("删除文件失败");
+            log.error("删除文件失败,dataId = {}", data.getId());
         }
         return this.removeById(dataId);
     }

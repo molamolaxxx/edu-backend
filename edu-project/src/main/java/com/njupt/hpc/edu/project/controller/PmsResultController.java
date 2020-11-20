@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.njupt.hpc.edu.common.api.CommonPage;
 import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
-import com.njupt.hpc.edu.common.utils.WrapperUtil;
 import com.njupt.hpc.edu.project.data.content.csv.CSVContentVO;
 import com.njupt.hpc.edu.project.data.parser.impl.FusionDataParser;
 import com.njupt.hpc.edu.project.data.parser.impl.GenerateDataParser;

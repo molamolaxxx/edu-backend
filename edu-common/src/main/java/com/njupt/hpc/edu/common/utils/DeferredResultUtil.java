@@ -28,4 +28,15 @@ public class DeferredResultUtil {
 
         return result;
     }
+
+    /**
+     * 构建立即失败的请求
+     * @param message
+     * @return
+     */
+    public static DeferredResult buildFailedResult(String message) {
+        DeferredResult<CommonResult> result = new DeferredResult();
+        result.setResult(CommonResult.failed(message));
+        return result;
+    }
 }

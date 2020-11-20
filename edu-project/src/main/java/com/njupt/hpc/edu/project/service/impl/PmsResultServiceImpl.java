@@ -6,16 +6,18 @@ import com.njupt.hpc.edu.common.exception.EduProjectException;
 import com.njupt.hpc.edu.common.utils.BeanUtilsPlug;
 import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.project.dao.PmsResultMapper;
+import com.njupt.hpc.edu.project.manager.FileTransferManager;
 import com.njupt.hpc.edu.project.model.PmsResult;
 import com.njupt.hpc.edu.project.model.dto.ResultDTO;
 import com.njupt.hpc.edu.project.service.PmsResultService;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,8 +32,12 @@ import java.util.List;
 @Service
 public class PmsResultServiceImpl extends ServiceImpl<PmsResultMapper, PmsResult> implements PmsResultService {
 
-    @Autowired
+    @Resource
     private PmsResultMapper pmsResultMapper;
+
+    @Resource
+    private FileTransferManager fileTransferManager;
+
     @Override
     public Boolean create(ResultDTO dto) {
         if (dto.getId() == null) {
@@ -72,30 +78,7 @@ public class PmsResultServiceImpl extends ServiceImpl<PmsResultMapper, PmsResult
         if (result == null) {
             throw new EduProjectException("结果明细记录不存在");
         }
-        File file = new File(result.getPath());
-        if (!file.exists()) {
-            throw new EduProjectException("文件不存在");
-        }
-        response.setContentType("application/x-msdownload;");
-        response.setHeader("Content-disposition", "attachment; filename=" + new String(file.getName().getBytes("utf-8"), "utf-8"));
-        response.setHeader("Content-Length", String.valueOf(file.length()));
-        // 获得文件输入流
-        FileInputStream fileInputStream = new FileInputStream(file);
-        // 装饰成bufferedStream
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
-        byte[] buffer = new byte[1024];
-        int read = 0;
-        while (-1 != (read = bufferedInputStream.read(buffer, 0, buffer.length))){
-            bufferedOutputStream.write(buffer, 0, read);
-        }
-        if (null != bufferedInputStream) {
-            bufferedInputStream.close();
-        }
-        if (null != bufferedOutputStream) {
-            bufferedOutputStream.close();
-        }
-        return true;
+        return fileTransferManager.transfer(result.getPath(), response);
     }
 
     @Override

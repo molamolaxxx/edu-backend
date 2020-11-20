@@ -6,14 +6,16 @@ import com.njupt.hpc.edu.common.api.CommonResult;
 import com.njupt.hpc.edu.common.cache.DeferredResultCache;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.QueueEnum;
+import com.njupt.hpc.edu.project.service.AlgorithmService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -26,9 +28,11 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class EduMQListener {
 
-    @Autowired
+    @Resource
     private EduMQService mqService;
 
+    @Resource
+    private AlgorithmService algorithmService;
 
     @RabbitHandler
     @RabbitListener(queues = QueueEnum.PYTHON_TO_JAVA_QUEUE_NAME, containerFactory="rabbitListenerContainerFactory")
@@ -40,7 +44,7 @@ public class EduMQListener {
         String actionTypeId = (String) jsonObject.get("actionTypeId");
 
         // 如果能在缓存中找到DeferredResult，说明该请求处于等待中，需要执行相应返回逻辑
-        if (null != actionId && DeferredResultCache.get(actionId) != null) {
+        if (!StringUtils.isEmpty(actionId) && DeferredResultCache.get(actionId) != null) {
             log.info("存在等待请求,可以执行返回逻辑");
             DeferredResultCache.get(actionId).setResult(CommonResult.success(jsonObject));
             DeferredResultCache.del(actionId);
@@ -54,13 +58,13 @@ public class EduMQListener {
          * 2.FINISH("106","实例运行完毕通知");
          */
         // 实例运行失败
-        if (null != actionTypeId && actionTypeId.equals(InstanceActionType._ERROR)){
+        if (!StringUtils.isEmpty(actionTypeId) && actionTypeId.equals(InstanceActionType._ERROR)){
             // 消息拒绝
             mqService.rejectMessage(channel, msg);
             mqService.handlerError(instanceId, jsonObject);
         }
         // 实例运行完成
-        if (null != actionTypeId && actionTypeId.equals(InstanceActionType._FINISH)){
+        if (!StringUtils.isEmpty(actionTypeId) && actionTypeId.equals(InstanceActionType._FINISH)){
             // 消息确认
             mqService.ackMessage(channel, msg);
             mqService.handlerFinish(instanceId, jsonObject);
@@ -78,19 +82,25 @@ public class EduMQListener {
         String actionId = (String) jsonObject.get("actionId");
         String instanceId = (String)jsonObject.get("instanceId");
         String actionTypeId = (String) jsonObject.get("actionTypeId");
+        String instanceTypeId = (String) jsonObject.get("instanceTypeId");
 
         // 消息确认被消费
         mqService.rejectMessage(channel, msg);
 
         // 将对应的异步请求返回超时
-        if (null != actionId && DeferredResultCache.get(actionId) != null) {
+        if (!StringUtils.isEmpty(actionId) && DeferredResultCache.get(actionId) != null) {
             log.info("存在等待请求,可以执行返回逻辑");
             DeferredResultCache.get(actionId).setResult(CommonResult.timeout("任务未送达，请求超时"));
             DeferredResultCache.del(actionId);
         }
 
         // 当失效消息为停止运行时，死信队列必须重试，保证消息被消费
+        // 但须保证算法注册中心已经没有对应的实例，否则会造成死循环
         if (actionTypeId.equals(InstanceActionType._STOP)) {
+            if (!algorithmService.isInstanceContainerOnline(instanceTypeId)) {
+                log.warn("算法服务已经下线，请排查:"+jsonObject);
+                return;
+            }
             log.info("消息为停止实例操作，进行再次发送:"+jsonObject);
             mqService.sendMessageToMQ(message);
         }

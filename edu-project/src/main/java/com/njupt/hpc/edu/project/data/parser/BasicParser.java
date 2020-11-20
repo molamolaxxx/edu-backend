@@ -41,7 +41,6 @@ public abstract class BasicParser {
             // 如果缓存中读不到csv
             List<String> csvLines = null;
             try {
-                // todo 适配oss
                 csvLines = CSVUtils.readCSV(new File(path));
             } catch (IOException e) {
                 throw new EduProjectException("读取csv文件时发生IO错误");

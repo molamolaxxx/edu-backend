@@ -15,14 +15,15 @@ import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
 import com.njupt.hpc.edu.project.model.PmsData;
 import com.njupt.hpc.edu.project.model.PmsInstance;
 import com.njupt.hpc.edu.project.mq.EduMQService;
+import com.njupt.hpc.edu.project.service.AlgorithmService;
 import com.njupt.hpc.edu.project.service.PmsActionService;
 import com.njupt.hpc.edu.project.service.PmsDataService;
 import com.njupt.hpc.edu.project.service.PmsInstanceService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import javax.annotation.Resource;
 import java.io.File;
 
 /**
@@ -35,18 +36,24 @@ import java.io.File;
 @Slf4j
 public class PmsActionServiceImpl implements PmsActionService {
 
-    @Autowired
+    @Resource
     private EduMQService mqService;
 
-    @Autowired
+    @Resource
     private PmsInstanceService instanceService;
 
-    @Autowired
+    @Resource
     private PmsDataService dataService;
+
+    @Resource
+    private AlgorithmService algorithmService;
 
     @Override
     public DeferredResult action(PmsInstance instance, InstanceActionType actionType) {
-
+        if (!algorithmService.isInstanceContainerOnline(instance.getType())) {
+            log.warn("实例类型{}的算法容器不在线", instance.getType());
+            return DeferredResultUtil.buildFailedResult("启动失败，算法容器不在线");
+        }
         // 构建actionId与deferResult
         String actionId = IdUtil.generateId("action");
         DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");

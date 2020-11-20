@@ -1,11 +1,13 @@
 package com.njupt.hpc.edu.config;
 
 import com.njupt.hpc.edu.common.sys.UserConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.njupt.hpc.edu.project.interceptor.AlgorithmInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
 import java.io.File;
 
 /**
@@ -17,8 +19,11 @@ import java.io.File;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private UserConfig userConfig;
+
+    @Resource
+    private AlgorithmInterceptor algorithmInterceptor;
 
     /**
      * 将机器绝对路径映射到url
@@ -31,5 +36,10 @@ public class MvcConfig implements WebMvcConfigurer {
             iconRootPath += File.separator;
         registry.addResourceHandler("/iconHeader/**")
                 .addResourceLocations("file:"+ iconRootPath);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(algorithmInterceptor).addPathPatterns("/algorithm/**");
     }
 }

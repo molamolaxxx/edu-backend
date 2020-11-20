@@ -52,6 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/show/**")   // 展示界面可访问
                 .permitAll()
+                .antMatchers("/algorithm/**") // 算法自定义权限校验
+                .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()
 //                .antMatchers("/**")
