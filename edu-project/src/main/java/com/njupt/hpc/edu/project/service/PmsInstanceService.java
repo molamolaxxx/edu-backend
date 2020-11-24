@@ -63,5 +63,11 @@ public interface PmsInstanceService extends IService<PmsInstance> {
      */
     Boolean deleteTempInstance(PmsInstance instance);
 
+    /**
+     * 获取所有的临时实例
+     * @return
+     */
+    List<PmsInstance> getAllTempInstance();
+
 
 }

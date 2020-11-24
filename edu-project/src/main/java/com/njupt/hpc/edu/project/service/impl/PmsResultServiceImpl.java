@@ -65,6 +65,17 @@ public class PmsResultServiceImpl extends ServiceImpl<PmsResultMapper, PmsResult
     }
 
     @Override
+    public Boolean delete(String dataId) {
+        PmsResult result = this.getById(dataId);
+        if (null != result && this.removeById(dataId)) {
+            // 删除对应的文件
+            FileUtils.deleteQuietly(new File(result.getPath()));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public ResultDTO findByInstanceId(String instanceId) {
         QueryWrapper<PmsResult> wrapper = new QueryWrapper<>();
         wrapper.eq("instance_id", instanceId);

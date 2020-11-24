@@ -6,6 +6,7 @@ import com.njupt.hpc.edu.project.data.content.csv.CSVLine;
 import com.njupt.hpc.edu.project.data.content.graph.Entity;
 import com.njupt.hpc.edu.project.data.content.graph.GraphContentVO;
 import com.njupt.hpc.edu.project.data.content.graph.Relation;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * @author: Su
  * @create: 2020-05-26 10:43
  **/
+@Slf4j
 public abstract class BasicParser {
 
     protected Map<String, List<CSVLine>> csvContentMap = new ConcurrentHashMap<>();
@@ -43,6 +45,7 @@ public abstract class BasicParser {
             try {
                 csvLines = CSVUtils.readCSV(new File(path));
             } catch (IOException e) {
+                log.error("读取csv文件时发生IO错误", e);
                 throw new EduProjectException("读取csv文件时发生IO错误");
             }
             // csv检查

@@ -76,6 +76,7 @@ public class GenerateRequestAction extends RequestAction {
         PmsData instanceData = dataService.getById(this.getInstance().getDataId());
         dataMap.put("dataPath",instanceData.getDataPath());
         dataMap.put("dataType",instanceData.getDataType());
+        dataMap.put("dataId", instanceData.getId());
         // 放置数据的信息
         json.put("data",dataMap);
         // 从实例中获取相应的实例配置，如果获取不到，沿用默认的系统配置

@@ -33,6 +33,13 @@ public interface PmsResultService extends IService<PmsResult> {
     Boolean deleteByInstanceId(String instanceId);
 
     /**
+     * 删除结果与文件
+     * @param dataId
+     * @return
+     */
+    Boolean delete(String dataId);
+
+    /**
      * 根据外键instanceId删除result
      * @param instanceId
      * @return

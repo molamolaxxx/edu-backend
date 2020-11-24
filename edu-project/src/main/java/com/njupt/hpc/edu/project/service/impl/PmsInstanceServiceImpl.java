@@ -183,4 +183,11 @@ public class PmsInstanceServiceImpl extends ServiceImpl<PmsInstanceMapper, PmsIn
 
         return true;
     }
+
+    @Override
+    public List<PmsInstance> getAllTempInstance() {
+        return this.list().stream()
+                .filter(instance -> instance.getId().endsWith("temp"))
+                .collect(Collectors.toList());
+    }
 }

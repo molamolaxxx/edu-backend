@@ -25,6 +25,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : molamola
@@ -50,9 +52,14 @@ public class PmsActionServiceImpl implements PmsActionService {
 
     @Override
     public DeferredResult action(PmsInstance instance, InstanceActionType actionType) {
+        if (null == instance) {
+            throw new EduProjectException("实例不存在");
+        }
         if (!algorithmService.isInstanceContainerOnline(instance.getType())) {
-            log.warn("实例类型{}的算法容器不在线", instance.getType());
-            return DeferredResultUtil.buildFailedResult("启动失败，算法容器不在线");
+            log.warn("实例类型{}的算法容器不在线，操作【{}】执行失败", instance.getType(), actionType.getActionDesc());
+            // 将该实例置为失败状态
+            instanceService.updateInstanceState(instance.getId(), InstanceActionType._ERROR);
+            return DeferredResultUtil.buildFailedResult("操作【"+actionType.getActionDesc()+"】执行失败，算法容器不在线");
         }
         // 构建actionId与deferResult
         String actionId = IdUtil.generateId("action");
@@ -60,8 +67,10 @@ public class PmsActionServiceImpl implements PmsActionService {
         // 如果是info消息
         if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
                 actionType.getActionCode().equals(InstanceActionType._INFO)){
-            // 直接返回
-            result.setResult(CommonResult.success(true));
+            // 直接返回实例状态
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.put("state", instance.getState());
+            result.setResult(CommonResult.success(resultMap));
             return result;
         }
 
