@@ -3,8 +3,7 @@ package com.njupt.hpc.edu.project.action.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.njupt.hpc.edu.common.aware.EduApplicationAware;
-import com.njupt.hpc.edu.common.sys.DataConfig;
-import com.njupt.hpc.edu.common.sys.FusionConfig;
+import com.njupt.hpc.edu.common.sys.SentimentConfig;
 import com.njupt.hpc.edu.project.action.RequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceTypeEnum;
@@ -19,22 +18,22 @@ import java.util.Map;
 
 /**
  * @program: edu-backend
- * @description: 聚合模板的action数据封装
+ * @description: 课程情感评价模型训练模块的action数据封装
  * @author: Su
- * @create: 2020-05-13 15:55
+ * @create: 2020-12-9 15:55
  **/
 @Slf4j
-public class FusionRequestAction extends RequestAction {
+public class SentimentRequestAction extends RequestAction {
 
     private PmsDataService dataService = (PmsDataServiceImpl) EduApplicationAware
             .getApplicationContext().getBean("pmsDataServiceImpl");
 
-    private FusionConfig fusionConfig = (FusionConfig) EduApplicationAware
-            .getApplicationContext().getBean("fusionConfig");
+    private SentimentConfig sentimentConfig = (SentimentConfig) EduApplicationAware
+            .getApplicationContext().getBean("sentimentConfig");
 
-    public FusionRequestAction(String actionId, PmsInstance instance, InstanceActionType actionType) {
+    public SentimentRequestAction(String actionId, PmsInstance instance, InstanceActionType actionType) {
         this.setActionId(actionId);
-        this.setInstanceTypeEnum(InstanceTypeEnum.FUSION_EVALUATE);
+        this.setInstanceTypeEnum(InstanceTypeEnum.SENTIMENT_EVALUATE);
         this.setInstance(instance);
         this.setActionType(actionType);
     }
@@ -75,14 +74,14 @@ public class FusionRequestAction extends RequestAction {
         // 从实例中获取相应的实例配置，如果获取不到，沿用默认的系统配置
         // 放置系统配置信息（生成模块的配置）
         try {
-            fusionConfig.checkConfigInInstance(this.getInstance().getConfig());
+            sentimentConfig.checkConfigInInstance(this.getInstance().getConfig());
         } catch (RuntimeException e) {
             e.printStackTrace();
             log.info("instanceId:"+ getInstance().getId() +"配置出错");
-            json.put("sysConfig", fusionConfig.parseToJsonObject());
+            json.put("sysConfig", sentimentConfig.parseToJsonObject());
             return json;
         }
-        json.put("sysConfig", fusionConfig.parseToJsonObject());
+        json.put("sysConfig", sentimentConfig.parseToJsonObject());
         return json;
     }
 

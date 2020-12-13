@@ -151,7 +151,6 @@ public class FusionDataParser extends BasicParser {
      * 转化信息缺失度结果的function
      * @return
      */
-
     protected Function<String, CSVLine> parseInfoLackResultDetailFunc(){
         return line -> {
             String[] split = line.split("\t");

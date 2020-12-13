@@ -8,6 +8,7 @@ import com.njupt.hpc.edu.common.utils.DeferredResultUtil;
 import com.njupt.hpc.edu.common.utils.IdUtil;
 import com.njupt.hpc.edu.project.action.impl.FusionRequestAction;
 import com.njupt.hpc.edu.project.action.impl.GenerateRequestAction;
+import com.njupt.hpc.edu.project.action.impl.SentimentRequestAction;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionResponseCode;
 import com.njupt.hpc.edu.project.enumerate.InstanceActionType;
 import com.njupt.hpc.edu.project.enumerate.InstanceStateEnum;
@@ -50,14 +51,13 @@ public class PmsActionServiceImpl implements PmsActionService {
         // 构建actionId与deferResult
         String actionId = IdUtil.generateId("action");
         DeferredResult<CommonResult> result = DeferredResultUtil.build(actionId, "运行实例操作时,异步队列请求超时");
-        // 如果是info消息
+        // 如果实例是非运行状态且是获取info消息
         if(!instance.getState().equals(InstanceStateEnum.RUNNING.getCode()) &&
                 actionType.getActionCode().equals(InstanceActionType._INFO)){
             // 直接返回
             result.setResult(CommonResult.success(true));
             return result;
         }
-
         // 1.检查instance状态，数据是否存在、合法
         checkInstanceLegality(instance, actionType);
         checkDataLegality(instance.getDataId());
@@ -139,7 +139,8 @@ public class PmsActionServiceImpl implements PmsActionService {
             }
             // 情感分析
             case InstanceTypeEnum._SENTIMENT_EVALUATE:{
-                return "";
+                SentimentRequestAction sentimentRequestAction = new SentimentRequestAction(actionId, instance, type);
+                return sentimentRequestAction.parse2String();
             }
         }
         throw new EduProjectException("没有符合的实例请求转换器");

@@ -16,6 +16,11 @@
       "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig"
     },
     {
+      "name": "edu.sentiment",
+      "type": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig"
+    },
+    {
       "name": "edu.user",
       "type": "com.njupt.hpc.edu.common.sys.UserConfig",
       "sourceType": "com.njupt.hpc.edu.common.sys.UserConfig"
@@ -101,6 +106,48 @@
       "type": "java.lang.Integer",
       "sourceType": "com.njupt.hpc.edu.common.sys.GenerateConfig",
       "defaultValue": 10
+    },
+    {
+      "name": "edu.sentiment.batch-size",
+      "type": "java.lang.Integer",
+      "description": "批量大小",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "defaultValue": 128
+    },
+    {
+      "name": "edu.sentiment.embedding-vector-size",
+      "type": "java.lang.Integer",
+      "description": "词嵌入的向量维度",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "defaultValue": 10
+    },
+    {
+      "name": "edu.sentiment.epochs",
+      "type": "java.lang.Integer",
+      "description": "迭代次数",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "defaultValue": 10
+    },
+    {
+      "name": "edu.sentiment.lstm-size",
+      "type": "java.lang.Integer",
+      "description": "lstm层的维度",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "defaultValue": 32
+    },
+    {
+      "name": "edu.sentiment.maxlen",
+      "type": "java.lang.Integer",
+      "description": "文本最长单词数",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "defaultValue": 100
+    },
+    {
+      "name": "edu.sentiment.validation-split",
+      "type": "java.lang.Double",
+      "description": "训练集和验证集比例",
+      "sourceType": "com.njupt.hpc.edu.common.sys.SentimentConfig",
+      "defaultValue": 0.2
     },
     {
       "name": "edu.user.header-icon-path",
