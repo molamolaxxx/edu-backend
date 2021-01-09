@@ -47,7 +47,7 @@ public class RabbitConfig {
     }
 
     /**
-     * 申明发送队列
+     * 申明质量评价的发送队列
      */
     @Bean
     public Queue sender(){
@@ -56,6 +56,19 @@ public class RabbitConfig {
                 .withArgument("x-dead-letter-exchange", QueueEnum.JAVA_TO_PYTHON_CANCEL.getExchange())//到期后转发的交换机
                 .withArgument("x-dead-letter-routing-key", QueueEnum.JAVA_TO_PYTHON_CANCEL.getRouteKey())//到期后转发的路由键
                 .withArgument("x-message-ttl", 4000L)
+                .build();
+    }
+
+    /**
+     * 申明知识抽取的发送队列
+     */
+    @Bean
+    public Queue senderGenerate(){
+        return QueueBuilder
+                .durable(QueueEnum.JAVA_TO_PYTHON_QUEUE_GENERATE.getName())
+                .withArgument("x-dead-letter-exchange", QueueEnum.JAVA_TO_PYTHON_CANCEL.getExchange())//到期后转发的交换机
+                .withArgument("x-dead-letter-routing-key", QueueEnum.JAVA_TO_PYTHON_CANCEL.getRouteKey())//到期后转发的路由键
+                .withArgument("x-message-ttl", 20000L)
                 .build();
     }
 
@@ -85,6 +98,14 @@ public class RabbitConfig {
                 .bind(sender())
                 .to(j2pExchange())
                 .with(QueueEnum.JAVA_TO_PYTHON_QUEUE.getRouteKey());
+    }
+
+    @Bean
+    public Binding bindingSenderGenerate(){
+        return BindingBuilder
+                .bind(senderGenerate())
+                .to(j2pExchange())
+                .with(QueueEnum.JAVA_TO_PYTHON_QUEUE_GENERATE.getRouteKey());
     }
 
     @Bean
